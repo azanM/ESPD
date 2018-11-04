@@ -1,0 +1,11 @@
+﻿<html>
+<head>
+    <title>e - SPD</title>
+</head>
+<body>
+    <a href='|ApproveUrl|'>Approve</a>
+    <a href='|RejectUrl|'>Reject</a>
+       |ApproveUrl| |RejectUrl|
+       |eCrypt| |nCrypt| |sCrypt| |NoSPD|	   
+</body>
+</html>

@@ -1,0 +1,156 @@
+﻿using eSPD.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace eSPD
+{
+    public partial class newFormRequestList : System.Web.UI.Page
+    {
+        private static msKaryawan karyawan = new msKaryawan();
+        private static classSpd oSPD = new classSpd();
+        private static string strID = string.Empty;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+
+
+            strID = (string)Session["IDLogin"];
+            karyawan = oSPD.getKaryawan(strID);
+            Session["nrpLogin"] = karyawan.nrp;
+
+            if (string.IsNullOrEmpty(karyawan.nrp)) Response.Redirect("frmHome.aspx");
+
+            nrp.Value = karyawan.nrp;
+
+            if ((bool)Session["sekretaris"])
+            {
+                if (!IsPostBack)
+                {
+                    spdDirector.Visible = true;
+                    bindDirect();
+                }
+            }
+        }
+
+        protected void gvList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetail.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);      
+            }
+
+            if (e.CommandName == "Cancel")
+            {
+                ApprovalSPDUrl approvalSPDUrl = new ApprovalSPDUrl();
+                lblMessage.Text = approvalSPDUrl.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, string.Empty);
+                lblMessage.Visible = true;
+            }
+        }
+
+        protected void gvList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var Cancel = DataBinder.Eval(e.Row.DataItem, "isCancel");
+                var Approved = DataBinder.Eval(e.Row.DataItem, "isApproved");
+                bool isCancel = false;
+                bool isApproved = false;
+                if (Cancel != null) isCancel = true;
+                if (Approved != null) isApproved = true;
+
+                if (karyawan.nrp.Equals("99999999") || isCancel || isApproved)
+                {
+                    Button btnCancel = (Button)e.Row.FindControl("btnCancel");
+                    btnCancel.Visible = false;
+                }
+            }
+        }
+
+        protected void gvDirect_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetail.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+            }
+
+            if (e.CommandName == "Cancel")
+            {
+                ApprovalSPDUrl approvalSPDUrl = new ApprovalSPDUrl();
+                lblMessage.Text = approvalSPDUrl.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, string.Empty);
+                lblMessage.Visible = true;
+                bindDirect();
+            }
+        }
+
+        protected void gvDirect_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var Cancel = DataBinder.Eval(e.Row.DataItem, "isCancel");
+                bool isCancel = false;
+                if (Cancel != null) isCancel = true;
+
+                if (karyawan.nrp.Equals("99999999") || isCancel)
+                {
+                    Button btnCancel = (Button)e.Row.FindControl("btnCancel");
+                    btnCancel.Visible = false;
+                }
+            }
+        }
+
+        void bindDirect()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                DateTime tglBerangkat = (string.IsNullOrEmpty(txtTglBerangkat.Text) ? DateTime.Now : Convert.ToDateTime(txtTglBerangkat.Text));
+                var data = (from p in ctx.trSPDs
+                            let u = ctx.msUsers.Where(x => x.roleId == 14 || x.roleId == 13).Select(x => x.nrp)
+                            where u.Contains(p.nrp)
+                            && (string.IsNullOrEmpty(txtTglBerangkat.Text) ? true : p.tglBerangkat == tglBerangkat)
+                            select new
+                            {
+                                noSPD = p.noSPD,
+                                nrp = p.nrp,
+                                namaLengkap = p.namaLengkap,
+                                tujuan = p.companyCodeTujuan != null ? p.companyCodeTujuan + " - " + p.personelAreaTujuan + " - " + p.pSubAreaTujuan : p.tempatTujuanLain,
+                                keperluan = p.idKeperluan != null ? p.msKeperluan.keperluan : p.keperluanLain,
+                                tglBerangkat = p.tglBerangkat,
+                                tglKembali = p.tglKembali,
+                                isCancel = p.isCancel,
+                                status = p.status
+                            }).OrderByDescending(o => o.noSPD).OrderByDescending(o => o.tglBerangkat).ToList();
+                gvDirect.DataSource = data;
+                gvDirect.DataBind();
+                gvDirect.Visible = true;
+            }
+            
+        }
+
+        protected void gvDirect_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvDirect.PageIndex = e.NewPageIndex;
+            bindDirect();
+        }
+
+        protected void btnFind_Click(object sender, EventArgs e)
+        {
+            bindDirect();
+        }
+
+        protected void gvDirect_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            bindDirect();
+        }
+    }
+}

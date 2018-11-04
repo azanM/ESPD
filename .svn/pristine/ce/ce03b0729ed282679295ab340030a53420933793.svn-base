@@ -1,0 +1,214 @@
+﻿using eSPD.Core;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+
+namespace eSPD
+{
+    /// <summary>
+    /// Summary description for ClaimApprovalUrl
+    /// </summary>
+    public class ClaimApprovalUrl : IHttpHandler
+    {
+        private classSpd cs = new classSpd();
+        string errorMessage = string.Empty;
+        public void ProcessRequest(HttpContext context)
+        {
+            string NoSPD = Encrypto.Decrypt(context.Request["sCrypt"]);
+            string EmailAppproval = Encrypto.Decrypt(context.Request["eCrypt"]);
+            string NrpApproval = Encrypto.Decrypt(context.Request["nCrypt"]);
+            string Action = Encrypto.Decrypt(context.Request["Action"]);
+            string ClaimApprove = context.Request["ClaimApprove"];
+
+            context.Response.ContentType = "text/plain";
+            context.Response.Write(ChangeStatus(NoSPD, Action, NrpApproval, ClaimApprove));
+        }
+
+
+        public string ChangeStatus(string nospd, string action, string nrp, string claimapprove)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                try
+                {
+                    // get data spd & claim
+                    var dataClaim = ctx.trClaims.FirstOrDefault(o => o.noSPD == nospd);
+                    var dataSpd = ctx.trSPDs.FirstOrDefault(o => o.noSPD == nospd);
+
+                    if (dataClaim != null && dataSpd != null)
+                    {
+                        // get user creator nrp
+
+                        // approve
+                        if (action.ToLower().Contains("approve"))
+                        {
+                            switch (claimapprove.ToLower())
+                            {
+                                case "atasan":
+                                    dataClaim.isApprovedAtasan = true;
+                                    dataClaim.isApprovedAtasanDate = DateTime.Now;
+                                    dataClaim.ApprovedAtasanBy = nrp;
+                                    dataClaim.status = "Menunggu approval GA";
+
+                                    var role = (from p in ctx.msUsers
+                                                where p.roleId == 17
+                                                select p.nrp).ToList();
+
+                                    var dataGa = ctx.msKaryawans
+                                        .Where(o =>
+                                            o.coCd == "0001" &&
+                                            role.Contains(o.nrp));
+
+                                    foreach (var item in dataGa)
+                                    {
+                                        EmailCore.ApprovalClaim(item.nrp, dataClaim.noSPD, dataSpd, "ga", dataClaim.status);
+                                    }
+
+                                    EmailCore.InformasiClaim(dataSpd.dibuatOleh, dataClaim.noSPD, dataSpd, dataClaim.status);
+
+                                    break;
+                                case "ga":
+                                    dataClaim.isApprovedGA = true;
+                                    dataClaim.isApprovedGADate = DateTime.Now;
+                                    dataClaim.ApprovedGABy = nrp;
+                                    dataClaim.status = "Menunggu approval Finance";
+
+                                    var creator = ctx.msKaryawans.FirstOrDefault(o => o.nrp == dataSpd.nrp);
+
+                                    var role2 = (from p in ctx.msUsers
+                                                 where p.roleId == 19
+                                                 select p.nrp).ToList();
+
+                                    var datafinace = ctx.msKaryawans
+                                        .Where(o =>
+                                            o.coCd == creator.coCd &&
+                                            role2.Contains(o.nrp));
+
+                                    foreach (var item in datafinace)
+                                    {
+
+                                        EmailCore.ApprovalClaim(item.nrp, dataClaim.noSPD, dataSpd, "finance", dataClaim.status);
+                                    }
+
+                                    EmailCore.InformasiClaim(dataSpd.dibuatOleh, dataClaim.noSPD, dataSpd, dataClaim.status);
+
+                                    break;
+                                case "finance":
+                                    dataClaim.isApprovedFinance = true;
+                                    dataClaim.isApprovedFinanceDate = DateTime.Now;
+                                    dataClaim.ApprovedFinanceBy = nrp;
+                                    dataClaim.status = "Finance Approved";
+
+
+                                    EmailCore.InformasiClaim(dataSpd.dibuatOleh, dataClaim.noSPD, dataSpd, dataClaim.status);
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        }
+                        else if (action.ToLower().Contains("reject")) //reject
+                        {
+                            switch (claimapprove.ToLower())
+                            {
+                                case "atasan":
+                                    dataClaim.ApprovedAtasanBy = nrp;
+                                    dataClaim.isApprovedAtasan = false;
+                                    dataClaim.isApprovedAtasanDate = DateTime.Now;
+
+                                    break;
+                                case "ga":
+                                    dataClaim.ApprovedGABy = nrp;
+                                    dataClaim.isApprovedGA = false;
+                                    dataClaim.isApprovedGADate = DateTime.Now;
+
+                                    break;
+                                case "finance":
+                                    dataClaim.ApprovedFinanceBy = nrp;
+                                    dataClaim.isApprovedFinance = false;
+                                    dataClaim.isApprovedFinanceDate = DateTime.Now;
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            dataClaim.status = "Rejected by " + claimapprove;
+
+                            EmailCore.InformasiClaim(dataSpd.dibuatOleh, dataClaim.noSPD, dataSpd, dataClaim.status);
+
+                        }
+                        else if (action.ToLower().Contains("cancel")) //cancel
+                        {
+                            switch (claimapprove.ToLower())
+                            {
+                                case "ga":
+                                    dataClaim.isCancel = true;
+                                    dataClaim.isCancelDate = DateTime.Now;
+                                    dataClaim.status = "Cancel by " + claimapprove;
+
+                                    EmailCore.InformasiClaim(dataSpd.dibuatOleh, dataClaim.noSPD, dataSpd, dataClaim.status);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        ctx.SubmitChanges();
+                        return "Claim " + nospd + " berhasil di " + action + " status saat ini berubah menjadi " + dataClaim.status;
+                    }
+                    else
+                    {
+                        setErrorLog("Data claim atau spd tidak ditemukan", nospd);
+                        return "Claim " + nospd + " gagal di" + action + ", data tidak ditemukan";
+                    }
+                }
+                catch (Exception e)
+                {
+                    setErrorLog(e, nospd);
+
+                    return nospd + " _ " + e.Message;
+                }
+            }
+        }
+
+        void setErrorLog(object ex, string nospd)
+        {
+            try
+            {
+                string path = @"E:\SPD\ErrorMail\ErrorApproveClaim_" + nospd + "_" + DateTime.Now.ToString("dd_MMM_yyyy") + ".txt";
+                if (!File.Exists(path))
+                {
+                    (new FileInfo(path)).Directory.Create();
+                    using (TextWriter tw = new StreamWriter(path))
+                    {
+                        tw.WriteLine(ex.ToString() + Environment.NewLine);
+                        tw.Close();
+                    }
+                }
+                else
+                {
+                    using (StreamWriter tw = File.AppendText(path))
+                    {
+                        tw.WriteLine(ex.ToString() + Environment.NewLine);
+                        tw.Close();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+    }
+}

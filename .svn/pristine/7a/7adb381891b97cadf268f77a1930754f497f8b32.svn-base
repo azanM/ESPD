@@ -1,0 +1,1351 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+using eSPD.Core;
+using eSPD.Extensions;
+using System.Data;
+
+namespace eSPD
+{
+    public partial class frmHome : System.Web.UI.Page
+    {
+        private static dsSPDDataContext ctx = new dsSPDDataContext();
+        private string strStatusSPD = string.Empty;
+        //debug only
+        private string strLoginID = string.Empty;
+        public string LoginID
+        {
+            get
+            {
+                object o = Request.QueryString["LoginID"];
+                if ((o != null))
+                    return Convert.ToString(o);
+                else
+                    return UserID();
+            }
+            set { Request.QueryString["LoginID"] = value; }
+        }
+        private string UserID()
+        {
+            System.Security.Principal.WindowsIdentity User = null;
+            User = System.Web.HttpContext.Current.Request.LogonUserIdentity;
+            string UID = null;
+            UID = User.Name;
+            for (int i = 0; i <= UID.Length - 1; i++)
+            {
+                if (UID[i] == '\\')
+                {
+                    UID = UID.Remove(0, i + 1);
+                    break; // TODO: might not be correct. Was : Exit For
+                }
+            }
+            return UID;
+        }
+        msKaryawan karyawan = new msKaryawan();
+
+        protected void txtsetLoginID_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtsetLoginID.Text))
+            {
+                txtsetLoginID.Text = SetLabelWelcome();
+            }
+            strLoginID = txtsetLoginID.Text;
+            Session["IDLogin"] = strLoginID;
+            classSpd oSPD = new classSpd();
+            karyawan = oSPD.getKaryawan(strLoginID);
+            Session["nrpLogin"] = karyawan.nrp;
+            btnFind_Click(null, null);
+            btnFind0_Click(null, null);
+            btnListFind_Click(null, null);
+            btnListGA_Click(null, null);
+            dsSPDDataContext data = new dsSPDDataContext();
+            msUser sekretaris = (from u in data.msUsers
+                                 where u.nrp == karyawan.nrp && u.roleId == Konstan.SEKRETARIS
+                                 select u).FirstOrDefault();
+            if (sekretaris != null)
+            {
+                Session["sekretaris"] = true;
+                listfindSekretaris();
+            }
+            else Session["sekretaris"] = false;
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            if (!Page.IsPostBack)
+            {
+                //Session["noSPD"] = string.Empty;
+                //Session["editable"] = false;
+                AD ad = new AD();
+                //ArrayList al = ad.Groups("trac\\"+LoginID,true);
+                ArrayList o = ad.Groups();
+
+                //string strLoginID = SetLabelWelcome();
+                strLoginID = SetLabelWelcome();
+
+                //if (strLoginID.ToLower() == "wawan010193")
+                txtsetLoginID.Text = "spd";
+                strLoginID = "spd";
+                if (strLoginID.ToLower() == "asus")
+                {
+
+                    //strLoginID = "spd";
+                    //strLoginID = "fanie009601";//sekertaris
+                    //strLoginID = "nsa00003707";
+                    //strLoginID = "puji";
+                    //strLoginID = "sisilia00002075";
+                    //strLoginID = "erna009094";
+
+                    //strLoginID = "spd";
+                    //strLoginID = "ESU90000653"; //GA
+                    //strLoginID = "arin009255"; 
+                    //strLoginID = "bagus008492"; 
+                    //strLoginID = "jerry010190"; 
+                    //strLoginID = "winna00003217"; 
+                    //strLoginID = "novi00002440"; 
+                    //strLoginID = "luki008392"; 
+                    //strLoginID = "david00003313";
+                    //strLoginID = "arsyah008468";
+                    //strLoginID = "andy00002378";
+                    //strLoginID = "pandu00001938";
+                    //strLoginID = "winna00003217";
+                    //strLoginID = "Syam005812";
+                    //strLoginID = "kumar";//"YSI00003641";
+                    //strLoginID = "yudi006891"; //PT. BALAI LELANG SERASI - YUDI HENDRA AGUS - 0007
+                    //strLoginID = "andhika00001875"; //PT. DAYA MITRA SERASI - ANDHIKA PRAMANTA - 0008 - msUser double - msrole double
+                    //strLoginID = "fitri007578"; //PT. HARMONI MITRA UTAMA - SUKMA FITRI - 515 - gapunya role
+                    //strLoginID = "Wenny005103"; //PT. SERASI AUTORAYA - WENNY MARLINA - 183 
+                    //strLoginID = "Triana005184"; //PT. SERASI LOGISTICS IND - TRIANA INDAH SUSANTI - 253
+                    //strLoginID = "cintya008512"; //PT.SERASI MITRA MOBIL-ADMINISTRATION - CINTYA CLAUDIA - 458
+                    //strLoginID = "agus006890"; //PT. SERASI TRAN NUSANTARA - AGUS SOEDIRDJA - 453
+                    //strLoginID = "fani009249"; //PT. UNITED AUTOMOBIL90 - MARIAM OTFANI - 1173
+
+                    //strLoginID = "felix00002371";
+
+
+                    //strLoginID = "Putu005001";
+                    // strLoginID = "yulia009582";
+                    //strLoginID = "fanie009601";
+                    // strLoginID = "ati008503";
+                    // strLoginID = "agus008935";
+                    //strLoginID = "fanie009601";
+                    //strLoginID = "neneng005240";
+                    //strLoginID = "hari00003583";
+
+                 
+
+                    //!!!!!! debug Only";
+                }
+                Session["IDLogin"] = strLoginID;
+                classSpd oSPD = new classSpd();
+                karyawan = oSPD.getKaryawan(strLoginID);
+                Session["nrpLogin"] = karyawan.nrp;
+                btnFind_Click(null, null);
+                btnFind0_Click(null, null);
+                btnListFind_Click(null, null);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                btnListGA_Click(null, null);
+                dsSPDDataContext data = new dsSPDDataContext();
+                msUser sekretaris = (from u in data.msUsers
+                                     where u.nrp == karyawan.nrp && u.roleId == Konstan.SEKRETARIS
+                                     select u).FirstOrDefault();
+                if (sekretaris != null)
+                {
+                    Session["sekretaris"] = true;
+                    listfindSekretaris();
+                }
+                else Session["sekretaris"] = false;
+
+                DropDownList2_SelectedIndexChanged(null, null);
+            }
+            //for debug
+            txtsetLoginID_TextChanged(null, null);
+            //end for debug
+
+            if (IsPostBack)
+            {
+                Response.Redirect("~/newFormHome.aspx");
+            }
+            
+        }
+
+
+
+
+        protected void btnFind_Click(object sender, EventArgs e)
+        {
+            if (IsPostBack)
+            {
+                String str = txtTglBerangkat.Text;
+            }
+
+            bindFind();
+
+        }
+        private Dictionary<string, Object> paramValidate(string param)
+        {
+            Dictionary<string, Object> dict = new Dictionary<string, Object>();
+
+            string[] format = new string[] { "dd-MM-yyyy" };
+            DateTime datetime;
+            if (DateTime.TryParseExact(param, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out datetime)) {
+                dict.Add("date", datetime);
+                return dict;
+            } else {
+                dict.Add("string", param);
+                return dict;
+            }
+        }
+        void bindFind()
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            try
+            {
+                if (string.IsNullOrEmpty(karyawan.nrp))
+                {
+                    karyawan.nrp = Session["nrpLogin"].ToString();
+                }
+                string filter = !string.IsNullOrEmpty(txtTglBerangkat.Text.Trim()) ? "tglBerangkat" : string.Empty; //DropDownList1.Text.Trim() == "--Select--" ? "" : DropDownList1.SelectedItem.Value;
+                string param = txtTglBerangkat.Text;
+                var dataTable = data.sp_GetApprovalSPDAtasanLangsung(karyawan.nrp, filter, param).ToList(); //SPHelper.GetApprovalSPDAtasanLangsung(karyawan.nrp, filter, param);
+                gvViewSPD.DataSource = dataTable;
+                gvViewSPD.DataBind();
+                if (dataTable.Count > 0) Panel1.Visible = true;
+                else Panel1.Visible = false;
+
+                //cr : by ian
+                #region changed
+                //if (txtTglBerangkat.Text.Trim() == "" || txtTglBerangkat.Text.Trim() == null)
+                //{
+                //    var query = (from spd in data.trSPDs.AsEnumerable()
+                //                 where spd.nrpAtasan.Trim() == karyawan.nrp
+                //                 && (spd.status.Split('-')[0] == "2")
+                //                 select new
+                //                 {
+                //                     noSPD = spd.noSPD,
+                //                     nrp = spd.nrp,
+                //                     namaLengkap = spd.namaLengkap,
+                //                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                //                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                //                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                //                     tglKembali = spd.tglKembali.ToShortDateString(),
+                //                     status = spd.status.Split('-')[1]
+                //                 }).OrderByDescending(spd => spd.noSPD);
+
+                //    gvViewSPD.DataSource = query.ToList();
+                //    gvViewSPD.DataBind();
+                //    //query = query.ToList();
+                //    if (!query.Any())
+                //    {
+                //        Panel1.Visible = false;
+                //    }
+                //    else
+                //        Panel1.Visible = true;
+                //    data.Dispose();
+                //}
+                //else
+                //{
+                //    DateTime str = Convert.ToDateTime(txtTglBerangkat.Text);
+                //    var query = (from spd in data.trSPDs.AsEnumerable()
+                //                 where spd.nrpAtasan.Trim() == karyawan.nrp && (spd.status.Split('-')[0] == "2") && spd.tglBerangkat == str
+                //                 select new
+                //                 {
+                //                     noSPD = spd.noSPD,
+                //                     nrp = spd.nrp,
+                //                     namaLengkap = spd.namaLengkap,
+                //                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                //                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                //                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                //                     tglKembali = spd.tglKembali.ToShortDateString(),
+                //                     status = spd.status.Split('-')[1]
+                //                 }).OrderByDescending(spd => spd.noSPD);
+                //    gvViewSPD.DataSource = query.ToList();
+                //    gvViewSPD.DataBind();
+                //    //query = query.ToList();
+                //    if (!query.Any())
+                //    {
+                //        Panel1.Visible = false;
+                //    }
+                //    else
+                //        Panel1.Visible = true;
+                //    data.Dispose();
+                //}
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Panel1.Visible = false;
+                //Response.Write(ex.Message);
+            }
+        }
+        protected void btnFind0_Click(object sender, EventArgs e)
+        {
+            findTempatTujuan();
+        }
+        void findTempatTujuan()
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            try
+            {
+                if (string.IsNullOrEmpty(karyawan.nrp))
+                {
+                    karyawan.nrp = Session["nrpLogin"].ToString();
+                }
+
+                if (txtTglBerangkatTujuan.Text == "" || txtTglBerangkatTujuan.Text == null)
+                {
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 where spd.nrpApprovalTujuan.Trim() == karyawan.nrp 
+                                    //&& (spd.status.Split('-')[0] == "6" || spd.status.Split('-')[0] == "3")
+                                    && spd.status == "SPD Menunggu approval tujuan"
+                                    && spd.isSubmit == true
+                                    && spd.isApproved == null
+                                    && (spd.isCancel == null || spd.isCancel == false)
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+                    gvViewSPDTujuan.DataSource = query.ToList();
+                    gvViewSPDTujuan.DataBind();
+                    if (!query.Any())
+                    {
+                        Panel2.Visible = false;
+
+                    }
+                    else
+                        Panel2.Visible = true;
+
+                    data.Dispose();
+                    //Panel2.Visible = true;
+                }
+                else
+                {
+                    DateTime str = Convert.ToDateTime(txtTglBerangkatTujuan.Text);
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 where spd.nrpApprovalTujuan.Trim() == karyawan.nrp 
+                                    //&& (spd.status.Split('-')[0] == "6" || spd.status.Split('-')[0] == "3") 
+                                    && spd.status == "SPD Menunggu approval tujuan"
+                                    && spd.isSubmit == true
+                                    && spd.isApproved == null
+                                    && (spd.isCancel == null || spd.isCancel == false) 
+                                    && spd.tglBerangkat == str
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+                    gvViewSPDTujuan.DataSource = query.ToList();
+                    gvViewSPDTujuan.DataBind();
+                    if (!query.Any())
+                    {
+                        Panel2.Visible = false;
+
+                    }
+                    else
+                        Panel2.Visible = true;
+
+                    data.Dispose();
+                    //Panel2.Visible = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Panel2.Visible = false;
+                Response.Write(ex.Message);
+
+            }
+        }
+        protected void lbDetail_Click(object sender, EventArgs e)
+        {
+            LinkButton link = (LinkButton)sender;
+            GridViewRow gv = (GridViewRow)(link.NamingContainer);
+            string strNoSpd = gv.Cells[0].Text;
+            Session["noSPD"] = strNoSpd;
+            if (gv.Cells[7].Text.ToLower() == "save")
+            {
+                Session["editable"] = true;
+            }
+            else
+            {
+                Session["editable"] = false;
+
+            }
+            Response.Redirect("frmRequestInput.aspx");
+
+        }
+
+        protected void lbTolak_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-1-6 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "reject";
+                    
+                    string indexLevel = row.Cells[8].Text;
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+                    lblStat.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+
+                #region changed
+                //strStatusSPD = "12-SPD Tolak (Atasan)";
+                //akanUbahStatus(sender, strStatusSPD, "1");
+                #endregion
+
+                bindFind();
+            }
+        }
+
+        protected void lbListRevisiGA_Click(object sender, EventArgs e)
+        {
+            LinkButton link = (LinkButton)sender;
+            GridViewRow gv = (GridViewRow)(link.NamingContainer);
+            string strNoSpd = gv.Cells[0].Text;
+            Session["noSPD"] = strNoSpd;
+            Session["editable"] = true;
+            Session["gamode"] = true;
+            Session["Role"] = "GA";
+            Response.Redirect("frmRequestInput.aspx");
+
+        }
+
+        private void akanUbahStatus(object sender, string strStatus, string role)
+        {
+            LinkButton link = (LinkButton)sender;
+            GridViewRow gv = (GridViewRow)(link.NamingContainer);
+            string strNoSpd = gv.Cells[0].Text;
+            try
+            {
+                ubahStatus(strNoSpd, strStatus, role);
+                lblNoSPD.Text = strNoSpd;
+                lblStatus.Text = strStatus.Trim();
+                int intStatus = int.Parse(strStatusSPD.Split('-')[0]);
+                if (intStatus == 8 || intStatus == 9 || intStatus == 12 || intStatus == 13)
+                {
+                    Panel4.Visible = true;
+                    //  bPanel1 = Panel1.Visible;
+                    //  bPanel2 = Panel2.Visible;
+                    //   bPanel5 = Panel5.Visible;
+                    if (intStatus == 8 || intStatus == 9)
+                    {
+                        lblRevisi.Visible = true;
+                        lblTolak.Visible = false;
+                    }
+                    else
+                    {
+                        lblRevisi.Visible = false;
+                        lblTolak.Visible = true;
+
+                    }
+                    Panel1.Visible = false;
+                    Panel5.Visible = false;
+                    txtRevisi.Focus();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //Response.Write(ex.Message);
+            }
+        }
+
+        protected void lbSetuju_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-1-5 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "approve";
+
+                    string indexLevel = row.Cells[8].Text;
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+
+                    lblStat.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+
+                #region changed
+                //strStatusSPD = "3-Atasan Approve";
+                //akanUbahStatus(sender, strStatusSPD, "1");
+                #endregion
+
+                bindFind();
+            }
+        }
+        private void ubahStatus(string strNoSpd, string p, string role)
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            classSpd cSPD = new classSpd();
+            trSPD oSpd = (from spd in data.trSPDs
+                          where spd.noSPD == strNoSpd
+                          select spd).First();
+            msKaryawan kary = new msKaryawan();
+            if (oSpd.nrp != "99999999")
+            {
+                kary = (from kar in data.msKaryawans
+                        where kar.nrp == oSpd.nrp
+                        select kar).First();
+
+            }
+            else
+            {
+
+                kary.email = oSpd.email;
+                kary.nrp = oSpd.nrp;
+                kary.namaLengkap = oSpd.namaLengkap;
+                kary.golongan = "III";
+                kary.job = oSpd.jabatan;
+                kary.posisi = oSpd.jabatan;
+                kary.coCd = "1";
+                kary.kodePSubArea = "1";
+                kary.kodePA = "1";
+
+            }
+            //msUser mu = (from msuser in data.msUsers
+            //             where msuser.nrp == oSpd.nrp
+            //select msuser).First();
+
+            trApprovalHistory ah = new trApprovalHistory();
+            ah.noSPD = strNoSpd;
+            ah.idRole = role;
+            ah.statusApproval = p;
+            ah.nrpApprover = cSPD.getKaryawan(Session["IDLogin"].ToString()).nrp;
+            ah.approvalDatetime = DateTime.Now;
+            data.trApprovalHistories.InsertOnSubmit(ah);
+            oSpd.status = p;
+            data.SubmitChanges();
+            classSpd oClassSPD = new classSpd();
+            switch (oSpd.status.Split('-')[0])
+            {
+                case "2":
+                    oClassSPD.sendMail(oSpd, "Atasan", kary);
+                    break;
+                case "3":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    oClassSPD.sendMail(oSpd, "Tujuan", kary);
+                    oClassSPD.sendMail(oSpd, "GA", kary);
+                    break;
+                case "6":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    oClassSPD.sendMail(oSpd, "Tujuan", kary);
+                    oClassSPD.sendMail(oSpd, "GA", kary);
+                    break;
+                case "7":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    break;
+                case "8":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    break;
+                case "9":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    break;
+                case "12":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    break;
+                case "13":
+                    oClassSPD.sendMail(oSpd, "Pembuat", kary);
+                    break;
+            }
+
+            data.Dispose();
+
+
+        }
+        protected void lbRevisi_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                strStatusSPD = "8-SPD Perlu Revisi (Atasan)";
+                akanUbahStatus(sender, strStatusSPD, "1");
+                bindFind();
+            }
+        }
+
+        protected void lbDetailTujuan_Click(object sender, EventArgs e)
+        {
+            LinkButton link = (LinkButton)sender;
+            GridViewRow gv = (GridViewRow)(link.NamingContainer);
+            string strNoSpd = gv.Cells[0].Text;
+            Session["noSPD"] = strNoSpd;
+            Session["editable"] = false;
+            Response.Redirect("frmRequestInput.aspx");
+        }
+
+
+        protected void lbRevisiTujuan_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                strStatusSPD = "9-SPD Perlu Revisi (Tujuan)";
+                akanUbahStatus(sender, strStatusSPD, "2");
+                findTempatTujuan();
+            }
+        }
+        protected void lbSetujuTujuan_Click1(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-01-08 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "approve";
+
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+
+                    lblStat1.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+                #region changed
+                //strStatusSPD = "7-Tempat Tujuan Approve";
+                //akanUbahStatus(sender, strStatusSPD, "2");
+                #endregion
+                findTempatTujuan();
+            }
+        }
+
+        protected void lbTolakTujuan_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-1-6 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "reject";
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+                    lblStat1.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+
+                #region changed
+                //strStatusSPD = "13-SPD Tolak (Tujuan)";
+                //akanUbahStatus(sender, strStatusSPD, "2");
+                #endregion
+                findTempatTujuan();
+            }
+        }
+
+        protected void lbListCancel_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-1-5 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "cancel";
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+
+
+                    lblStat2.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+
+                #region changed
+                //strStatusSPD = "29-SPD Cancel";
+                //akanUbahStatus(sender, strStatusSPD, "2");
+                #endregion
+
+                btnListFind_Click(null, null);
+            }
+        }
+
+        protected void lbListGACancel_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                //cr : 2015-01-08 ian
+                try
+                {
+                    var lb = (Control)sender;
+                    GridViewRow row = (GridViewRow)lb.NamingContainer;
+
+                    classSpd oSPD = new classSpd();
+                    karyawan = oSPD.getKaryawan(Session["IDLogin"].ToString());
+
+                    string noSPD = row.Cells[0].Text;
+                    string nrpApproval = karyawan.nrp;
+                    string emailApproval = karyawan.email;
+                    string action = "cancel";
+
+                    ApprovalUrl1 approvalUrl = new ApprovalUrl1();
+                    lblStat3.Text = approvalUrl.ChangeStatus(noSPD, action, nrpApproval);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+                #region changed
+                //strStatusSPD = "29-SPD Cancel";
+                //akanUbahStatus(sender, strStatusSPD, "17");
+                //cek_claim(sender, "SPD Cancel");
+                #endregion
+                btnListGA_Click(null, null);
+            }
+        }
+
+        protected void btnListFind_Click(object sender, EventArgs e)
+        {
+            if (Session["sekretaris"] != null && (bool)Session["sekretaris"])
+            {
+                listfindSekretaris();
+            }
+            else
+                bindFindList();
+        }
+        void bindFindList()
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            try
+            {
+                if (string.IsNullOrEmpty(karyawan.nrp))
+                {
+                    karyawan.nrp = Session["nrpLogin"].ToString();
+                }
+
+                if (txtTglSpd.Text == "" || txtTglSpd == null)
+                {
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 where spd.nrp == karyawan.nrp
+                                 //&& spd.status.Split('-')[0] != "29" && spd.status.Split('-')[0] != "26"
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+
+                    //query = query.Skip(grvList.PageIndex * 10).Take(10);
+                    grvList.DataSource = query.ToList();
+                    grvList.DataBind();
+                    if (!query.Any())
+                    {
+                        Panel5.Visible = false;
+
+                    }
+                    else
+                        Panel5.Visible = true;
+                    data.Dispose();
+                }
+                else
+                {
+                    DateTime str = Convert.ToDateTime(txtTglSpd.Text);
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 where spd.nrp == karyawan.nrp 
+                                    //&& spd.status.Split('-')[0] != "29"  
+                                    && spd.tglBerangkat == str
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+                    grvList.DataSource = query.ToList();
+                    grvList.DataBind();
+                    if (!query.Any())
+                    {
+                        Panel5.Visible = false;
+
+                    }
+                    else
+                        Panel5.Visible = true;
+                    data.Dispose();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //Response.Write(ex.Message);
+
+            }
+        }
+        protected void lbListRevisi_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                LinkButton link = (LinkButton)sender;
+                GridViewRow gv = (GridViewRow)(link.NamingContainer);
+                string strNoSpd = gv.Cells[0].Text;
+                string status = gv.Cells[7].Text.Split('-')[0];
+                Session["noSPD"] = strNoSpd;
+                if (status.ToLower() == "save" || status == "SPD Perlu Revisi (Tujuan)" || status == "SPD Perlu Revisi (Atasan)")
+                    Session["editable"] = true;
+                else
+                    Session["editable"] = false;
+                Response.Redirect("frmRequestInput.aspx");
+            }
+        }
+        public string SetLabelWelcome()
+        {
+            System.Security.Principal.WindowsIdentity User = null;
+            User = System.Web.HttpContext.Current.Request.LogonUserIdentity;
+            string username = null;
+            //username = "anton009190"
+            username = User.Name;
+            for (int i = 0; i <= username.Length - 1; i++)
+            {
+                if (username[i] == '\\')
+                {
+                    username = username.Remove(0, i + 1);
+                    break; // TODO: might not be correct. Was : Exit For
+                }
+            }
+            return username;
+        }
+
+        protected void btnSimpan_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                string strLoginID = (string)Session["IDLogin"];
+                classSpd oSPD = new classSpd();
+                msKaryawan karyawan = oSPD.getKaryawan(strLoginID);
+                int status = int.Parse(lblStatus.Text.Split('-')[0]);
+                dsSPDDataContext data = new dsSPDDataContext();
+                if (status == 8 || status == 9)
+                {
+                    trRevisi revisi = new trRevisi();
+                    revisi.dibuatOleh = karyawan.nrp;
+                    revisi.dibuatTanggal = DateTime.Now;
+                    revisi.keteranganRevisi = txtRevisi.Text;
+                    revisi.noSPD = lblNoSPD.Text;
+                    revisi.nrpRevisi = karyawan.nrp;
+                    revisi.status = status;
+                    data.trRevisis.InsertOnSubmit(revisi);
+                }
+                if (status == 12 || status == 13)
+                {
+                    trTolak tolak = new trTolak();
+                    tolak.dibuatOleh = karyawan.nrp;
+                    tolak.dibuatTanggal = DateTime.Now;
+                    tolak.keteranganTolak = txtRevisi.Text;
+                    tolak.noSPD = lblNoSPD.Text;
+                    tolak.nrpTolak = karyawan.nrp;
+                    tolak.status = status;
+                    data.trTolaks.InsertOnSubmit(tolak);
+                }
+                data.SubmitChanges();
+                Panel4.Visible = false;
+            }
+        }
+
+        protected void lbExtend_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                LinkButton link = (LinkButton)sender;
+                GridViewRow gv = (GridViewRow)(link.NamingContainer);
+                string strNoSpd = gv.Cells[0].Text;
+
+                pnlExtend.Visible = true;
+                dsSPDDataContext data = new dsSPDDataContext();
+                trSPD spd = (from s in data.trSPDs
+                             where s.noSPD == strNoSpd
+                             select s).SingleOrDefault();
+
+                txtNoSPD.Text = spd.noSPD;
+                TextBox1.Text = spd.tglBerangkat.ToString();
+                txtJamBerangkat.Text = spd.jamBerangkat;
+                txtMenitBerangkat.Text = spd.menitBerangkat;
+
+                txtTglKembali.Text = spd.tglKembali.ToString();
+                txtJamKembali.Text = spd.jamKembali;
+                txtMenitKembali.Text = spd.menitKembali;
+            }
+        }
+
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            pnlExtend.Visible = false;
+        }
+
+
+
+        protected void btnSubmitExtend_Click(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+            else
+            {
+                string strLoginID = (string)Session["IDLogin"];
+                classSpd oSPD = new classSpd();
+                msKaryawan karyawan = oSPD.getKaryawan(strLoginID);
+
+                dsSPDDataContext data = new dsSPDDataContext();
+
+                trSPD spd = (from s in data.trSPDs
+                             where s.noSPD == txtNoSPD.Text
+                             select s).SingleOrDefault();
+                spd.tglKembali = DateTime.Parse(txtTglKembaliExtend.Text);
+                spd.jamKembali = cmbJamKembali.SelectedValue;
+                spd.menitKembali = cmbMenitKembali.SelectedValue;
+                //revisi = new trRevisi();
+                //revisi.dibuatOleh = karyawan.nrp;
+                //revisi.dibuatTanggal = DateTime.Now;
+                //revisi.keteranganRevisi = txtRevisi.Text;
+                //revisi.noSPD = lblNoSPD.Text;
+                //revisi.nrpRevisi = karyawan.nrp;
+                //revisi.status = status;
+                //data.trSPDs.InsertOnSubmit(spd);
+                data.SubmitChanges();
+                oSPD.sendMail(spd, "Extend", karyawan);
+                //bindFindList();
+            }
+        }
+
+        protected void gvViewSPD_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvViewSPD.PageIndex = e.NewPageIndex;
+            bindFind();
+        }
+
+        protected void grvListGA_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            grvListGA.PageIndex = e.NewPageIndex;
+            bindGa();
+        }
+
+        protected void txtTglBerangkat_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnListGA_Click(object sender, EventArgs e)
+        {
+            bindGa();
+        }
+
+        void bindGa()
+        {
+            if (cek_ga(Session["IDLogin"].ToString()))
+            {
+                dsSPDDataContext data = new dsSPDDataContext();
+
+                try
+                {
+                    if (string.IsNullOrEmpty(karyawan.nrp))
+                    {
+                        karyawan.nrp = Session["nrpLogin"].ToString();
+                    }
+
+                    string filter = DropDownList2.Text.Trim() == "--Select--" ? "" : DropDownList2.SelectedItem.Value;
+                    string param = txtTglGA.Text;
+                    DataTable dataTable = SPHelper.GetListSPDGA(filter, param);
+                    grvListGA.DataSource = dataTable;
+                    grvListGA.DataBind();
+                    if (dataTable.Rows.Count > 0) Panel6.Visible = true;
+                    else Panel6.Visible = false;
+
+                    //cr : by ian
+                    #region changed
+                    //if (txtTglGA.Text.Trim() == "" || txtTglGA.Text.Trim() == null)
+                    //{
+                    //    var query = (from spd in data.trSPDs.AsEnumerable()
+                    //                 where (int.Parse(spd.status.Split('-')[0]) < 100) && spd.status.Split('-')[0] != "29"
+                    //                 select new
+                    //                 {
+                    //                     noSPD = spd.noSPD,
+                    //                     nrp = spd.nrp,
+                    //                     namaLengkap = spd.namaLengkap,
+                    //                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                    //                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                    //                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                    //                     tglKembali = spd.tglKembali.ToShortDateString(),
+                    //                     status = spd.status.Split('-')[1]
+                    //                 }).OrderByDescending(spd => spd.noSPD);
+
+                    //    grvListGA.DataSource = query.ToList();
+                    //    grvListGA.DataBind();
+                    //    //query = query.ToList();
+                    //    if (!query.Any())
+                    //    {
+                    //        Panel6.Visible = false;
+                    //    }
+                    //    else
+                    //        Panel6.Visible = true;
+                    //    data.Dispose();
+                    //}
+                    //else
+                    //{
+                    //    DateTime str = Convert.ToDateTime(txtTglGA.Text);
+
+                    //    var query = (from spd in data.trSPDs.AsEnumerable()
+                    //                 where spd.tglBerangkat == str && spd.status.Split('-')[0] != "29"
+                    //                 select new
+                    //                 {
+                    //                     noSPD = spd.noSPD,
+                    //                     nrp = spd.nrp,
+                    //                     namaLengkap = spd.namaLengkap,
+                    //                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                    //                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                    //                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                    //                     tglKembali = spd.tglKembali.ToShortDateString(),
+                    //                     status = spd.status.Split('-')[1]
+                    //                 }).OrderByDescending(spd => spd.noSPD);
+                    //    grvListGA.DataSource = query.ToList();
+                    //    grvListGA.DataBind();
+                    //    //query = query.ToList();
+                    //    if (!query.Any())
+                    //    {
+                    //        Panel6.Visible = false;
+                    //    }
+                    //    else
+                    //        Panel6.Visible = true;
+                    //    data.Dispose();
+                    //}
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                    Panel6.Visible = false;
+                    //Response.Write(ex.Message);
+
+                }
+            }
+            else
+                Panel6.Visible = false;
+
+        }
+
+        private bool cek_ga(string LoginID)
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            classSpd oSPD = new classSpd();
+            msKaryawan karyawan = new msKaryawan(); ;
+            string t_nrp = oSPD.getKaryawan(LoginID).nrp;
+
+            var user = (from u in data.msUsers
+                        join k in data.msKaryawans on u.nrp equals k.nrp
+                        where u.roleId == 17 && k.nrp == t_nrp
+                        orderby k.namaLengkap
+                        select new
+                        {
+                            namaLengkap = k.namaLengkap,
+                            nrp = k.nrp
+                        }).Distinct();
+            if (user.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        void cek_claim(object sender, string status)
+        {
+            LinkButton link = (LinkButton)sender;
+            GridViewRow gv = (GridViewRow)(link.NamingContainer);
+            string strNoSpd = gv.Cells[0].Text;
+            dsSPDDataContext data = new dsSPDDataContext();
+            trClaim claim = new trClaim();
+            var cekClaim = (from c in data.trClaims
+                            where c.noSPD == strNoSpd
+                            select c).FirstOrDefault();
+            if (cekClaim == null)
+            {
+
+            }
+            else
+            {
+                cekClaim.status = status;
+                data.SubmitChanges();
+            }
+
+
+        }
+
+
+        private void listfindSekretaris()
+        {
+            dsSPDDataContext data = new dsSPDDataContext();
+            try
+            {
+                if (string.IsNullOrEmpty(karyawan.nrp))
+                {
+                    karyawan.nrp = Session["nrpLogin"].ToString();
+                }
+
+                if (txtTglSpd.Text == "" || txtTglSpd == null)
+                {
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 let u = data.msUsers.Where(x => x.roleId == 14 || x.roleId == 13).Select(x => x.nrp)
+                                 where (spd.nrp == karyawan.nrp || u.Contains(spd.nrp)) 
+                                    //&& spd.status.Split('-')[0] != "29" && spd.status.Split('-')[0] != "26"
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+                    grvList.DataSource = query.ToList();
+                    grvList.DataBind();
+                    if (!query.Any())
+                        Panel5.Visible = false;
+                    else
+                        Panel5.Visible = true;
+                    data.Dispose();
+                }
+                else
+                {
+                    DateTime str = Convert.ToDateTime(txtTglSpd.Text);
+                    var query = (from spd in data.trSPDs //.AsEnumerable()
+                                 let u = data.msUsers.Where(x => x.roleId == 14 || x.roleId == 13).Select(x => x.nrp)
+                                 where (spd.nrp == karyawan.nrp || u.Contains(spd.nrp)) 
+                                    //&& spd.status.Split('-')[0] != "29" && spd.tglBerangkat == str
+                                 select new
+                                 {
+                                     noSPD = spd.noSPD,
+                                     nrp = spd.nrp,
+                                     namaLengkap = spd.namaLengkap,
+                                     cabangTujuan = spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                     keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                     tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                     tglKembali = spd.tglKembali.ToShortDateString(),
+                                     status = spd.status //.Split('-')[1]
+                                 }).OrderByDescending(spd => spd.noSPD);
+                    grvList.DataSource = query.ToList();
+                    grvList.DataBind();
+                    if (!query.Any())
+                        Panel5.Visible = false;
+                    else
+                        Panel5.Visible = true;
+                    data.Dispose();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //Response.Write(ex.Message);
+
+            }
+        }
+
+        protected void gvViewSPDTujuan_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+            gvViewSPDTujuan.PageIndex = e.NewPageIndex;
+            findTempatTujuan();
+        }
+
+        protected void gvViewSPDTujuan_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                LinkButton lbSetuju = (LinkButton)e.Row.FindControl("lbSetujuTujuan");
+                LinkButton lbTolak = (LinkButton)e.Row.FindControl("lbTolakTujuan");
+                //LinkButton lbRevisi = (LinkButton)e.Row.FindControl("lbRevisiTujuan");
+                Label lbNotAv = (Label)e.Row.FindControl("lbNotAv");
+
+                if (Convert.ToDateTime(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "tglBerangkat"))) > DateTime.Now.Date)
+                {
+                    lbSetuju.Visible = false;
+                    lbTolak.Visible = false;
+                    //lbRevisi.Visible = false;
+                    lbNotAv.Visible = true;
+
+                }
+
+            }
+        }
+        protected void grvList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            grvList.PageIndex = e.NewPageIndex;
+            if ((bool)Session["sekretaris"])
+            {
+                listfindSekretaris();
+            }
+            else
+                bindFindList();
+        }
+
+        protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DropDownList2.SelectedValue != "tglBerangkat")
+                txtTglGA_CalendarExtender.Enabled = false;
+            else txtTglGA_CalendarExtender.Enabled = true;
+        }
+
+
+        //public static class ResponseHelper
+        //{
+        //    public static void Redirect(this HttpResponse response, string url, string target, string windowFeatures)
+        //    {
+
+        //        if ((String.IsNullOrEmpty(target) || target.Equals("_self", StringComparison.OrdinalIgnoreCase)) && String.IsNullOrEmpty(windowFeatures))
+        //        {
+        //            response.Redirect(url);
+        //        }
+        //        else
+        //        {
+        //            Page page = (Page)HttpContext.Current.Handler;
+
+        //            if (page == null)
+        //            {
+        //                throw new InvalidOperationException("Cannot redirect to new window outside Page context.");
+        //            }
+        //            url = page.ResolveClientUrl(url);
+
+        //            string script;
+        //            if (!String.IsNullOrEmpty(windowFeatures))
+        //            {
+        //                script = @"window.open(""{0}"", ""{1}"", ""{2}"");";
+        //            }
+        //            else
+        //            {
+        //                script = @"window.open(""{0}"", ""{1}"");";
+        //            }
+        //            script = String.Format(script, url, target, windowFeatures);
+        //            ScriptManager.RegisterStartupScript(page, typeof(Page), "Redirect", script, true);
+        //        }
+        //    }
+        //}
+    }
+}

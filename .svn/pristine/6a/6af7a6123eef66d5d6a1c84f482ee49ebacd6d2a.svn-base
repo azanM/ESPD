@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="D:\spd_is07" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Web.config" publishTime="04/11/2013 17:16:58" />
+    <file relUrl="ResendNotification.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmRequestInput.aspx" publishTime="04/11/2013 16:03:51" />
+    <file relUrl="frmRequestView.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmClaimApproval.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="bin/eSPD.dll" publishTime="04/11/2013 17:16:51" />
+    <file relUrl="frmLogin.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="App_Themes/Main/Site.css" publishTime="04/09/2013 14:41:13" />
+    <file relUrl="frmReportCrystalClaim.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="Style/SERA.jpg" publishTime="04/09/2013 14:41:18" />
+    <file relUrl="frmReportClaim.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmRequestPrint.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="approvalSPD.ashx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="MasterPage.Master" publishTime="04/11/2013 15:51:05" />
+    <file relUrl="Login.Master" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmReportCrystalSPD.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="bin/eSPD.pdb" publishTime="04/11/2013 17:16:49" />
+    <file relUrl="Style/Banner-ESPD.jpg" publishTime="04/09/2013 14:41:18" />
+    <file relUrl="frmSPDExtend.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmHome.aspx" publishTime="04/11/2013 11:41:14" />
+    <file relUrl="Style/style.css" publishTime="04/11/2013 16:05:08" />
+    <file relUrl="frmReportSPD.aspx" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="bin/AjaxControlToolkit.dll" publishTime="04/09/2013 14:41:20" />
+    <file relUrl="frmClaimInput.aspx" publishTime="04/10/2013 12:33:49" />
+    <file relUrl="MasterPages.master" publishTime="04/11/2013 15:46:27" />
+  </publishProfile>
+</publishData>

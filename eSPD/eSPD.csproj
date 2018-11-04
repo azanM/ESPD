@@ -1,0 +1,847 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2A6256B8-ECDF-4C8A-AB38-41F770790A9E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eSPD</RootNamespace>
+    <AssemblyName>eSPD</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=4.1.60501.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60501\lib\40\AjaxControlToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AntiXSSLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60501\lib\40\SanitizerProviders\AntiXSSLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.ClientDoc.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.Web.1.0.1\lib\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v14.1, Version=14.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Office.v14.1.Core, Version=14.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v14.1.Core, Version=14.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v14.1, Version=14.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\DevExpress.Web.v14.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DropDownCheckBoxes">
+      <HintPath>..\..\..\..\..\CARMELLO\Carmello(nosms)\CARMELLO\CARMELLO.UI\Bin\DropDownCheckBoxes.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary, Version=4.2.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60501\lib\40\SanitizerProviders\HtmlSanitizationLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Excel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Excel.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\Intikom\Documents\Visual Studio 2015\Projects\TestingAPI\TestingAPI\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\packages\Quartz.2.3.1\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="SanitizerProviders, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60501\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Common.Logging.Core.dll" />
+    <Content Include="bin\Common.Logging.Core.pdb" />
+    <Content Include="bin\Common.Logging.dll" />
+    <Content Include="bin\DevExpress.Data.v14.1.dll" />
+    <Content Include="bin\DevExpress.Office.v14.1.Core.dll" />
+    <Content Include="bin\DevExpress.RichEdit.v14.1.Core.dll" />
+    <Content Include="bin\DevExpress.Web.ASPxEditors.v11.2.dll" />
+    <Content Include="bin\DevExpress.Web.v11.2.dll" />
+    <Content Include="bin\DevExpress.Web.v14.1.dll" />
+    <Content Include="bin\DropDownCheckBoxes.dll" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\eSPD.dll" />
+    <Content Include="bin\eSPD.pdb" />
+    <Content Include="Core\espdTamplate.txt" />
+    <Content Include="CSS.css" />
+    <Content Include="EmailTemplate\ApprovalClaim.txt" />
+    <Content Include="EmailTemplate\InformasiBudgetExceeded.txt" />
+    <Content Include="EmailTemplate\InformasiCancelClaim.txt" />
+    <Content Include="EmailTemplate\InformasiPencarianTiket.txt" />
+    <Content Include="EmailTemplate\InformasiSPD - Copy.txt" />
+    <Content Include="EmailTemplate\InformasiSPD.txt" />
+    <Content Include="EmailTemplate\InformasiCancelSPD.txt" />
+    <Content Include="EmailTemplate\ApprovalSPD.txt" />
+    <Content Include="EmailTemplate\InformasiClaim.txt" />
+    <Content Include="EmailTemplate\NotifExpired.txt" />
+    <Content Include="errorLog.aspx" />
+    <Content Include="FormError.aspx" />
+    <Content Include="frmClaimInput.aspx" />
+    <Content Include="frmGLAccount.aspx" />
+    <Content Include="frmMsAngkutan.aspx" />
+    <Content Include="frmMsKeperluan.aspx" />
+    <Content Include="frmMsPlafon.aspx" />
+    <Content Include="frmMsPlafonGolongan.aspx" />
+    <Content Include="frmMsRole.aspx" />
+    <Content Include="frmReportSLA.aspx" />
+    <Content Include="Hardship.aspx" />
+    <Content Include="Img\al_loading.gif" />
+    <Content Include="MasterBackup.aspx" />
+    <Content Include="MasterPage.Master" />
+    <Content Include="MasterPages.master" />
+    <Content Include="msADH.aspx" />
+    <Content Include="msProvinsi.aspx" />
+    <Content Include="msUser.aspx" />
+    <Content Include="frmAssignRole.aspx" />
+    <Content Include="frmClaimApproval.aspx" />
+    <Content Include="frmFinanceApp.aspx" />
+    <Content Include="frmHome.aspx" />
+    <Content Include="frmLogin.aspx" />
+    <Content Include="frmMasterKaryawan.aspx" />
+    <Content Include="frmReportClaim.aspx" />
+    <Content Include="frmReportClaimSPD.aspx" />
+    <Content Include="frmReportCrystalClaim.aspx" />
+    <Content Include="frmReportCrystalSPD.aspx" />
+    <Content Include="frmReportSPD.aspx" />
+    <Content Include="frmRequestInput.aspx" />
+    <Content Include="frmRequestPrint.aspx" />
+    <Content Include="frmRequestView.aspx" />
+    <Content Include="App_Themes\Main\Site.css" />
+    <Content Include="frmRptClaimAll.aspx" />
+    <Content Include="frmRptSPD.aspx" />
+    <Content Include="frmRptSPDAll.aspx" />
+    <Content Include="frmSPDExtend.aspx" />
+    <Content Include="frmSPDFinder.aspx" />
+    <Content Include="frmUserManual.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="msCostCenter.aspx" />
+    <Content Include="newAcceptDocument1.aspx" />
+    <Content Include="NewApprovalTest.aspx" />
+    <Content Include="newUM.aspx" />
+    <Content Include="newClaimList.aspx" />
+    <Content Include="newFormClaimInput.aspx" />
+    <Content Include="newFormHome.aspx" />
+    <Content Include="newFormRequestDetail.aspx" />
+    <Content Include="newFormRequestDetailClaim.aspx" />
+    <Content Include="newFormRequestInput.aspx" />
+    <Content Include="newFormRequestList.aspx" />
+    <Content Include="newAcceptDocument.aspx" />
+    <Content Include="ResendNotification.aspx" />
+    <Content Include="scConfig.aspx" />
+    <Content Include="Script\jquery-1.10.2.min.js" />
+    <Content Include="Script\jquery-1.12.4.js" />
+    <Content Include="Script\jquery-ui.js" />
+    <Content Include="Script\select2.min.js" />
+    <Content Include="Style\Banner-ESPD.jpg" />
+    <Content Include="Style\claim.png" />
+    <Content Include="Style\home.png" />
+    <Content Include="Style\images\ui-icons_444444_256x240.png" />
+    <Content Include="Style\images\ui-icons_555555_256x240.png" />
+    <Content Include="Style\jquery-ui.css" />
+    <Content Include="Style\select2-spinner.gif" />
+    <Content Include="Style\select2.css" />
+    <Content Include="Style\select2.png" />
+    <Content Include="Style\select2x2.png" />
+    <Content Include="Style\SERA.jpg" />
+    <Content Include="Style\style.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="approvalSPD.ashx.cs">
+      <DependentUpon>approvalSPD.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ApprovalSPDUrl.ashx.cs">
+      <DependentUpon>ApprovalSPDUrl.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ApprovalUrl.ashx.cs">
+      <DependentUpon>ApprovalUrl.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ClaimApprovalUrl.ashx.cs">
+      <DependentUpon>ClaimApprovalUrl.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\classSpd.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\EmailClaimJob.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\EmailCore.cs" />
+    <Compile Include="Core\EmailJob.cs" />
+    <Compile Include="Core\Encrypto.cs" />
+    <Compile Include="Core\ESPDBudget.cs" />
+    <Compile Include="Core\ESPDJson.cs" />
+    <Compile Include="Core\Impersonator.cs" />
+    <Compile Include="Core\isHoliday.cs" />
+    <Compile Include="Core\JobScheduler.cs" />
+    <Compile Include="Core\ApplicationPoolRecycle.cs" />
+    <Compile Include="Core\LogError.cs" />
+    <Compile Include="dsSPDALLNew1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="errorLog.aspx.cs">
+      <DependentUpon>errorLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="errorLog.aspx.designer.cs">
+      <DependentUpon>errorLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EspdEmail.cs" />
+    <Compile Include="Extensions\LinqExtension.cs" />
+    <Compile Include="Extensions\SPHelper.cs" />
+    <Compile Include="Extensions\SqlHelper.cs" />
+    <Compile Include="FormError.aspx.cs">
+      <DependentUpon>FormError.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormError.aspx.designer.cs">
+      <DependentUpon>FormError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmClaimInput.aspx.cs">
+      <DependentUpon>frmClaimInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmClaimInput.aspx.designer.cs">
+      <DependentUpon>frmClaimInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmGLAccount.aspx.cs">
+      <DependentUpon>frmGLAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmGLAccount.aspx.designer.cs">
+      <DependentUpon>frmGLAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsAngkutan.aspx.cs">
+      <DependentUpon>frmMsAngkutan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsAngkutan.aspx.designer.cs">
+      <DependentUpon>frmMsAngkutan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsKeperluan.aspx.cs">
+      <DependentUpon>frmMsKeperluan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsKeperluan.aspx.designer.cs">
+      <DependentUpon>frmMsKeperluan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsPlafon.aspx.cs">
+      <DependentUpon>frmMsPlafon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsPlafon.aspx.designer.cs">
+      <DependentUpon>frmMsPlafon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsPlafonGolongan.aspx.cs">
+      <DependentUpon>frmMsPlafonGolongan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsPlafonGolongan.aspx.designer.cs">
+      <DependentUpon>frmMsPlafonGolongan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsRole.aspx.cs">
+      <DependentUpon>frmMsRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsRole.aspx.designer.cs">
+      <DependentUpon>frmMsRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportSLA.aspx.cs">
+      <DependentUpon>frmReportSLA.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportSLA.aspx.designer.cs">
+      <DependentUpon>frmReportSLA.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Hardship.aspx.cs">
+      <DependentUpon>Hardship.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Hardship.aspx.designer.cs">
+      <DependentUpon>Hardship.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Helper.cs" />
+    <Compile Include="ListtoDataTableConverter.cs" />
+    <Compile Include="MasterBackup.aspx.cs">
+      <DependentUpon>MasterBackup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterBackup.aspx.designer.cs">
+      <DependentUpon>MasterBackup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.Master.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage.Master.designer.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages.master.cs">
+      <DependentUpon>MasterPages.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msADH.aspx.cs">
+      <DependentUpon>msADH.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msADH.aspx.designer.cs">
+      <DependentUpon>msADH.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="msProvinsi.aspx.cs">
+      <DependentUpon>msProvinsi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msProvinsi.aspx.designer.cs">
+      <DependentUpon>msProvinsi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="msUser.aspx.cs">
+      <DependentUpon>msUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msUser.aspx.designer.cs">
+      <DependentUpon>msUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AD.cs" />
+    <Compile Include="Core\Konstan.cs" />
+    <Compile Include="crClaim.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crClaim.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="crSPD.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crSPD.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="dsSPD.cs">
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="dsSPD.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="frmAssignRole.aspx.cs">
+      <DependentUpon>frmAssignRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAssignRole.aspx.designer.cs">
+      <DependentUpon>frmAssignRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmClaimApproval.aspx.cs">
+      <DependentUpon>frmClaimApproval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmClaimApproval.aspx.designer.cs">
+      <DependentUpon>frmClaimApproval.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmFinanceApp.aspx.cs">
+      <DependentUpon>frmFinanceApp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmFinanceApp.aspx.designer.cs">
+      <DependentUpon>frmFinanceApp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmHome.aspx.cs">
+      <DependentUpon>frmHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmHome.aspx.designer.cs">
+      <DependentUpon>frmHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.aspx.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLogin.aspx.designer.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMasterKaryawan.aspx.cs">
+      <DependentUpon>frmMasterKaryawan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMasterKaryawan.aspx.designer.cs">
+      <DependentUpon>frmMasterKaryawan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportClaim.aspx.cs">
+      <DependentUpon>frmReportClaim.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportClaim.aspx.designer.cs">
+      <DependentUpon>frmReportClaim.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportClaimSPD.aspx.cs">
+      <DependentUpon>frmReportClaimSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportClaimSPD.aspx.designer.cs">
+      <DependentUpon>frmReportClaimSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportCrystalClaim.aspx.cs">
+      <DependentUpon>frmReportCrystalClaim.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportCrystalClaim.aspx.designer.cs">
+      <DependentUpon>frmReportCrystalClaim.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportCrystalSPD.aspx.cs">
+      <DependentUpon>frmReportCrystalSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportCrystalSPD.aspx.designer.cs">
+      <DependentUpon>frmReportCrystalSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportSPD.aspx.cs">
+      <DependentUpon>frmReportSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportSPD.aspx.designer.cs">
+      <DependentUpon>frmReportSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRequestInput.aspx.cs">
+      <DependentUpon>frmRequestInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRequestInput.aspx.designer.cs">
+      <DependentUpon>frmRequestInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRequestPrint.aspx.cs">
+      <DependentUpon>frmRequestPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRequestView.aspx.cs">
+      <DependentUpon>frmRequestView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptClaimAll.aspx.cs">
+      <DependentUpon>frmRptClaimAll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptClaimAll.aspx.designer.cs">
+      <DependentUpon>frmRptClaimAll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptSPD.aspx.cs">
+      <DependentUpon>frmRptSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptSPD.aspx.designer.cs">
+      <DependentUpon>frmRptSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptSPDAll.aspx.cs">
+      <DependentUpon>frmRptSPDAll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptSPDAll.aspx.designer.cs">
+      <DependentUpon>frmRptSPDAll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSPDExtend.aspx.cs">
+      <DependentUpon>frmSPDExtend.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSPDExtend.aspx.designer.cs">
+      <DependentUpon>frmSPDExtend.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSPDFinder.aspx.cs">
+      <DependentUpon>frmSPDFinder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSPDFinder.aspx.designer.cs">
+      <DependentUpon>frmSPDFinder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserManual.aspx.cs">
+      <DependentUpon>frmUserManual.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmUserManual.aspx.designer.cs">
+      <DependentUpon>frmUserManual.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.Master.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.Master.designer.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+    </Compile>
+    <Compile Include="msCostCenter.aspx.cs">
+      <DependentUpon>msCostCenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msCostCenter.aspx.designer.cs">
+      <DependentUpon>msCostCenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newAcceptDocument1.aspx.cs">
+      <DependentUpon>newAcceptDocument1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newAcceptDocument1.aspx.designer.cs">
+      <DependentUpon>newAcceptDocument1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NewApprovalTest.aspx.cs">
+      <DependentUpon>NewApprovalTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewApprovalTest.aspx.designer.cs">
+      <DependentUpon>NewApprovalTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newUM.aspx.cs">
+      <DependentUpon>newUM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newUM.aspx.designer.cs">
+      <DependentUpon>newUM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newClaimList.aspx.cs">
+      <DependentUpon>newClaimList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newClaimList.aspx.designer.cs">
+      <DependentUpon>newClaimList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormClaimInput.aspx.cs">
+      <DependentUpon>newFormClaimInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormClaimInput.aspx.designer.cs">
+      <DependentUpon>newFormClaimInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormHome.aspx.cs">
+      <DependentUpon>newFormHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormHome.aspx.designer.cs">
+      <DependentUpon>newFormHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormRequestDetail.aspx.cs">
+      <DependentUpon>newFormRequestDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormRequestDetail.aspx.designer.cs">
+      <DependentUpon>newFormRequestDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormRequestDetailClaim.aspx.cs">
+      <DependentUpon>newFormRequestDetailClaim.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormRequestDetailClaim.aspx.designer.cs">
+      <DependentUpon>newFormRequestDetailClaim.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormRequestInput.aspx.cs">
+      <DependentUpon>newFormRequestInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormRequestInput.aspx.designer.cs">
+      <DependentUpon>newFormRequestInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newFormRequestList.aspx.cs">
+      <DependentUpon>newFormRequestList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newFormRequestList.aspx.designer.cs">
+      <DependentUpon>newFormRequestList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="newAcceptDocument.aspx.cs">
+      <DependentUpon>newAcceptDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newAcceptDocument.aspx.designer.cs">
+      <DependentUpon>newAcceptDocument.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ResendNotification.aspx.cs">
+      <DependentUpon>ResendNotification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResendNotification.aspx.designer.cs">
+      <DependentUpon>ResendNotification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="rptClaimAll.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptClaimAll.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="scConfig.aspx.cs">
+      <DependentUpon>scConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scConfig.aspx.designer.cs">
+      <DependentUpon>scConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SPDDevDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SPDDevDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Login.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="approvalSPD.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApprovalUrl.ashx" />
+    <Content Include="ClaimApprovalUrl.ashx" />
+    <Content Include="ApprovalSPDUrl.ashx" />
+    <None Include="dsSPD.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>dsSPD.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dsSPDALLNew.xsc">
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </None>
+    <None Include="dsSPDALLNew.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSPDALLNew1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dsSPDALLNew.xss">
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </None>
+    <Content Include="packages.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <None Include="Properties\PublishProfiles\SPDPublish.pubxml" />
+    <None Include="SPDDevDataSet2.xsc">
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="SPDDevDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SPDDevDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SPDDevDataSet2.xss">
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="UserManual\E-SPD User Manual.pdf" />
+    <None Include="SPDDevDataSet.xsc">
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SPDDevDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SPDDevDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SPDDevDataSet.xss">
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </None>
+    <Content Include="UserManual\User Manual E-SPD 2015.pdf" />
+    <Content Include="Web.config.bak" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dsSPD.dbml.layout">
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Copy of Copy of Copy of rptSPDAll.rdlc" />
+    <EmbeddedResource Include="rptSPDAll.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="crClaim.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crClaim.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="crSPD.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crSPD.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptClaimAll.rdlc" />
+    <EmbeddedResource Include="rptClaimAll.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptClaimAll.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Attach\" />
+    <Folder Include="bin\de\" />
+    <Folder Include="bin\es\" />
+    <Folder Include="bin\ja\" />
+    <Folder Include="bin\ru\" />
+    <Folder Include="Files\" />
+    <Folder Include="GenerateText\" />
+    <Folder Include="LogESPD\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7918</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:7888/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

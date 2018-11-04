@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 23, 36.5" name="dsSPD">
+  <DataContextMoniker Name="/dsSPDDataContext" />
+  <nestedChildShapes>
+    <classShape Id="2ba0010a-e313-4418-9851-0e5e36fdacef" absoluteBounds="0.75, 5.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/msAngkutan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3f8768af-3b6f-4677-9e18-df3086ccc82f" absoluteBounds="0.765, 5.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0d15d94d-0715-454d-86ec-3c482132e21a" absoluteBounds="6.25, 1.625, 2, 2.5401025390624996">
+      <DataClassMoniker Name="/dsSPDDataContext/trTolak" />
+      <nestedChildShapes>
+        <elementListCompartment Id="270f3fd8-32e1-478d-b9bb-6121dc8cf679" absoluteBounds="6.265, 2.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6d8ab7e0-c94b-435c-bd37-0d745b1747e3" absoluteBounds="0.75, 9, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/msCabang" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5418d37d-40c9-4207-97ea-843cb3981062" absoluteBounds="0.765, 9.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="28a0d2a6-d7be-4644-94d8-a72a2bbefd02" absoluteBounds="8.75, 19.375, 2, 2.7324039713541737">
+      <DataClassMoniker Name="/dsSPDDataContext/msFunction" />
+      <nestedChildShapes>
+        <elementListCompartment Id="00d15bcb-f9eb-4f47-92b4-718c26445f5e" absoluteBounds="8.765, 19.835, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="28afd634-db8f-4391-9b58-b937524cef4d" absoluteBounds="11.5, 13, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/dsSPDDataContext/msGolonganPlafon" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5633605a-9434-434a-8fdb-487c3ebfcb26" absoluteBounds="11.515, 13.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0de00009-49fa-49ed-8242-20e64df2269d" absoluteBounds="0.75, 12.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/msKeperluan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8e1e5413-5e9e-469d-8e8a-aea0d69c7c25" absoluteBounds="0.765, 12.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c58a5309-8de7-4109-a275-e9b22217ff6a" absoluteBounds="8.75, 13.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/msPlafon" />
+      <nestedChildShapes>
+        <elementListCompartment Id="43ba9381-98f5-41c4-b4a6-2076f2ea3972" absoluteBounds="8.765, 13.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="10f72f3a-f87c-4c81-b62d-1de3d2b86452" absoluteBounds="8.75, 2.625, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/msRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6966bd66-7e98-4c1e-87b4-a4ab36e7fbd9" absoluteBounds="8.765, 3.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="56263ccc-6c40-4aac-8616-edb87e497ea4" absoluteBounds="0.75, 0.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/dsSPDDataContext/msStatus" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2fd9ee67-42e4-437b-a5ad-09730ca7b66b" absoluteBounds="0.765, 1.2100000000000009, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0e4fb656-a01e-4c96-8262-29b20c0aa796" absoluteBounds="14.75, 0.75, 2, 1.9631982421875023">
+      <DataClassMoniker Name="/dsSPDDataContext/trApprovalHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fe30541b-9dbe-4f40-ba02-6be3350f7b3a" absoluteBounds="14.765, 1.2100000000000009, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="45bae628-72ce-485b-9dfc-b5cc4d452d1d" absoluteBounds="14.75, 3.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/dsSPDDataContext/trExtend" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ae8954a0-e3ba-4f2f-840e-9c60b3aeac9d" absoluteBounds="14.765, 4.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5b2528c0-3035-47f5-aaa1-12a4c78b3066" absoluteBounds="6.25, 5, 2, 2.5401025390625005">
+      <DataClassMoniker Name="/dsSPDDataContext/trRevisi" />
+      <nestedChildShapes>
+        <elementListCompartment Id="750acccd-3e27-4104-bfed-0aebb7d3f8f1" absoluteBounds="6.265, 5.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d8e683da-b027-491a-8a47-0d678d6a6467" absoluteBounds="11.5, 1.625, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/trRoleFunction" />
+      <nestedChildShapes>
+        <elementListCompartment Id="91d116ac-ea35-4dc3-9200-bed757dbc5a6" absoluteBounds="11.515, 2.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(10.75 : 14.5777498372396); (11.0416666666667 : 14.5777498372396 : JumpStart); (11.2083333333333 : 14.5777498372396 : JumpEnd); (11.5 : 14.5777498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msPlafon/msPlafon_msGolonganPlafon" />
+      <nodes>
+        <classShapeMoniker Id="c58a5309-8de7-4109-a275-e9b22217ff6a" />
+        <classShapeMoniker Id="28afd634-db8f-4391-9b58-b937524cef4d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.75 : 19.375); (11.125 : 19); (11.125 : 2.70274983723958); (11.5 : 2.70274983723958)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msFunction/msFunction_trRoleFunction" />
+      <nodes>
+        <classShapeMoniker Id="28a0d2a6-d7be-4644-94d8-a72a2bbefd02" />
+        <classShapeMoniker Id="d8e683da-b027-491a-8a47-0d678d6a6467" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.75 : 3.30412475585937); (11.0416666666667 : 3.30412475585937 : JumpStart); (11.2083333333333 : 3.30412475585937 : JumpEnd); (11.5 : 3.30412475585937)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msRole/msRole_trRoleFunction" />
+      <nodes>
+        <classShapeMoniker Id="10f72f3a-f87c-4c81-b62d-1de3d2b86452" />
+        <classShapeMoniker Id="d8e683da-b027-491a-8a47-0d678d6a6467" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="0f88c26a-353b-4a73-979e-a53aa8572fc0" absoluteBounds="14.75, 7.75, 2, 4.0785139973958318">
+      <DataClassMoniker Name="/dsSPDDataContext/v_karyawanMapping" />
+      <nestedChildShapes>
+        <elementListCompartment Id="502fb959-e0b1-479d-a92c-14a53cbff3e8" absoluteBounds="14.765, 8.21, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5b309012-2024-433d-aa30-4d772b8a353f" absoluteBounds="11.5, 5.5, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/dsSPDDataContext/msUser" />
+      <nestedChildShapes>
+        <elementListCompartment Id="336058c9-5ca3-4391-bdf6-6dd5e5fff847" absoluteBounds="11.515, 5.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(9.75 : 4.78049967447917); (9.75 : 6.67390055338542); (11.0416666666667 : 6.67390055338542 : JumpStart); (11.2083333333333 : 6.67390055338542 : JumpEnd); (11.5 : 6.67390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msRole/msRole_msUser" />
+      <nodes>
+        <classShapeMoniker Id="10f72f3a-f87c-4c81-b62d-1de3d2b86452" />
+        <classShapeMoniker Id="5b309012-2024-433d-aa30-4d772b8a353f" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="6ca7f239-d91b-417e-87a8-9f4ca1d5358d" absoluteBounds="14.75, 12.75, 2, 1.7708968098958309">
+      <DataClassMoniker Name="/dsSPDDataContext/v_userRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4c628f9a-1512-49d6-8848-d5fe32ef3370" absoluteBounds="14.765, 13.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c462628c-d7e0-4756-8da4-2eacabaeddf0" absoluteBounds="14.75, 15.75, 2, 5.4246240234375005">
+      <DataClassMoniker Name="/dsSPDDataContext/v_karyawanTrac" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4bb06fab-ea13-4123-9eec-abd6fd7756e4" absoluteBounds="14.765, 16.21, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e9e63683-f444-4120-a03d-340232a827d5" absoluteBounds="17.75, 0.75, 2, 5.4246240234374987">
+      <DataClassMoniker Name="/dsSPDDataContext/v_atasan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b0a25621-aed8-404d-8ef5-51b40bfa1e45" absoluteBounds="17.765, 1.21, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8be28871-cdc4-423e-b58c-a4b0eda50721" absoluteBounds="8.75, 9, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/ApprovalRule" />
+      <nestedChildShapes>
+        <elementListCompartment Id="90cd92b7-0454-48cd-be89-5403f6b61bee" absoluteBounds="8.765, 9.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9cf98c8e-5306-4f39-b59e-fc1679d82374" absoluteBounds="11.5, 9, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/dsSPDDataContext/ApprovalStatus" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8255bd0f-6cc1-4f98-81dc-8427caf12321" absoluteBounds="11.515, 9.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(10.75 : 10.0777498372396); (11.0416666666667 : 10.0777498372396 : JumpStart); (11.2083333333333 : 10.0777498372396 : JumpEnd); (11.5 : 10.0777498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/ApprovalRule/ApprovalRule_ApprovalStatus" />
+      <nodes>
+        <classShapeMoniker Id="8be28871-cdc4-423e-b58c-a4b0eda50721" />
+        <classShapeMoniker Id="9cf98c8e-5306-4f39-b59e-fc1679d82374" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="0f684925-20be-4520-b1f6-f110dad10c96" absoluteBounds="0.75, 17.75, 2, 10.809064127604167">
+      <DataClassMoniker Name="/dsSPDDataContext/v_claim_spd" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8571e36f-b8c0-48a8-855b-670d74bba860" absoluteBounds="0.76500000000000057, 18.21, 1.9700000000000002, 10.249064127604166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="da439ece-938d-4496-aad3-89c69f9dea92" absoluteBounds="17.75, 7.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dsSPDDataContext/MailError" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6ebd0bb9-c3ab-4ff0-a6d9-95adeb782c07" absoluteBounds="17.765, 8.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="df033d4a-5dad-4b83-b95c-4087b98519e5" absoluteBounds="17.75, 10.75, 2, 1.7708968098958309">
+      <DataClassMoniker Name="/dsSPDDataContext/JobSch" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3946106d-77b7-4e42-b832-03d84ae45a2a" absoluteBounds="17.765, 11.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="24f4b5df-8bf8-4072-8c3a-20030646ca73" absoluteBounds="17.75, 13.75, 2, 1.7708968098958309">
+      <DataClassMoniker Name="/dsSPDDataContext/msCost" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c8cf125d-4c80-4605-8d05-94f753501df9" absoluteBounds="17.765, 14.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1a2c7adf-5e4e-4a6d-8282-80a29e681a09" absoluteBounds="17.75, 16.75, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/dsSPDDataContext/v_mili" />
+      <nestedChildShapes>
+        <elementListCompartment Id="46252ff8-ae4b-4c50-b9a7-49b6ce5f1ef7" absoluteBounds="17.765, 17.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="76e046e1-ba4e-4b25-9230-1906e1615e86" absoluteBounds="3.75, 19.75, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/dsSPDDataContext/msMili" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4b8465c8-2c26-4e4b-af44-23980547e169" absoluteBounds="3.7650000000000006, 20.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d17d7025-df48-4579-82ce-7b55e462c1e4" absoluteBounds="17.75, 19.75, 2, 5.4246240234375023">
+      <DataClassMoniker Name="/dsSPDDataContext/v_atasan_tujuan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e68bea4f-1e69-4683-bd55-e0a71bdcd2ef" absoluteBounds="17.765, 20.21, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="103c53f6-8026-4508-b42e-120d416b5e59" absoluteBounds="20.75, 0.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/dsSPDDataContext/msPosition" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d825a816-fa1a-4a67-b6b6-79e46644c12d" absoluteBounds="20.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3627491b-16c7-42c7-a5d7-2c8efd6874f3" absoluteBounds="20.75, 2.75, 2, 7.9245426432291666">
+      <DataClassMoniker Name="/dsSPDDataContext/OrgUnit" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a31cf81b-4f9b-4742-a080-02cac729d55f" absoluteBounds="20.765, 3.2100000000000009, 1.9700000000000002, 7.3645426432291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" absoluteBounds="3.5, 3.5, 2, 13.116681315104167">
+      <DataClassMoniker Name="/dsSPDDataContext/trSPD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c202b6fe-2524-4eba-bf46-551d28488500" absoluteBounds="3.515, 3.9600000000000009, 1.9700000000000002, 12.556681315104166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 3.83255126953125); (6.25 : 3.83255126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/trSPD/trSPD_trTolak" />
+      <nodes>
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+        <classShapeMoniker Id="0d15d94d-0715-454d-86ec-3c482132e21a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 6.27005126953125); (6.25 : 6.27005126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/trSPD/trSPD_trRevisi" />
+      <nodes>
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+        <classShapeMoniker Id="5b2528c0-3035-47f5-aaa1-12a4c78b3066" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 6.57774983723958); (3.5 : 6.57774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msAngkutan/msAngkutan_trSPD" />
+      <nodes>
+        <classShapeMoniker Id="2ba0010a-e313-4418-9851-0e5e36fdacef" />
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 10.0777498372396); (3.5 : 10.0777498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msCabang/msCabang_trSPD" />
+      <nodes>
+        <classShapeMoniker Id="6d8ab7e0-c94b-435c-bd37-0d745b1747e3" />
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 13.5777498372396); (3.5 : 13.5777498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/msKeperluan/msKeperluan_trSPD" />
+      <nodes>
+        <classShapeMoniker Id="0de00009-49fa-49ed-8242-20e64df2269d" />
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="94776b40-b28e-400a-b83e-cb7e00b8108a" absoluteBounds="6.25, 8.25, 2, 10.232159830729167">
+      <DataClassMoniker Name="/dsSPDDataContext/trClaim" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1863d720-f91e-4496-b176-2f74be7b1a22" absoluteBounds="6.2650000000000006, 8.71, 1.9700000000000002, 9.6721598307291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 12.4333406575521); (6.25 : 12.4333406575521)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dsSPDDataContext/trSPD/trSPD_trClaim" />
+      <nodes>
+        <classShapeMoniker Id="63172f91-11ee-4b3d-8a1b-124e2a710f3b" />
+        <classShapeMoniker Id="94776b40-b28e-400a-b83e-cb7e00b8108a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="6fc7ea0a-8033-4196-98c8-f0043b4d5c4c" absoluteBounds="20.75, 11.75, 2, 7.9245426432291666">
+      <DataClassMoniker Name="/dsSPDDataContext/vwOrgUnit" />
+      <nestedChildShapes>
+        <elementListCompartment Id="448f26f1-df61-4752-93b6-47ab9971b78e" absoluteBounds="20.765, 12.21, 1.9700000000000002, 7.3645426432291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cde88f9d-e2db-405a-affa-1952eb211ea4" absoluteBounds="20.75, 20.75, 2, 5.8092268880208309">
+      <DataClassMoniker Name="/dsSPDDataContext/msKaryawan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bafd557f-d45c-441b-9f28-c67e0faa6ef9" absoluteBounds="20.765, 21.21, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="996e0f9d-3b36-42d5-ab7b-a8b56b2a5074" absoluteBounds="3.75, 22.75, 2, 13.501284179687502">
+      <DataClassMoniker Name="/dsSPDDataContext/vwDetailSPD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8c7a3340-87e9-45cb-b5fe-b12ff0a7b492" absoluteBounds="3.7649999999999997, 23.21, 1.9700000000000002, 12.9412841796875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="68377917-133b-4813-896a-ee1d5a56dcc1" absoluteBounds="11.75, 22.75, 2, 1.0016910807291666">
+      <DataClassMoniker Name="/dsSPDDataContext/NRPNotExpired" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a2387233-d261-4a28-9c41-b8c5cd11eb81" absoluteBounds="11.765, 23.21, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

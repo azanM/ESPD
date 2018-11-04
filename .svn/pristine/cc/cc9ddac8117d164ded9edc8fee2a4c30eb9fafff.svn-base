@@ -1,0 +1,190 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" EnableTheming="true"  %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=8"> 
+    <link href="App_Themes/Main/Site.css" rel="stylesheet" type="text/css" />
+    <link href="style/style.css" rel="stylesheet" type="text/css" /> 
+    <script language="javascript" type="text/javascript" src="../App_Themes/Default/ClientScript.js"></script>
+    
+    <script type="text/javascript" src="~/Script/jquery-1.10.2.min.js"></script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>              
+     <script language="JavaScript" type="text/javascript">
+         
+         var days = Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+         var months = Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+         function renderTime() {
+
+             var dt = new Date();
+             var date = (dt.getDate() < 10) ? '0' + dt.getDate() : dt.getDate();
+             var day = days[dt.getDay()];
+             var month = months[dt.getMonth()];
+             var year = dt.getFullYear();
+
+             var currentTime = new Date();
+             var diem = "AM";
+             var h = currentTime.getHours();
+             var m = currentTime.getMinutes();
+             var s = currentTime.getSeconds();
+             var teksDate = new String();	
+             setTimeout('renderTime()', 1000);
+             if (h == 0) {
+                 h = 12;
+             } else if (h > 12) {
+                 h = h - 12;
+                 diem = "PM";
+             }
+             if (h < 10) {
+                 h = "0" + h;
+             }
+             if (m < 10) {
+                 m = "0" + m;
+             }
+             if (s < 10) {
+                 s = "0" + s;
+             }
+             //var myClock = document.getElementById('clockDisplay');
+//             myClock.textContent = day + "," + "" + date + "-" + month + "-" + year + "|" + h + ":" + m + ":" + s + " " + diem;
+             //myClock.innerHTML = day + "," + "" + date + "-" + month + "-" + year + "|" + h + ":" + m + ":" + s + " " + diem;
+             teksDate = day + "," + "" + date + "-" + month + "-" + year + "|" + h + ":" + m + ":" + s + " " + diem;
+             //clockDisplay.innerHTML = teksDate;            
+         }
+         renderTime();
+</script>       
+</head>
+<body  >
+  <form id="form1" runat="server"  >
+    <div class="page" >
+      <table width="1050" align="center" cellpadding="0" cellspacing="0" >
+        <tr>
+        <td colspan="3" width="100%" >
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td align="left" style="margin-left:20px;" class="HeaderLeft">
+              <table>
+              <tr>
+              <td style="margin-left:20px;" >
+              <asp:Image runat="server" ID="IMGlOGO" ImageUrl="~/Style/SERA.jpg" 
+                      Height="58px" Width="169px" />
+              </td>
+              </tr>
+              </table>              
+                  </td>
+              <td class="HeaderRepeater" align="right">
+                  <%--<div id="clockDisplay" style="font-size:small; font-family:Verdana;" class="clockStyle"></div>--%><%--<span id="clockDisplay" style="font-size:small; font-family:Verdana;" class="clockStyle" ></span>--%>
+              </td>
+              <td class="HeaderRight"></td>
+            </tr>
+          </table>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="3">
+        <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+        <td style="background-color:#414141;" >&nbsp;</td>       
+        </tr>
+        </table>
+        </td>
+        </tr>
+        <tr>                   
+          <td align="left" >
+          <table>
+            <tr> 
+            <td>
+                <asp:Menu ID="mnuMain" runat="server" CssClass="menu" 
+                    DynamicEnableDefaultPopOutImage="False" 
+                    DynamicPopOutImageUrl="~/App_Themes/Theme/Images/img_rmenuarrow.gif" 
+                    EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal" 
+                    StaticDisplayLevels="2" StaticEnableDefaultPopOutImage="False">
+                    <Items>
+                        <asp:menuitem NavigateUrl="~/frmHome.aspx" Text="Home" Value="Home">
+                            <asp:menuitem Text="Master" Value="mstr"></asp:menuitem>
+                            <asp:menuitem Text="Transaction" Value="tscn">
+                                <asp:menuitem NavigateUrl="~/frmRequestInput.aspx" Text="Create SPD" 
+                                    Value="msCreate"></asp:menuitem>
+                                <asp:MenuItem NavigateUrl="frmClaimApproval.aspx" Text="Claim SPD" 
+                                    Value="msClaim"></asp:MenuItem>
+                            </asp:menuitem>
+                           <%-- <asp:MenuItem Text="Laporan" Value="lpr">
+                               <asp:menuitem NavigateUrl="~/frmReportSPD.aspx" Text="Report SPD" 
+                                    Value="msCreate"></asp:menuitem>
+                                <asp:MenuItem NavigateUrl="frmReportClaim.aspx" Text="Report Claim SPD" 
+                                    Value="msClaim"></asp:MenuItem>
+                            </asp:MenuItem>--%>
+                            <asp:MenuItem Text="Laporan Crystal Report" Value="lpr1">
+                               <asp:menuitem NavigateUrl="~/frmReportCrystalSPD.aspx" Text="Report SPD CR" 
+                                    Value="msCreate"></asp:menuitem>
+                                <asp:MenuItem NavigateUrl="~/frmReportCrystalClaim.aspx" Text="Report Claim SPD CR" 
+                                    Value="msClaim"></asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem Text="Setting" Value="st">
+                                <asp:MenuItem Text="User Maintenance" Value="UM"></asp:MenuItem>
+                                <asp:MenuItem Text="Page Access Security" Value="GPM"></asp:MenuItem>
+                                <asp:MenuItem Text="Data Access Security" Value="DAS"></asp:MenuItem>
+                            </asp:MenuItem>
+                        </asp:menuitem>
+                    </Items>
+                    <StaticMenuStyle CssClass="staticMenu" HorizontalPadding="0px" 
+                        VerticalPadding="0px" />
+                    <StaticMenuItemStyle CssClass="staticMenuItem" ItemSpacing="1px" />
+                    <StaticHoverStyle CssClass="statichover" />
+                    <DynamicMenuStyle BackColor="#CCCCCC" CssClass="dynamicMenu" 
+                        HorizontalPadding="1px" />
+                    <DynamicMenuItemStyle BackColor="#dbe8f4" CssClass="dynamicMenuItem" 
+                        ItemSpacing="1px" />
+                    <DynamicHoverStyle BackColor="#89AFDC" BorderStyle="None" ForeColor="White" />
+                    <StaticSelectedStyle CssClass="staticMenuItem" ItemSpacing="1px" />
+                </asp:Menu>
+                </td>                                               
+              <td >
+                <asp:LoginView ID="LoginView1" runat="server" >
+                  <LoggedInTemplate>
+                      <asp:LoginName ID="LoginName1" runat="server" FormatString="Welcome, {0}"/>
+                      <asp:Label runat="server" ID="lblLogin" CssClass="logouttheme" ForeColor="#3333FF" />
+                  </LoggedInTemplate>
+                  <AnonymousTemplate><span class="logouttheme" style="color:White; width:200px;">You are not logged in</span>
+                  
+                  </AnonymousTemplate>
+                </asp:LoginView>         
+                <asp:LinkButton runat="server" ToolTip="Log Out" Text="Keluar" Visible="true" 
+                      onclick="lbLogout_Click" ID="lblLogout"></asp:LinkButton>                    
+              </td>
+             <td>
+                 <asp:ScriptManager ID="ScriptManager1" runat="server">
+                 </asp:ScriptManager>
+                </td>                            
+            </tr>
+          </table>                                
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="background-color:White; height:500px; padding:10px; vertical-align:top;" >
+            <table width="100%" cellpadding="0" cellspacing="0" >
+              <tr>                
+                <td width="80%" style="vertical-align:top;"  >
+                  <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">        
+                  </asp:ContentPlaceHolder>
+                </td>
+              </tr>
+            </table>
+          </td>          
+        </tr>
+        <tr>
+        <td colspan="3" width="100%" >
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td class="Footer"></td>
+              <td class="FooterRepeater" align="right"></td>
+              <td class="FooterRight"></td>
+            </tr>
+          </table>
+        </td>          
+        </tr>
+      </table>      
+    </div>
+  </form>
+</body>
+</html>

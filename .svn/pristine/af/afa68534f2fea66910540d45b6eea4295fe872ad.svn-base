@@ -1,0 +1,497 @@
+﻿using eSPD.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace eSPD
+{
+    public partial class newClaimList : System.Web.UI.Page
+    {
+        private static msKaryawan karyawan = new msKaryawan();
+        private static classSpd oSPD = new classSpd();
+        private static string strID = string.Empty;
+        private static ClaimApprovalUrl claimApproval = new ClaimApprovalUrl();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+
+            strID = (string)Session["IDLogin"];
+            karyawan = oSPD.getKaryawan(strID);
+            Session["nrpLogin"] = karyawan.nrp;
+
+            if (string.IsNullOrEmpty(karyawan.nrp)) Response.Redirect("frmHome.aspx");
+
+            if (!IsPostBack)
+            {
+                ClaimGA.Visible = false;
+                ClaimFinance.Visible = false;
+                switch (userType(karyawan.nrp))
+                {
+                    case 17: // GA
+
+                        bindGA();
+                        ClaimGA.Visible = true;
+                        break;
+                    case 19:  // finance
+
+                        bindFinance();
+                        ClaimFinance.Visible = true;
+                        break;
+
+                    case 23: // sekertaris
+
+
+                        break;
+                    default:
+                        break;
+                }
+
+                BindClaimSPD();
+                BindAtasan();
+                BindPersonal();
+            }
+        }
+
+        #region user type
+        private int? userType(string nrp)
+        {
+
+            using (var ctx = new dsSPDDataContext())
+            {
+                var type = ctx.msUsers.FirstOrDefault(o => o.nrp.Equals(nrp));
+
+                if (type != null)
+                {
+                    return type.roleId;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        #endregion
+
+        #region Create Claim SPD
+        protected void gvClaimSPD_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvClaimSPD.PageIndex = e.NewPageIndex;
+            BindClaimSPD();
+        }
+
+        protected void gvClaimSPD_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Create")
+            {
+                Session["noSPD"] = e.CommandArgument.ToString();
+                Response.Redirect("newFormClaimInput.aspx");
+            }
+        }
+
+        void BindClaimSPD()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                var data = (from spd in ctx.trSPDs
+                            let u = ctx.msUsers.Where(x => x.roleId == 14 || x.roleId == 13).Select(x => x.nrp)
+                            join claim in ctx.trClaims
+                               on spd.noSPD equals claim.noSPD into aps
+                            from y1 in aps.DefaultIfEmpty()
+                            where (((bool)Session["sekretaris"]) == true ? spd.nrp.Trim() == karyawan.nrp.Trim() || u.Contains(spd.nrp) : spd.nrp.Trim() == karyawan.nrp.Trim())
+                                && spd.isApproved == true
+                                && (spd.isCancel == null || spd.isCancel == false)
+                                && (y1 == null)
+                            select new
+                            {
+                                noSPD = spd.noSPD,
+                                nrp = spd.nrp,
+                                namaLengkap = spd.namaLengkap,
+                                cabangTujuan = spd.companyCodeTujuan != "0" || spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                tglBerangkat = spd.tglBerangkat,
+                                tglKembali = spd.tglKembali,
+                                status = spd.status
+                            }).ToList();
+
+                if (!data.Any())
+                {
+                    ListSPDClaim.Visible = false;
+                }
+                else
+                {
+                    ListSPDClaim.Visible = true;
+                    gvClaimSPD.DataSource = data;
+                    gvClaimSPD.DataBind();
+                }
+            }
+        }
+        #endregion
+
+        #region Approval
+
+        #region Atasan
+        protected void gvAtasan_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetailClaim.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+            }
+
+            if (e.CommandName == "Approve")
+            {
+                lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "Atasan");
+                lblMessage.Visible = true;
+            }
+
+            if (e.CommandName == "Reject")
+            {
+                lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "Atasan");
+                lblMessage.Visible = true;
+            }
+
+            if (e.CommandName != "Detail") BindAtasan();
+        }
+
+        protected void gvAtasan_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvAtasan.PageIndex = e.NewPageIndex;
+            BindClaimSPD();
+        }
+
+        void BindAtasan()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                var data = (from claim in ctx.trClaims
+                            join spd in ctx.trSPDs
+                                on claim.noSPD equals spd.noSPD
+                            where claim.nrpAtasan.Trim() == karyawan.nrp
+                                && spd.isApproved == true
+                                && claim.isSubmit == true
+                                && claim.isApprovedAtasan == null
+                                && claim.isApprovedGA == null
+                                && claim.isApprovedFinance == null
+                                && claim.isCancel == null
+                            select new
+                            {
+                                noSPD = claim.noSPD,
+                                nrp = spd.nrp,
+                                namaLengkap = spd.namaLengkap,
+                                cabangTujuan = spd.companyCodeTujuan != "0" || spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                tglKembali = spd.tglKembali.ToShortDateString(),
+                                uangMakan = claim.biayaMakan,
+                                uangSaku = claim.uangSaku,
+                                Tiket = claim.tiket,
+                                Hotel = claim.hotel,
+                                BBM = claim.BBM,
+                                Tol = claim.tol,
+                                Taxi = claim.taxi,
+                                AirportTax = claim.airportTax,
+                                laundry = claim.laundry,
+                                Parkir = claim.parkir,
+                                Lain = claim.biayaLainLain,
+                                Total = claim.biayaMakan + claim.uangSaku + claim.tiket + claim.hotel + claim.BBM + claim.tol + claim.taxi + claim.airportTax + claim.laundry + claim.parkir + claim.biayaLainLain + claim.komunikasi,
+                                status = claim.status
+                            }).ToList();
+
+                if (!data.Any())
+                {
+                    ClaimAtasan.Visible = false;
+                }
+                else
+                {
+                    ClaimAtasan.Visible = true;
+                    gvAtasan.DataSource = data;
+                    gvAtasan.DataBind();
+                }
+            }
+        }
+        #endregion
+
+        #region GA
+        protected void gvGA_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetailClaim.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+            }
+            else
+            {
+
+                if (e.CommandName == "Approve")
+                {
+                    lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "GA");
+                    lblMessage.Visible = true;
+                   
+                }
+
+                if (e.CommandName == "Reject")
+                {
+                    lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "GA");
+                    lblMessage.Visible = true;
+                }
+                lblMessage.Visible = true;
+                bindGA();
+            }
+
+            if (e.CommandName == "Cancel")
+            {
+                lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "GA");
+                lblMessage.Visible = true;
+            }
+
+            if (e.CommandName == "Edit")
+            {
+                Session["noSPD"] = e.CommandArgument.ToString();
+                Response.Redirect("newFormClaimInput.aspx");
+            }
+
+        }
+
+        protected void gvGA_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            bindGA();
+        }
+
+        protected void gvGA_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvGA.PageIndex = e.NewPageIndex;
+            bindGA();
+        }
+
+        protected void ddlParamGA_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlParamGA.SelectedValue != "tglBerangkat") ceFilterGA.Enabled = false;
+            else ceFilterGA.Enabled = true;
+        }
+
+        protected void gvGA_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var ApprovalGA = DataBinder.Eval(e.Row.DataItem, "isApprovedGA");
+                if (ApprovalGA != null)
+                {
+                    Button btnApprove = (Button)e.Row.FindControl("btnApprove");
+                    btnApprove.Visible = false;
+
+                    Button btnReject = (Button)e.Row.FindControl("btnReject");
+                    btnReject.Visible = false;
+                }
+            }
+        }
+
+        protected void btnFindGA_Click(object sender, EventArgs e)
+        {
+            bindGA();
+        }
+
+        void bindGA()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                string filter = ddlParamGA.Text.Trim() == "--Select--" ? "" : ddlParamGA.SelectedItem.Value;
+                string param = txFilterGA.Text;
+                var data = ctx.sp_GetApprovalClaimSPDOlehGA(filter, param);
+                gvGA.DataSource = data;
+                gvGA.DataBind();
+            }
+
+        }
+        #endregion
+
+        #region finance
+        protected void gvFinance_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetailClaim.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+            }
+
+            if (e.CommandName == "Approve")
+            {
+                lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "Finance");
+                lblMessage.Visible = true;
+            }
+
+            if (e.CommandName == "Reject")
+            {
+                lblMessage.Text = claimApproval.ChangeStatus(e.CommandArgument.ToString(), e.CommandName, karyawan.nrp, "Finance");
+                lblMessage.Visible = true;
+            }
+
+            if (e.CommandName != "Detail") bindFinance();
+        }
+        protected void gvFinance_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvFinance.PageIndex = e.NewPageIndex;
+            bindFinance();
+        }
+        void bindFinance()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                DateTime? fltDate = new DateTime();
+                if (!string.IsNullOrEmpty(txFilterFinance.Text)) fltDate = Convert.ToDateTime(txFilterFinance.Text);
+                var data = (from claim in ctx.trClaims
+                            join spd in ctx.trSPDs
+                                on claim.noSPD equals spd.noSPD
+                            join k in ctx.msKaryawans
+                                on spd.nrp equals k.nrp
+                            where k.coCd == karyawan.coCd
+                                && claim.isApprovedGA == true
+                                && claim.isApprovedFinance == null
+                                && claim.isCancel == null
+                                && (string.IsNullOrEmpty(txFilterFinance.Text) ? true : spd.tglBerangkat == fltDate)
+                            select new
+                            {
+                                noSPD = claim.noSPD,
+                                nrp = spd.nrp,
+                                namaLengkap = spd.namaLengkap,
+                                cabangTujuan = spd.companyCodeTujuan != "0" || spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                tglBerangkat = spd.tglBerangkat.ToShortDateString(),
+                                tglKembali = spd.tglKembali.ToShortDateString(),
+                                uangMakan = claim.biayaMakan,
+                                uangSaku = claim.uangSaku,
+                                Tiket = claim.tiket,
+                                Hotel = claim.hotel,
+                                BBM = claim.BBM,
+                                Tol = claim.tol,
+                                Taxi = claim.taxi,
+                                AirportTax = claim.airportTax,
+                                laundry = claim.laundry,
+                                Parkir = claim.parkir,
+                                Lain = claim.biayaLainLain,
+                                Total = claim.biayaMakan + claim.uangSaku + claim.tiket + claim.hotel + claim.BBM + claim.tol + claim.taxi + claim.airportTax + claim.laundry + claim.parkir + claim.komunikasi + claim.biayaLainLain,
+                                status = claim.status
+                            }).ToList();
+
+                gvFinance.DataSource = data;
+                gvFinance.DataBind();
+            }
+        }
+        protected void btnFindFinance_Click(object sender, EventArgs e)
+        {
+            bindFinance();
+        }
+        #endregion
+
+        #endregion
+
+        #region claim personal
+        protected void btnFindPersonal_Click(object sender, EventArgs e)
+        {
+            BindPersonal();
+        }
+
+
+        protected void gvPersonal_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvPersonal.PageIndex = e.NewPageIndex;
+            BindPersonal();
+        }
+
+        protected void gvPersonal_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Detail")
+            {
+                string URL = "~/newFormRequestDetailClaim.aspx?encrypt=" + Encrypto.Encrypt(e.CommandArgument.ToString());
+                URL = Page.ResolveClientUrl(URL);
+                ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+            }
+
+            if (e.CommandName == "Edit")
+            {
+                Session["noSPD"] = e.CommandArgument.ToString();
+                Response.Redirect("newFormClaimInput.aspx");
+            }
+        }
+
+        void BindPersonal()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                DateTime? fltDate = new DateTime();
+                if (!string.IsNullOrEmpty(txFilterPersonal.Text)) fltDate = Convert.ToDateTime(txFilterPersonal.Text);
+
+                var data = (from spd in ctx.trSPDs
+                            let u = ctx.msUsers.Where(x => x.roleId == 14 || x.roleId == 13).Select(x => x.nrp)
+                            join claim in ctx.trClaims
+                               on spd.noSPD equals claim.noSPD
+                            where (((bool)Session["sekretaris"]) == true ? spd.nrp.Trim() == karyawan.nrp.Trim() || u.Contains(spd.nrp) : spd.nrp.Trim() == karyawan.nrp.Trim())
+                                && spd.isApproved == true
+                                && (string.IsNullOrEmpty(txFilterPersonal.Text) ? true : spd.tglBerangkat == fltDate)
+                            select new
+                            {
+                                noSPD = spd.noSPD,
+                                nrp = spd.nrp,
+                                namaLengkap = spd.namaLengkap,
+                                cabangTujuan = spd.companyCodeTujuan != "0" || spd.companyCodeTujuan != null ? spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan : spd.tempatTujuanLain,
+                                keperluan = spd.idKeperluan != null ? spd.msKeperluan.keperluan : spd.keperluanLain,
+                                tglBerangkat = spd.tglBerangkat,
+                                tglKembali = spd.tglKembali,
+                                status = spd.status,
+                                statusClaim = claim.status,
+                                isApprovedFinance = claim.isApprovedFinance
+                            }).ToList();
+
+                if (!data.Any())
+                {
+                    lblMessagePersonal.Visible = true;
+                    lblMessagePersonal.Text = "No Data";
+                    gvPersonal.Visible = false;
+                }
+                else
+                {
+                    lblMessagePersonal.Visible = false;
+                    gvPersonal.Visible = true;
+                    ClaimPersonal.Visible = true;
+                    gvPersonal.DataSource = data;
+                    gvPersonal.DataBind();
+                }
+            }
+        }
+        #endregion
+
+        protected void gvPersonal_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var isApprovedFinance = DataBinder.Eval(e.Row.DataItem, "isApprovedFinance");
+
+                bool approved = false;
+                if (isApprovedFinance != null)
+                {
+                    try
+                    {
+                        approved = (bool)isApprovedFinance;
+                    }
+                    catch (Exception)
+                    {
+                        approved = true;
+                    }
+                }
+
+
+                if (karyawan.nrp.Equals("99999999") || approved)
+                {
+                    Button btnEdit = (Button)e.Row.FindControl("btnEdit");
+                    btnEdit.Visible = false;
+                }
+            }
+        }
+    }
+}

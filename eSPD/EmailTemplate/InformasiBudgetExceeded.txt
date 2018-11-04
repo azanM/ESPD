@@ -1,0 +1,136 @@
+<html>
+<head>
+    <title>e-SPD [Approval SPD Atasan Langsung] |NoSPD|-|spdRequester|</title>
+    <!-- CSS goes in the document HEAD or added to your external stylesheet -->
+    <style type="text/css">
+        body {
+            color: #333;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 1.42857;
+        }
+
+        .bs-callout {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-color: #eee;
+            border-image: none;
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 1px 1px 1px 10px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fdfdfd;
+        }
+
+            .bs-callout h4 {
+                margin-bottom: 5px;
+                margin-top: 0;
+                padding-bottom: 1em;
+            }
+
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #eee;
+            border-collapse: collapse;
+        }
+
+            table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+                background-color: #dedede;
+            }
+
+            table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+            }
+    </style>
+</head>
+<body>
+    <div class="bs-callout">
+        <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+            Approval |NoSPD|
+			Budget Exceeded |NoSPD| |spdRequester|
+        </h4>
+        <p>
+            Kepada Yth, <br />
+            Bapak/Ibu |spdRequester| <br /> <br />
+			Kami informasikan kepada Bapak/Ibu |spdRequester| <span style="color: #FF0000">bahwa budget perjalanan dinas dari Bapak/Ibu telah exceeded</span>.
+			Jika Bapak/Ibu tetap akan melakukan perjalanan dinas mohon dapat melakukan reclass budget di SAP. <br /> <br />
+			Adapun rincian SPD sebagai berikut :   <br /> <br />
+        </p>
+
+        <div class="bs-callout">
+            <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+                Informasi Karyawan
+            </h4>
+            <table class="none">
+                <tbody>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">No. SPD </td>
+                        <td>|NoSPD|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Nama Lengkap </td>
+                        <td>|spdRequester|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">No Handphone </td>
+                        <td>|noHp|</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bs-callout">
+            <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+                Informasi SPD
+            </h4>
+            <table class="none">
+                <tbody>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tempat Tujuan </td>
+                        <td>|tempatTujuan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Keperluan </td>
+                        <td>|keperluan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tanggal Berangkat</td>
+                        <td>|tanggalBerangkat|&nbsp;|jamBerangkat|:|menitBerangkat|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tanggal Kembali </td>
+                        <td>|tanggalKembali|&nbsp;|jamKembali|:|menitKembali|</td>
+                    </tr>
+					<tr>
+                        <td style="text-align:right;font-weight:bold;color: #FF0000;">Tanggal Expired</td>
+                        <td style="color: #FF0000">|tglExpired|</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+		<h3>Detail</h3>
+
+		  <p>Silahkan  <a href='|DetailURL|'>Click ini</a> untuk melihat data detail.</p>
+
+
+        <hr />
+        Terima kasih. <br />
+        <span style="color: #FF0000"><b>Catatan : E-mail ini dikirim otomatis oleh Sistem Pembuatan SPD.Tidak perlu membalas E-mail ini</b></span>
+
+    </div>
+</body>
+</html>

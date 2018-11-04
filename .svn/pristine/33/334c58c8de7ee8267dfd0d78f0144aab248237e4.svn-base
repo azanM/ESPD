@@ -1,0 +1,900 @@
+﻿using eSPD.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace eSPD
+{
+    public partial class newFormRequestInput : System.Web.UI.Page
+    {
+        private static msKaryawan karyawan = new msKaryawan();
+        private static classSpd oSPD = new classSpd();
+        private static string strID = string.Empty;
+        List<string> errorMessageHidden = new List<string>();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+
+
+            strID = (string)Session["IDLogin"];
+            karyawan = oSPD.getKaryawan(strID);
+            Session["nrpLogin"] = karyawan.nrp;
+
+            if (string.IsNullOrEmpty(karyawan.nrp)) Response.Redirect("frmHome.aspx");
+
+            // jika sekertaris
+            isSec(karyawan.nrp);
+
+            if (!IsPostBack)
+            {
+                setInitial(karyawan);
+            }
+
+            if (IsPostBack)
+            {
+                approvalViewState();
+            }
+
+            enableUangMukaAndAlasan();
+            tujuanLain(txTempatTujuanLain.Enabled);
+        }
+
+        protected void ddlSelfOrDirect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlDireksi.Visible = false;
+            rvDireksi.Enabled = false;
+            ddDireksi.Visible = false;
+
+            if (ddlSelfOrDirect.SelectedValue == "0") setDirect();
+            else setInitial(karyawan);
+        }
+
+        protected void ddlDireksi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                if (ddlSelfOrDirect.SelectedValue == "0" && !string.IsNullOrWhiteSpace(ddlDireksi.SelectedValue))
+                {
+                    var direksi = ctx.msKaryawans.FirstOrDefault(o => o.nrp == ddlDireksi.SelectedValue);
+                    setInitial(direksi);
+                }
+                else
+                {
+                    setInitial(karyawan);
+                }
+            }
+        }
+
+        protected void ddlAsal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setContent();
+            setApproval();
+        }
+
+        protected void ddlGolongan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setContent();
+            setApproval();
+        }
+
+        protected void ddlPosisi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setContent();
+            setApproval();
+        }
+
+        protected void ddlTujuan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlWilayahTujuan.Items.Clear();
+            ddlWilayahTujuan.Items.Add(new ListItem(" - Select One - ", "", true));
+            ddlWilayahTujuan.AppendDataBoundItems = true;
+            setContent();
+            setApproval();
+        }
+
+        protected void ddlWilayahTujuan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setContent();
+        }
+
+        protected void ddlCompanyTujuan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlPersonalAreaTujuan.Items.Clear();
+            ddlPersonalAreaTujuan.Items.Add(new ListItem(" - Select One - ", "", true));
+            ddlPersonalAreaTujuan.AppendDataBoundItems = true;
+
+            ddlPSubAreaTujuan.Items.Clear();
+            ddlPSubAreaTujuan.Items.Add(new ListItem(" - Select One - ", "", true));
+            ddlPSubAreaTujuan.AppendDataBoundItems = true;
+
+            if (ddlCompanyTujuan.SelectedValue == "0") tujuanLain(true);
+            else tujuanLain(false);
+        }
+
+        protected void ddlPersonalAreaTujuan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlPSubAreaTujuan.Items.Clear();
+            ddlPSubAreaTujuan.Items.Add(new ListItem(" - Select One - ", "", true));
+            ddlPSubAreaTujuan.AppendDataBoundItems = true;
+        }
+
+        protected void txtTglBerangkat_TextChanged(object sender, EventArgs e)
+        {
+            enableUangMukaAndAlasan();
+            setDisabledHotelAndNotLessThan();
+        }
+
+        protected void txtTglKembali_TextChanged(object sender, EventArgs e)
+        {
+            enableUangMukaAndAlasan();
+            setDisabledHotelAndNotLessThan();
+        }
+
+        protected void ddlAngkutan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            angkutanLain(false);
+            if (ddlAngkutan.SelectedValue == "5") angkutanLain(true);
+        }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                List<Approval> Approvals = (List<Approval>)ViewState["Approval"];
+
+                trSPD spd = new trSPD();
+
+                spd.asal = ddlAsal.SelectedValue;
+                spd.nrp = txNrp.Value;
+                spd.namaLengkap = txNamaLengkap.Text;
+                spd.idGolongan = ddlGolongan.SelectedValue;
+                spd.jabatan = txJabatan.Text;
+                spd.email = txEmail.Text;
+                spd.coCdTujuan = ddlCompanyTujuan.SelectedValue;
+                spd.companyCodeTujuan = ddlCompanyTujuan.SelectedItem.Text;
+
+                if (ddlCompanyTujuan.SelectedValue != "0")
+                {
+
+                    spd.kodePATujuan = ddlPersonalAreaTujuan.SelectedValue;
+                    spd.personelAreaTujuan = ddlPersonalAreaTujuan.SelectedItem.Text;
+                    spd.kodePSubAreaTujuan = ddlPSubAreaTujuan.SelectedValue;
+                    spd.pSubAreaTujuan = ddlPSubAreaTujuan.SelectedItem.Text;
+                }
+                else
+                {
+                    spd.personelAreaTujuan = ddlCompanyTujuan.SelectedItem.Text;
+                    spd.pSubAreaTujuan = ddlCompanyTujuan.SelectedItem.Text;
+                }
+
+                spd.Tujuan = ddlTujuan.SelectedItem.Text;
+                spd.WilayahTujuan = ddlWilayahTujuan.SelectedValue;
+                spd.NoHP = txNoPonsel.Text;
+                spd.tempatTujuanLain = txTempatTujuanLain.Text;
+                spd.idKeperluan = Convert.ToInt32(ddlKeperluan.SelectedValue);
+                spd.ketKeperluan = txKetKeperluan.Text;
+                spd.tiket = "Dicarikan";
+                spd.tglBerangkat = Convert.ToDateTime(txtTglBerangkat.Text);
+                spd.jamBerangkat = ddlJamBerangkat.SelectedValue;
+                spd.menitBerangkat = ddlMenitBerangkat.SelectedValue;
+                spd.tglKembali = Convert.ToDateTime(txtTglKembali.Text);
+                spd.jamKembali = ddlJamKembali.SelectedValue;
+                spd.menitKembali = ddlMenitKembali.SelectedValue;
+                spd.Alasan = txAlasan.Text;
+                spd.idAngkutan = Convert.ToInt32(ddlAngkutan.SelectedValue);
+                spd.angkutanLain = txAngkutanLain.Text;
+                spd.penginapan = ddlPenginapan.SelectedValue;
+
+                if (ddlPenginapan.SelectedValue.ToLower().Contains("disediakan"))
+                {
+                    spd.isHotel = true;
+                }
+                else
+                {
+                    spd.isHotel = false;
+                }
+
+                // first Index Sequence approval, di assign pas even submit
+                spd.nrpAtasan = string.Empty;
+                spd.nrpApprovalTujuan = ddlApprovalTujuan.SelectedValue;
+                spd.uangMuka = txUangMuka.Text;
+                spd.costCenter = ddlCostCenter.SelectedValue;
+                spd.keterangan = txKeterangan.Text;
+                spd.status = "Save";
+                spd.dibuatOleh = txNrp.Value;
+                spd.dibuatTanggal = DateTime.Now;
+                spd.posisi = ddlPosisi.SelectedValue;
+
+                #region gak kepake
+                //spd.datetimeClose = txNoSPD.Text;
+                //spd.nrpApprovalGA = txNoSPD.Text;
+                //spd.diubahOleh = txNoSPD.Text;
+                //spd.diubahTanggal = txNoSPD.Text;
+                //spd.isApproved = txNoSPD.Text;
+                //spd.isCancel = txNoSPD.Text;
+                //spd.isSubmit = txNoSPD.Text;
+                //spd.idCabangTujuan = txNoSPD.Text;
+                //spd.keperluanLain = txKetKeperluan.Text;
+                //spd.isSubmitDate = txNoSPD.Text;
+                //spd.isApprovedDate = txNoSPD.Text;
+                //spd.isCancelDate = txNoSPD.Text;  
+                //spd.idCabangTujuan = txNoSPD.Text;
+                #endregion
+
+                if (Approvals.Count() == 0)
+                {
+                    errorMessageHidden.Add("Tidak ada approval atasan.");
+                }
+
+                if (!validateDate())
+                {
+                    errorMessageHidden.Add("Waktu berangkat harus lebih kecil nilainya, dari pada waktu kembali.");
+                }
+
+                if (errorMessageHidden.Count() == 0)
+                {
+                    try
+                    {
+                        spd.noSPD = ctx.sp_GenerateNoSpd().FirstOrDefault().number; // generate number belakangan
+                        ctx.trSPDs.InsertOnSubmit(spd);
+                        ctx.SubmitChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessageHidden.Add("Error Save SPD, ketika save spd header");
+                        errorMessageHidden.Add(ex.Message);
+
+                        if (ctx.trSPDs.FirstOrDefault(o => o.noSPD == spd.noSPD) != null)
+                        {
+                            ctx.trSPDs.DeleteOnSubmit(spd);
+                            ctx.SubmitChanges();
+                        }
+
+                    }
+                }
+
+                if (errorMessageHidden.Count() == 0)
+                {
+                    // method insert approval
+                    List<ApprovalStatus> newApprovalList = (from p in Approvals
+                                                            select new ApprovalStatus
+                                                            {
+                                                                NoSPD = spd.noSPD,
+                                                                RuleID = p.RuleID,
+                                                                NrpApproval = p.NrpApproval,
+                                                                Nama = p.Nama,
+                                                                Email = p.Email,
+                                                                IndexLevel = p.IndexLevel
+                                                            }).ToList();
+
+                    try
+                    {
+                        ctx.ApprovalStatus.InsertAllOnSubmit(newApprovalList);
+                        ctx.SubmitChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessageHidden.Add("Error Save Approval");
+                        errorMessageHidden.Add(ex.Message);
+
+                        ctx.trSPDs.DeleteOnSubmit(spd);
+                        ctx.SubmitChanges();
+                    }
+                    finally
+                    {
+                        txNoSPD.Text = spd.noSPD;
+                        pnlSuccess.Visible = true;
+                        pnlError.Visible = false;
+                        lblSuccess.Text = "SPD Berhasil di Save, No SPD : " + spd.noSPD;
+                        btnSave.Enabled = false;
+                        btnSubmit.Enabled = true;
+                        btnReset.Disabled = true;
+                    }
+                }
+
+                if (errorMessageHidden.Count() > 0)
+                {
+                    errorMessage.DataSource = errorMessageHidden;
+                    errorMessage.DataBind();
+
+                    pnlError.Visible = true;
+                    pnlSuccess.Visible = false;
+                }
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                var spd = ctx.trSPDs.FirstOrDefault(o => o.noSPD == txNoSPD.Text);
+                var firstApproval = ctx.ApprovalStatus.FirstOrDefault(o => o.NoSPD == txNoSPD.Text && o.IndexLevel.Value == 1);
+
+                if (spd == null)
+                {
+                    errorMessageHidden.Add("SPD tidak ditemukan");
+                }
+
+                if (firstApproval == null)
+                {
+                    errorMessageHidden.Add("Approval pertama tidak ditemukan");
+                }
+
+                if (errorMessageHidden.Count() == 0)
+                {
+                    spd.diubahOleh = karyawan.nrp;
+                    spd.diubahTanggal = DateTime.Now;
+                    spd.isSubmitDate = DateTime.Now;
+                    spd.nrpAtasan = firstApproval.NrpApproval;
+                    spd.status = "Menunggu approval " + firstApproval.ApprovalRule.Deskripsi;
+                    spd.isSubmit = true;
+
+                    try
+                    {
+                        ctx.SubmitChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessageHidden.Add("Error Submit SPD, gangguan teknis");
+                        errorMessageHidden.Add(ex.Message);
+                    }
+                    finally
+                    {
+                        pnlSuccess.Visible = true;
+                        pnlError.Visible = false;
+                        lblSuccess.Text = "SPD Berhasil di Submit, No SPD : " + spd.noSPD + ", status spd saat ini adalah " + spd.status;
+                        btnSave.Enabled = false;
+                        btnSubmit.Enabled = false;
+
+                        // send email atasan
+                        EmailCore.ApprovalSPD(firstApproval.NrpApproval, txNoSPD.Text, firstApproval.IndexLevel.Value.ToString(), spd);
+
+                        btnReset.Disabled = false;
+                    }
+                }
+
+                if (errorMessageHidden.Count() > 0)
+                {
+                    errorMessage.DataSource = errorMessageHidden;
+                    errorMessage.DataBind();
+
+                    pnlError.Visible = true;
+                    pnlSuccess.Visible = false;
+                }
+            }
+        }
+
+        void setInitial(msKaryawan karyawan)
+        {
+            txNrp.Value = karyawan.nrp;
+
+            if (karyawan.nrp.Equals("99999999"))
+            {
+                txNamaLengkap.ReadOnly = false;
+                txEmail.ReadOnly = false;
+                txJabatan.ReadOnly = false;
+                ddlGolongan.SelectedValue = "III";
+                rvNamaLengkap.Enabled = true;
+                rvEmail.Enabled = true;
+                rvJabatan.Enabled = true;
+            }
+
+            txNamaLengkap.Text = karyawan.namaLengkap;
+            txEmail.Text = karyawan.email;
+            txJabatan.Text = karyawan.job;
+            txCompanyCode.Text = karyawan.companyCode;
+            txPersonalArea.Text = karyawan.personelArea;
+            txPersonalSubArea.Text = karyawan.pSubArea;
+            ddlGolongan.SelectedValue = karyawan.golongan.Trim();
+            ddlGolongan_SelectedIndexChanged(null, null);
+        }
+
+        void approvalViewState()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                List<Approval> Approvals = new List<Approval>();
+                try
+                {
+                    for (int i = 0; i < gvApproval.Rows.Count; i++)
+                    {
+                        Approval newApproval = new Approval();
+
+                        var NrpApproval = (TextBox)gvApproval.Rows[i].Cells[1].FindControl("txNrpApproval");
+                        var IndexLevel = (TextBox)gvApproval.Rows[i].Cells[1].FindControl("txIndexLevel");
+                        var Deskripsi = (TextBox)gvApproval.Rows[i].Cells[1].FindControl("txDesc");
+                        var RuleID = (TextBox)gvApproval.Rows[i].Cells[1].FindControl("txRuleID");
+
+                        if (!string.IsNullOrEmpty(NrpApproval.Text))
+                        {
+                            var atasanData = (from p in ctx.msKaryawans
+                                              where p.nrp == NrpApproval.Text
+                                              select p).FirstOrDefault();
+
+                            newApproval.Email = atasanData.email;
+                            newApproval.Nama = atasanData.namaLengkap;
+                        }
+
+                        newApproval.NrpApproval = NrpApproval.Text;
+                        newApproval.IndexLevel = Convert.ToInt32(IndexLevel.Text); ;
+                        newApproval.Deskripsi = Deskripsi.Text;
+                        newApproval.RuleID = Convert.ToInt32(RuleID.Text); ;
+
+                        Approvals.Add(newApproval);
+                    }
+                    ViewState.Remove("Approval");
+                    ViewState.Clear();
+                    ViewState.Add("Approval", Approvals);
+                    gvApproval.DataSource = ViewState["Approval"];
+                    gvApproval.DataBind();
+                }
+                catch (Exception)
+                {
+                    // nothing
+                    ViewState.Clear();
+                    Approvals.RemoveRange(0, 9999);
+                    pnlApproval.Visible = true;
+                    pnlRequiredAppval.Visible = false;
+                    setApproval();
+                }
+
+                pnlApproval.Visible = false;
+                pnlRequiredAppval.Visible = true;
+
+                if (Approvals.Count > 0)
+                {
+                    pnlApproval.Visible = true;
+                    pnlRequiredAppval.Visible = false;
+                }
+            }
+        }
+
+        void setContent()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                // plafon
+                var data = from p in ctx.msGolonganPlafons
+                           where p.golongan.Equals(ddlGolongan.SelectedValue.Trim()) && p.jenisSPD.Equals(ddlTujuan.SelectedItem.Text)
+                           select p;
+
+                var plafon = data.Where(p => p.idPlafon == 1).ToList();
+
+                if (plafon.Count > 0) txBiayaMakan.Text = plafon.First().harga == null ? "" : plafon.First().harga.ToString();
+
+                plafon = data.Where(p => p.idPlafon == 2).ToList();
+
+                if (plafon.Count > 0) txUangSaku.Text = plafon.First().harga == null ? "" : plafon.First().harga.ToString();
+
+                plafon = data.Where(p => p.idPlafon == 3).ToList();
+
+                if (plafon.Count > 0) txTransportasi.Text = plafon.First().deskripsi == null ? "" : plafon.First().deskripsi;
+            }
+        }
+
+        void setApproval()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                ViewState.Remove("Approval");
+                ViewState.Clear();
+                var dataApproval = (from x in ctx.ApprovalRules
+                                    join y in ctx.ApprovalStatus
+                                    on new { X1 = x.RuleID, X2 = txNoSPD.Text } equals new { X1 = y.RuleID, X2 = y.NoSPD } into aps
+                                    from y1 in aps.DefaultIfEmpty()
+                                    where
+                                          x.Tipe == ddlTujuan.SelectedValue &&
+                                          x.TipeDetail == ddlAsal.SelectedValue &&
+                                          x.Golongan == ddlGolongan.SelectedValue &&
+                                          x.Posisi.Equals(ddlPosisi.SelectedValue)
+                                    select new Approval
+                                    {
+                                        NrpApproval = y1.NrpApproval,
+                                        Nama = y1.Nama,
+                                        IndexLevel = x.IndexLevel,
+                                        Deskripsi = x.Deskripsi,
+                                        Email = y1.Email,
+                                        RuleID = x.RuleID
+                                    }).ToList();
+
+                ViewState.Add("Approval", dataApproval);
+
+                gvApproval.DataSource = dataApproval;
+                gvApproval.DataBind();
+
+                pnlApproval.Visible = false;
+                pnlRequiredAppval.Visible = true;
+
+                if (dataApproval.Count > 0)
+                {
+                    pnlApproval.Visible = true;
+                    pnlRequiredAppval.Visible = false;
+                }
+            }
+        }
+
+        void tujuanLain(bool enable)
+        {
+            ddlPersonalAreaTujuan.Enabled = !enable;
+            rvPersonalAreaTujuan.Enabled = !enable;
+            ddlPSubAreaTujuan.Enabled = !enable;
+            rvPSubAreaTujuan.Enabled = !enable;
+            txTempatTujuanLain.Enabled = enable;
+            rvTempatTujuanLain.Enabled = enable;
+
+            if (enable)
+            {
+                ddlPersonalAreaTujuan.Items.Clear();
+                ddlPSubAreaTujuan.Items.Clear();
+            }
+        }
+
+        void angkutanLain(bool enable)
+        {
+            txAngkutanLain.Enabled = enable;
+            rvAngkutanLain.Enabled = enable;
+        }
+
+        void enableUangMukaAndAlasan()
+        {
+            if (!string.IsNullOrEmpty(txtTglBerangkat.Text) && !string.IsNullOrEmpty(txtTglKembali.Text))
+            {
+                TimeSpan Jumlahhari = (Convert.ToDateTime(txtTglKembali.Text) - Convert.ToDateTime(txtTglBerangkat.Text));
+                if (Jumlahhari.Days >= 5)
+                {
+                    txUangMuka.ReadOnly = false;
+                }
+                else
+                {
+                    txUangMuka.ReadOnly = true;
+                }
+
+                if (Jumlahhari.Days > 0)
+                {
+                    txAlasan.Enabled = true;
+                    rvAlasan.Enabled = true;
+                    reAlasan.Enabled = true;
+                }
+                else
+                {
+                    txAlasan.Enabled = false;
+                    rvAlasan.Enabled = false;
+                    reAlasan.Enabled = false;
+                }
+            }
+        }
+
+        void isSec(string nrp)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                var user = (from u in ctx.msUsers
+                            join k in ctx.msKaryawans on u.nrp equals k.nrp
+                            where u.roleId == 23 && k.nrp == nrp
+                            orderby k.namaLengkap
+                            select new
+                            {
+                                namaLengkap = k.namaLengkap,
+                                nrp = k.nrp
+                            }).Distinct();
+                if (user.Count() > 0)
+                {
+                    pnlSekertaris.Visible = true;
+                    rvSelfOrDirect.Enabled = true;
+                }
+                else
+                {
+                    pnlSekertaris.Visible = false;
+                    rvSelfOrDirect.Enabled = false;
+                }
+            }
+        }
+
+        void setDirect()
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                ddlDireksi.Visible = true;
+                rvDireksi.Enabled = true;
+                ddDireksi.Visible = true;
+
+                ddlDireksi.Items.Clear();
+
+                List<SelectListItem> direksi = new List<SelectListItem>();
+                direksi.Add(new SelectListItem() { id = "", text = " - Select One - " });
+
+                direksi.AddRange((from p in ctx.msUsers
+                                  join k in ctx.msKaryawans on p.nrp equals k.nrp
+                                  where p.roleId == 14 || p.roleId == 13
+                                  orderby k.namaLengkap
+                                  select new SelectListItem
+                                  {
+                                      id = k.nrp,
+                                      text = k.namaLengkap
+                                  }).Distinct().ToList());
+
+                ddlDireksi.DataSource = direksi;
+
+                ddlDireksi.DataValueField = "id";
+                ddlDireksi.DataTextField = "text";
+
+                ddlDireksi.DataBind();
+                ddlDireksi.SelectedValue = string.Empty;
+            }
+        }
+
+        // disable hotel jika tanggal sama, validasi tanggal berangkat tidak boleh lebih kecil dari pada kembali
+        void setDisabledHotelAndNotLessThan()
+        {
+            DateTime? berangkat = thisDateTime(txtTglBerangkat.Text, "00"), kembali = thisDateTime(txtTglKembali.Text, "00");
+
+            ddlPenginapan.SelectedValue = "Disediakan";
+            ddlPenginapan.Enabled = true;
+
+            if (berangkat == kembali)
+            {
+                ddlPenginapan.SelectedValue = "Tidak disediakan";
+                ddlPenginapan.Enabled = false;
+            }
+
+            if (berangkat > kembali) lblDateLessThan.Visible = true;
+            else lblDateLessThan.Visible = false;
+        }
+
+        public bool validateDate()
+        {
+            DateTime? berangkat = DateTime.Now, kembali = berangkat;
+            if (!string.IsNullOrEmpty(txtTglBerangkat.Text) &&
+                !string.IsNullOrEmpty(ddlJamBerangkat.SelectedValue) &&
+                !string.IsNullOrEmpty(txtTglKembali.Text) &&
+                !string.IsNullOrEmpty(ddlJamKembali.SelectedValue))
+            {
+                berangkat = thisDateTime(txtTglBerangkat.Text, ddlJamBerangkat.SelectedValue);
+                kembali = thisDateTime(txtTglKembali.Text, ddlJamKembali.SelectedValue);
+            }
+            if (kembali <= berangkat) return false;
+            else return true;
+        }
+
+        private DateTime? thisDateTime(string date, string time)
+        {
+            try
+            {
+                DateTime newDate = Convert.ToDateTime(date);
+                double newTime = Convert.ToDouble(time);
+                return new DateTime(newDate.Year, newDate.Month, newDate.Day, 0, 0, 0).AddHours(newTime);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<SelectListItem> GetAtasan(string searchText, string additionalFilter, int page, string posisi)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                List<SelectListItem> data = new List<SelectListItem>();
+
+                if (!string.IsNullOrEmpty(posisi))
+                {
+                    ////cr 2015-04-14 ian : maintain posisi from ApprovalPosition
+                    //var positionDesc = (from p in ctx.ApprovalPositions
+                    //            where p.PositionMatrix == posisi.ToLower()
+                    //            select p.PositionDescription).ToList();
+                    ////end
+
+                    switch (posisi.ToLower())
+                    {
+                        case "bm":
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && (p.posisi.Contains("Branch Manager")
+                                        || p.posisi.Contains("General Manager"))
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "cfat div head":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.posisi.Contains("CFAT Div Head")
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "dic":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.posisi.Contains("Director")
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "finance director":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.posisi.Contains("Finance Director")
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "gm/om/rm":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && (p.posisi.Contains("General Manager")
+                                        || p.posisi.Contains("Operation Manager")
+                                        || p.posisi.Contains("TRAC Operation Chief")
+                                        || p.posisi.Contains("Regional Manager")
+                                        || p.posisi.Contains("TRAC Retail Sales Head")
+                                        || p.posisi.Contains("TRAC Corporate Sales Head"))
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "kadept/am/om":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.coCd == karyawan.coCd
+                                    && (p.posisi.Contains("Dept Head")
+                                        || p.posisi.Contains("TRAC Sales Project Manager")
+                                        || p.posisi.Contains("TRAC 4x4 Sales Force Manager")
+                                        || p.posisi.Contains("TRAC Retail Sales Branch Manager")
+                                        || p.posisi.Contains("Account Manager")
+                                        || p.posisi.Contains("Operation Manager")
+                                        //cr 2015-04-14 add kadept for renata
+                                        || p.namaLengkap.Contains("RENATA INDRIANA")
+                                        //end cr
+                                        )
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "kadiv/om":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.coCd == karyawan.coCd
+                                    && (p.posisi.Contains("Div Head")
+                                        || p.posisi.Contains("Operation Manager")
+                                        || p.posisi.Contains("TRAC Corporate Sales Head")
+                                        || p.posisi.Contains("TRAC Operation Chief")
+                                        || p.posisi.Contains("TRAC Retail Sales Head"))
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+
+                        case "presiden director":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && p.posisi.Contains("President Director")
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+                            break;
+                        case "bm/kadept/am/om":
+
+                            data = (from p in ctx.msKaryawans
+                                    where
+                                    p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                                    && (p.posisi.Contains("Branch Manager")
+                                        || p.posisi.Contains("Dept Head")
+                                        || p.posisi.Contains("Departement Head")
+                                        || p.posisi.Contains("Account Manager")
+                                        || p.posisi.Contains("General Manager")
+                                        || p.posisi.Contains("Operation Manager")
+                                        //cr 2015-04-14 add kadept for renata
+                                        || p.namaLengkap.Contains("RENATA INDRIANA")
+                                        //end cr
+                                        )
+                                    select new SelectListItem
+                                    {
+                                        id = p.nrp,
+                                        text = p.namaLengkap,
+                                    }).Skip(10 * (page - 1)).Take(10).ToList();
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    data = (from p in ctx.msKaryawans
+                            where
+                            p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                            orderby p.namaLengkap
+                            select new SelectListItem
+                            {
+                                id = p.nrp,
+                                text = p.namaLengkap,
+                            }).Skip(10 * (page - 1)).Take(10).ToList();
+                }
+
+                if (data.Count == 0)
+                {
+                    data = (from p in ctx.msKaryawans
+                            where p.namaLengkap.ToLower().Contains(searchText.ToLower()) && p.nrp != karyawan.nrp
+                            select new SelectListItem
+                            {
+                                id = p.nrp,
+                                text = p.namaLengkap,
+                            }).Skip(10 * (page - 1)).Take(10).ToList();
+                }
+
+                return data;
+            }
+        }
+
+        public class SelectListItem
+        {
+            public string id { get; set; }
+            public string text { get; set; }
+        }
+
+        [Serializable]
+        public class Approval
+        {
+            public string NrpApproval { get; set; }
+            public string Nama { get; set; }
+            public int? IndexLevel { get; set; }
+            public string Deskripsi { get; set; }
+            public string Email { get; set; }
+            public int RuleID { get; set; }
+        }
+    }
+}

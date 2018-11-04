@@ -1,0 +1,34 @@
+﻿<html>
+<head>
+    <title>e-SPD [Informasi SPD Atasan Langsung Or Atasan Tujuan] |NoSPD|-|spdRequester|-|statusName|</title>
+</head>
+<body>
+	Kepada Yth, <br/>
+	Bapak/Ibu |spdRequester| <br/> <br/>
+
+	Status Request SPD Bapak/Ibu |spdRequester| adalah <b>|statusName|</b>.Berikut ini rincian SPD tersebut :  <br/> <br/>
+
+	<b>Detail Karyawan</b>  <br/>
+	No. SPD : |NoSPD| <br/>
+	NRP : |nrpRequester| <br/>
+	Nama Lengkap : |spdRequester| <br/>
+	No Handphone : |noHp| <br/>
+	Jabatan : |jabatan| <br/>
+	Organisasi Unit : |organisasiUnit| <br/>
+	Company Code : |companyCode| <br/>
+	Personel Area : |personalArea| <br/>
+	Personel Sub Area : |personelSubArea| <br/>
+	Cost Center Pembebanan : |costCenterPembebanan| <br/> 
+	Angkutan : |angkutan| <br/> 
+	Hotel : |hotel| <br/> <br/>
+
+	<b>Detail SPD</b>  <br/>
+	Tempat Tujuan : |tempatTujuan| <br/>
+	Keperluan : |keperluan| <br/>
+	Tanggal Berangkat : |tanggalBerangkat| Jam Berangkat : |jamBerangkat| Menit Berangkat : |menitBerangkat|  <br/>
+	Tanggal Kembali : |tanggalKembali| Jam Kembali : |jamKembali| Menit Kembali : |menitKembali|  <br/> <br/>
+
+	Terima kasih. <br/>
+	<span style="color: #FF0000"><b>Catatan : E-mail ini dikirim otomatis oleh Sistem Pembuatan SPD.Tidak perlu membalas E-mail ini</b></span>	   
+</body>
+</html>

@@ -1,0 +1,163 @@
+@charset "UTF-8";
+/* CSS Document */
+* {
+    margin: 3;
+    padding: 3;
+}
+/*a									{ text-decoration: none; }*/
+
+body {
+    /*margin: 1;
+	padding: 3;*/
+    text-align: left;
+    font-family: Tahoma;
+    font-size: 12px;
+}
+
+
+.mastertable {
+    width: Auto;
+    font-family: Tahoma;
+    border: solid 0px #66FF66;
+    background-color: White;
+    Frame: box;
+}
+
+.header {
+    border: solid 1px Green;
+}
+
+.mastertables {
+    width: 800px;
+    font-family: Calibri;
+    border: thick solid #66FF66;
+    background-color: White;
+    Frame: box;
+}
+
+.maintable {
+    width: 750px;
+    align: center;
+}
+
+.sidemenu {
+    width: 150px;
+}
+
+.menuhead {
+    background-color: #E1E1E1;
+    padding: 8px 5px;
+    border: solid 1px green;
+    align: center;
+    height: 25px;
+    margin-top: -8px;
+}
+
+    .menuhead a {
+        color: #009900;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+        .menuhead a:hover {
+            color: Black;
+        }
+
+    .menuhead table.td:hover {
+        background-color: #FFFFFF;
+    }
+
+.tablex {
+    border: solid 1px #D5D5D5;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .tablex td {
+        border: 1px solid #D5D5D5;
+        font-size: 10px;
+        padding: 7px 5px;
+    }
+
+    .tablex th {
+        background-color: #D5FFAA;
+        border-right: 1px solid #D5D5D5;
+        font-size: 12px;
+        line-height: 120%;
+        font-weight: bold;
+        padding: 7px 5px;
+        text-align: center;
+    }
+
+.tablez {
+    border: solid 1px #D5D5D5;
+    border-collapse: collapse;
+    width: 900px;
+}
+
+    .tablez td {
+        border: 1px solid #D5D5D5;
+        font-size: 10px;
+        padding: 7px 5px;
+    }
+
+    .tablez th {
+        background-color: #D5FFAA;
+        border-right: 1px solid #D5D5D5;
+        font-size: 13.5px;
+        line-height: 120%;
+        font-weight: bold;
+        padding: 8px 5px;
+        text-align: center;
+    }
+
+.ui-resizable {
+    position: relative;
+}
+
+.ui-resizable-handle {
+    display: block;
+    font-size: 0.1px;
+    position: absolute;
+    z-index: 99999;
+}
+
+.ui-resizable-s {
+    background: #EEEEEE url(../images/grippie.png) no-repeat scroll center 2px;
+    border-top: 1px solid #CCCCCC;
+    bottom: -5px;
+    cursor: s-resize;
+    height: 14px;
+    left: 0;
+    width: 100%;
+}
+
+h1, h2, h3, h4 {
+    padding: 10px;
+}
+
+
+.authentic {
+    background-color: #465c71;
+      border-collapse: collapse;
+}
+
+tr.authentic td{
+    border:none;
+}
+
+a.authentication {
+    color:white;
+     font-weight:400;
+}
+
+a.authentication:hover, a.authentication:active {
+    font-weight:600;
+}
+/*;
+	bottom:-5px;
+	cursor:s-resize;
+	height:14px;
+	left:0;width:100%; 
+}*/

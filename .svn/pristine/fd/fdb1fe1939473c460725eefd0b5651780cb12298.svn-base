@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2A6256B8-ECDF-4C8A-AB38-41F770790A9E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eSPD</RootNamespace>
+    <AssemblyName>eSPD</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=4.1.40412.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v11.2, Version=11.2.11.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DropDownCheckBoxes">
+      <HintPath>..\..\..\..\..\CARMELLO\Carmello(nosms)\CARMELLO\CARMELLO.UI\Bin\DropDownCheckBoxes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\AjaxControlToolkit.dll" />
+    <Content Include="bin\DevExpress.Registration.AddIn.dll" />
+    <Content Include="bin\eSPD.dll" />
+    <Content Include="bin\eSPD.pdb" />
+    <Content Include="frmMsRole.aspx" />
+    <Content Include="msUser.aspx" />
+    <Content Include="frmAssignRole.aspx" />
+    <Content Include="frmClaimApproval.aspx" />
+    <Content Include="frmClaimInput.aspx" />
+    <Content Include="frmFinanceApp.aspx" />
+    <Content Include="frmHome.aspx" />
+    <Content Include="frmLogin.aspx" />
+    <Content Include="frmMasterKaryawan.aspx" />
+    <Content Include="frmReportClaim.aspx" />
+    <Content Include="frmReportClaimSPD.aspx" />
+    <Content Include="frmReportCrystalClaim.aspx" />
+    <Content Include="frmReportCrystalSPD.aspx" />
+    <Content Include="frmReportSPD.aspx" />
+    <Content Include="frmRequestInput.aspx" />
+    <Content Include="frmRequestPrint.aspx" />
+    <Content Include="frmRequestView.aspx" />
+    <Content Include="App_Themes\Main\Site.css" />
+    <Content Include="frmRptClaimAll.aspx" />
+    <Content Include="frmRptSPD.aspx" />
+    <Content Include="frmRptSPDAll.aspx" />
+    <Content Include="frmSPDExtend.aspx" />
+    <Content Include="frmSPDFinder.aspx" />
+    <Content Include="frmUserManual.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="msCostCenter.aspx" />
+    <Content Include="ResendNotification.aspx" />
+    <Content Include="Style\Banner-ESPD.jpg" />
+    <Content Include="Style\claim.png" />
+    <Content Include="Style\home.png" />
+    <Content Include="Style\SERA.jpg" />
+    <Content Include="Style\style.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="approvalSPD.ashx.cs">
+      <DependentUpon>approvalSPD.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="dsSPDALLNew1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="frmMsRole.aspx.cs">
+      <DependentUpon>frmMsRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMsRole.aspx.designer.cs">
+      <DependentUpon>frmMsRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="msUser.aspx.cs">
+      <DependentUpon>msUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msUser.aspx.designer.cs">
+      <DependentUpon>msUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AD.cs" />
+    <Compile Include="Core\classSpd.cs" />
+    <Compile Include="Core\Konstan.cs" />
+    <Compile Include="crClaim.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crClaim.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="crSPD.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crSPD.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="dsSPD.cs">
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="dsSPD.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="frmAssignRole.aspx.cs">
+      <DependentUpon>frmAssignRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAssignRole.aspx.designer.cs">
+      <DependentUpon>frmAssignRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmClaimApproval.aspx.cs">
+      <DependentUpon>frmClaimApproval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmClaimApproval.aspx.designer.cs">
+      <DependentUpon>frmClaimApproval.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmClaimInput.aspx.cs">
+      <DependentUpon>frmClaimInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmClaimInput.aspx.designer.cs">
+      <DependentUpon>frmClaimInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmFinanceApp.aspx.cs">
+      <DependentUpon>frmFinanceApp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmFinanceApp.aspx.designer.cs">
+      <DependentUpon>frmFinanceApp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmHome.aspx.cs">
+      <DependentUpon>frmHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmHome.aspx.designer.cs">
+      <DependentUpon>frmHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.aspx.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLogin.aspx.designer.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMasterKaryawan.aspx.cs">
+      <DependentUpon>frmMasterKaryawan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMasterKaryawan.aspx.designer.cs">
+      <DependentUpon>frmMasterKaryawan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportClaim.aspx.cs">
+      <DependentUpon>frmReportClaim.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportClaim.aspx.designer.cs">
+      <DependentUpon>frmReportClaim.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportClaimSPD.aspx.cs">
+      <DependentUpon>frmReportClaimSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportClaimSPD.aspx.designer.cs">
+      <DependentUpon>frmReportClaimSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportCrystalClaim.aspx.cs">
+      <DependentUpon>frmReportCrystalClaim.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportCrystalClaim.aspx.designer.cs">
+      <DependentUpon>frmReportCrystalClaim.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportCrystalSPD.aspx.cs">
+      <DependentUpon>frmReportCrystalSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportCrystalSPD.aspx.designer.cs">
+      <DependentUpon>frmReportCrystalSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportSPD.aspx.cs">
+      <DependentUpon>frmReportSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmReportSPD.aspx.designer.cs">
+      <DependentUpon>frmReportSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRequestInput.aspx.cs">
+      <DependentUpon>frmRequestInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRequestInput.aspx.designer.cs">
+      <DependentUpon>frmRequestInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRequestPrint.aspx.cs">
+      <DependentUpon>frmRequestPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRequestView.aspx.cs">
+      <DependentUpon>frmRequestView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptClaimAll.aspx.cs">
+      <DependentUpon>frmRptClaimAll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptClaimAll.aspx.designer.cs">
+      <DependentUpon>frmRptClaimAll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptSPD.aspx.cs">
+      <DependentUpon>frmRptSPD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptSPD.aspx.designer.cs">
+      <DependentUpon>frmRptSPD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptSPDAll.aspx.cs">
+      <DependentUpon>frmRptSPDAll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRptSPDAll.aspx.designer.cs">
+      <DependentUpon>frmRptSPDAll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSPDExtend.aspx.cs">
+      <DependentUpon>frmSPDExtend.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSPDExtend.aspx.designer.cs">
+      <DependentUpon>frmSPDExtend.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSPDFinder.aspx.cs">
+      <DependentUpon>frmSPDFinder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSPDFinder.aspx.designer.cs">
+      <DependentUpon>frmSPDFinder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserManual.aspx.cs">
+      <DependentUpon>frmUserManual.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmUserManual.aspx.designer.cs">
+      <DependentUpon>frmUserManual.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.Master.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.Master.designer.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.Master.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage.Master.designer.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages.master.cs">
+      <DependentUpon>MasterPages.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msCostCenter.aspx.cs">
+      <DependentUpon>msCostCenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="msCostCenter.aspx.designer.cs">
+      <DependentUpon>msCostCenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResendNotification.aspx.cs">
+      <DependentUpon>ResendNotification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResendNotification.aspx.designer.cs">
+      <DependentUpon>ResendNotification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="rptClaimAll.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptClaimAll.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SPDDevDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SPDDevDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MasterPages.master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Login.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="approvalSPD.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dsSPD.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>dsSPD.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="MasterPage.Master" />
+    <None Include="dsSPDALLNew.xsc">
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </None>
+    <None Include="dsSPDALLNew.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSPDALLNew1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dsSPDALLNew.xss">
+      <DependentUpon>dsSPDALLNew.xsd</DependentUpon>
+    </None>
+    <None Include="SPDDevDataSet2.xsc">
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="SPDDevDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SPDDevDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SPDDevDataSet2.xss">
+      <DependentUpon>SPDDevDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="UserManual\E-SPD User Manual.pdf" />
+    <None Include="SPDDevDataSet.xsc">
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SPDDevDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SPDDevDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SPDDevDataSet.xss">
+      <DependentUpon>SPDDevDataSet.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dsSPD.dbml.layout">
+      <DependentUpon>dsSPD.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Copy of Copy of Copy of rptSPDAll.rdlc" />
+    <EmbeddedResource Include="rptSPDAll.rdlc" />
+    <EmbeddedResource Include="crClaim.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crClaim.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="crSPD.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crSPD.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="rptClaimAll.rdlc" />
+    <EmbeddedResource Include="rptClaimAll.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptClaimAll.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7918</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/eSPD</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:333/eSPD</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,346 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="frmMasterKaryawan.aspx.cs" Inherits="eSPD.frmMasterKaryawan" %>
+<%@ Register assembly="DevExpress.Web.ASPxEditors.v11.2" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table width="100%" >
+ <tr>
+    <td>        
+        <asp:Panel ID="pnlForm" runat="server">
+            <table width="auto" align="left" >
+                <tr>
+                    <td>NRP</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtNRP" runat="server" MaxLength="20" AutoPostBack="True" ></asp:TextBox>
+                        <asp:Label ID="ValDir" runat="server" ForeColor="#CC0000" Text="*" ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valNRP" runat="server" 
+                            ErrorMessage="NRP Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtNRP" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nama Lengkap</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtNama" runat="server" Width="250" MaxLength="100" ></asp:TextBox>
+                        <asp:Label ID="Label1" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valNama" runat="server" 
+                            ErrorMessage="Nama Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtNama" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                  <tr>
+                    <td>Start Date</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtTglMasuk" runat="server" MaxLength="10" ></asp:TextBox>
+                        <asp:CalendarExtender ID="txtTglMasuk_CalendarExtender" runat="server" 
+                            Enabled="True" TargetControlID="txtTglMasuk">
+                        </asp:CalendarExtender>
+                        <asp:Label ID="Label2" runat="server" ForeColor="#CC0000" Text="*" ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valTglMasuk" runat="server" 
+                            ErrorMessage="Tanggal Masuk Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtTglMasuk" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kode Posisi</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtKdPosisi" runat="server" MaxLength="10" ></asp:TextBox>
+                        <asp:Label ID="Label3" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valKdPosisi" runat="server" 
+                            ErrorMessage="Kode Posisi Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtKdPosisi" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Posisi</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtPosisi" runat="server" Width="250px" MaxLength="100" ></asp:TextBox>
+                          <asp:Label ID="Label4" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valPosisi" runat="server" 
+                            ErrorMessage="Posisi Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtPosisi" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kode Job</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtKdJob" runat="server" MaxLength="10" ></asp:TextBox>
+                         <asp:Label ID="Label5" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valKdJob" runat="server" 
+                            ErrorMessage="Kode Job Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtKdJob" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>              
+                <tr>
+                    <td>Job</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtJob" runat="server" Width="250px" MaxLength="100" ></asp:TextBox>
+                         <asp:Label ID="Label6" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valJob" runat="server" 
+                            ErrorMessage="Job Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtJob" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>               
+                 <tr>
+                    <td>Status Karyawan</td>
+                    <td>:</td>
+                    <td>
+                        
+                        <asp:DropDownList ID="ddlStatus" runat="server">
+                            <asp:ListItem>Active</asp:ListItem>
+                            <asp:ListItem>Not Active</asp:ListItem>
+                        </asp:DropDownList>                        
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sub Group</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtSubGroup" runat="server" Width="250px" MaxLength="50" ></asp:TextBox>
+                         <asp:Label ID="Label7" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valSubGroup" runat="server" 
+                            ErrorMessage="Sub Group Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtSubGroup" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Tanggal</td>
+                    <td>:
+                     </td>
+                    <td>
+                        <asp:TextBox ID="txtTgl" runat="server" Width="150" MaxLength="50" ></asp:TextBox>
+                         <asp:Label ID="Label8" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:CalendarExtender ID="txtTgl_CalendarExtender" runat="server" 
+                            Enabled="True" TargetControlID="txtTgl">
+                        </asp:CalendarExtender>
+                        <asp:RequiredFieldValidator ID="valTgl" runat="server" 
+                            ErrorMessage="Tanggal Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtTgl" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Golongan</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtGolongan" runat="server" MaxLength="5" ></asp:TextBox>
+                         <asp:Label ID="Label9" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valGolongan" runat="server" 
+                            ErrorMessage="Golongan Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtGolongan" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kode Organisasi Unit</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtKdOrg" runat="server" MaxLength="5" ></asp:TextBox>
+                         <asp:Label ID="Label10" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valKdOrg" runat="server" 
+                            ErrorMessage="Kode Organisasi Unit Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtKdOrg" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Organisasi Unit</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtOrg" runat="server" Width="250" MaxLength="100" ></asp:TextBox>
+                         <asp:Label ID="Label11" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valOrg" runat="server" 
+                            ErrorMessage="Organisasi Unit Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtOrg" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>NRP Atasan</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtNRPAtasan" runat="server" MaxLength="20" ></asp:TextBox>
+                         <asp:Label ID="Label12" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valNRPAtasan" runat="server" 
+                            ErrorMessage="NRP Atasan Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtNRPAtasan" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nama Atasan</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtNamaAtasan" runat="server" MaxLength="100" Width="250px" ></asp:TextBox>
+                         <asp:Label ID="Label13" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valNamaAtasan" runat="server" 
+                            ErrorMessage="Nama Atasan Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtNamaAtasan" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>coCd</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtCocd" runat="server" MaxLength="5" ></asp:TextBox>
+                         <asp:Label ID="Label14" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valCocd" runat="server" 
+                            ErrorMessage="coCd Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtCocd" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Company Code</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtCompanyCode" runat="server" MaxLength="100" Width="250px" ></asp:TextBox>
+                         <asp:Label ID="Label15" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valCompanyCode" runat="server" 
+                            ErrorMessage="Company Code Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtCompanyCode" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Kode PA</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtKdPA" runat="server" MaxLength="5" ></asp:TextBox>
+                         <asp:Label ID="Label16" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valKdPA" runat="server" 
+                            ErrorMessage="Kode PA Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtKdPA" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PA</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtPA" runat="server" MaxLength="50" ></asp:TextBox>
+                         <asp:Label ID="Label17" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valPA" runat="server" 
+                            ErrorMessage="PA Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtPA" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Kode PSA</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtKdPSA" runat="server" MaxLength="5" ></asp:TextBox>
+                         <asp:Label ID="Label18" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valKdPSA" runat="server" 
+                            ErrorMessage="Kode PSA Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtKdPSA" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PSA</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtPSA" runat="server" MaxLength="100" ></asp:TextBox>
+                         <asp:Label ID="Label19" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valPSA" runat="server" 
+                            ErrorMessage="PSA Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtPSA" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>E-Mail</td>
+                    <td>:</td>
+                    <td>
+                        <asp:TextBox ID="txtEmail" runat="server" MaxLength="100" Width="250px" ></asp:TextBox>
+                         <asp:Label ID="Label20" runat="server" ForeColor="#CC0000" Text="*"  ></asp:Label>
+                        <asp:RequiredFieldValidator ID="valEmail" runat="server" 
+                            ErrorMessage="Email Tidak boleh kosong" ValidationGroup="a" 
+                            ControlToValidate="txtEmail" SetFocusOnError="True"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right" >
+                                          
+                    </td>
+                    <td align="left" >
+                      <asp:Button ID="btnSimpan" runat="server" Text="Simpan" 
+                            onclick="btnSimpan_Click" ValidationGroup="a" /> &nbsp;   
+                        <asp:Button ID="btnBatal" runat="server" Text="Batal" 
+                            onclick="btnBatal_Click" />
+                    </td>
+                </tr>
+            </table>
+        </asp:Panel>
+        
+    </td>
+ </tr>
+ <tr>
+    <td align="left"> <asp:Button ID="btnTambah" runat="server" Text="Tambah" 
+            onclick="btnTambah_Click" />
+       
+     </td>
+    <td> <asp:Label ID="notif" runat="server" Text="" Visible="false" ></asp:Label><asp:HiddenField ID="hfmode" runat="server" /></td>
+ </tr>
+ <tr>
+    <td align="left" >        
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                    <ContentTemplate>
+                        <asp:GridView ID="gvKaryawan" runat="server" AutoGenerateColumns="False" 
+                            CellPadding="4" ForeColor="#333333" GridLines="None" AllowPaging="true" 
+                            onpageindexchanging="gvKaryawan_PageIndexChanging" >
+                            <AlternatingRowStyle BackColor="White" />
+                            <Columns>
+                                <asp:BoundField DataField="nrp" HeaderText="NRP" />
+                                <asp:BoundField DataField="namaLengkap" HeaderText="Nama Lengkap" />
+                                <asp:BoundField DataField="startDate" HeaderText="Start Date" />
+                                <asp:BoundField DataField="kodePosisi" HeaderText="Kode Posisi" />
+                                <asp:BoundField DataField="posisi" HeaderText="Posisi" />
+                                <asp:BoundField DataField="kodeJob" HeaderText="Kode Job" />
+                                <asp:BoundField DataField="job" HeaderText="Job" />
+                                <asp:BoundField DataField="statusKaryawan" HeaderText="Status Karyawan" />
+                                <asp:BoundField DataField="karyawanSubGroup" HeaderText="Sub Group" />
+                                <asp:BoundField DataField="tanggal" HeaderText="Tanggal" />
+                                <asp:BoundField DataField="golongan" HeaderText="Golongan" />
+                                <asp:BoundField DataField="kodeOrganisasiUnit" HeaderText="Kode Organisasi Unit" />
+                                <asp:BoundField DataField="organisasiunit" HeaderText="Organisasi Unit" />
+                                <asp:BoundField DataField="nrpAtasan" HeaderText="NRP Atasan" />
+                                <asp:BoundField DataField="namaAtasan" HeaderText="Nama Atasan" />
+                                <asp:BoundField DataField="coCd" HeaderText="Cocd" />
+                                <asp:BoundField DataField="companyCode" HeaderText="Company Code" />
+                                <asp:BoundField DataField="kodePA" HeaderText="Kode PA" />
+                                <asp:BoundField DataField="personelArea" HeaderText="Personel Area" />
+                                <asp:BoundField DataField="kodePSubArea" HeaderText="Kode PSA" />
+                                <asp:BoundField DataField="pSubArea" HeaderText="Personel Sub Area" />
+                                <asp:BoundField DataField="email" HeaderText="E-Mail" />
+                                <asp:TemplateField HeaderText="Edit">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbEdit" runat="server" OnClick="lbEdit_Click" >Edit</asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Delete">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbDelete" runat="server" OnClick="lbDelete_Click" >Delete</asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <EditRowStyle BackColor="#7C6F57" />
+                            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+                            <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+                            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                            <RowStyle BackColor="#E3EAEB" />
+                            <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+                            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                            <SortedAscendingHeaderStyle BackColor="#246B61" />
+                            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                            <SortedDescendingHeaderStyle BackColor="#15524A" />
+                        </asp:GridView>
+                    </ContentTemplate>
+                    <Triggers>                        
+                        <asp:AsyncPostBackTrigger ControlID="btnSimpan" EventName="Click" />
+                    </Triggers>
+                </asp:UpdatePanel>    
+    </td>
+ </tr>
+</table>
+</asp:Content>

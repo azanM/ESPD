@@ -1,0 +1,497 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
+using System.Reflection;
+using System.Linq;
+using System.Web;
+using System.Net.Configuration;
+using System.Configuration;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace eSPD.Core
+{
+    public static class EmailCore
+    {
+        public static SmtpSection section = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+        public static void SendMail(string toAddress, string ccAddress, string bccAddress, string subject, string body)
+        {
+
+            //debug
+            ////////for development
+            //toAddress = "ix.habibi@gmail.com,iansuryana@gmail.com,farika.maharani@sera.astra.co.id";
+            //ccAddress = "ix.habibi@gmail.com,iansuryana@gmail.com,farika.maharani@sera.astra.co.id";
+            //bccAddress = "ix.habibi@gmail.com,iansuryana@gmail.com,farika.maharani@sera.astra.co.id";
+            //////end for development
+
+            ccAddress = !string.IsNullOrEmpty(ccAddress) ? ccAddress.Replace(',', ';') : "";
+
+            //backround process
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+
+                // kode background proses
+                using (var mail = BuildMessageWithAsync(section.From, toAddress.Replace(',', ';'), ccAddress, bccAddress.Replace(',', ';'), subject, body))
+                {
+                    SendMail(mail.Result);
+                }
+
+            }).Start();
+        }
+
+        public static void SendMail(MailMessage mail)
+        {
+            try
+            {
+                using (var smtpClient = new SmtpClient())
+                {
+                    smtpClient.Send(mail);
+                }
+
+            }
+            catch (Exception e)
+            {
+                using (var ctx = new dsSPDDataContext())
+                {
+                    MailError em = new MailError();
+                    em.ErrorId = Guid.NewGuid().ToString();
+                    em.Body = mail.Body;
+                    em.EmailTo = mail.To.FirstOrDefault().Address;
+                    em.Subject = mail.Subject;
+                    em.Status = false;
+                    em.ErrorMessage = e.Message + "||" + e.InnerException;
+                    em.ErrorDate = DateTime.Now;
+                    ctx.MailErrors.InsertOnSubmit(em);
+                    ctx.SubmitChanges();
+                }
+            }
+        }
+        //build a mail message
+        private static MailMessage BuildMessageWith(string fromAddress, string toAddress, string ccAddress, string bccAddress, string subject, string body)
+        {
+            MailMessage message = new MailMessage
+            {
+                Sender = new MailAddress(section.From), // on Behave of When From differs
+                From = new MailAddress(section.From),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true,
+            };
+
+            string[] tos = toAddress.Split(';');
+            foreach (string to in tos)
+            {
+                message.To.Add(new MailAddress(to));
+            }
+
+            if (!string.IsNullOrEmpty(ccAddress))
+            {
+                string[] ccs = ccAddress.Split(';');
+                foreach (string cc in ccs)
+                {
+                    message.CC.Add(new MailAddress(cc));
+                }
+            }
+
+            string[] bccs = bccAddress.Split(';');
+            foreach (string bcc in bccs)
+            {
+                message.Bcc.Add(new MailAddress(bcc));
+            }
+
+            return message;
+        }
+        //build a mail message async
+        private static Task<MailMessage> BuildMessageWithAsync(string fromAddress, string toAddress, string ccAddress, string bccAddress, string subject, string body)
+        {
+            var task = new Task<MailMessage>(() =>
+            {
+                MailMessage message = new MailMessage
+                {
+                    Sender = new MailAddress(section.From), // on Behave of When From differs
+                    From = new MailAddress(section.From),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
+
+                string[] tos = toAddress.Split(';');
+                foreach (string to in tos)
+                {
+                    message.To.Add(new MailAddress(to));
+                }
+
+                if (!string.IsNullOrEmpty(ccAddress))
+                {
+                    string[] ccs = ccAddress.Split(';');
+                    foreach (string cc in ccs)
+                    {
+                        message.CC.Add(new MailAddress(cc));
+                    }
+                }
+
+                string[] bccs = bccAddress.Split(';');
+                foreach (string bcc in bccs)
+                {
+                    message.Bcc.Add(new MailAddress(bcc));
+                }
+
+                return message;
+            });
+
+            task.Start();
+            return task;
+        }
+        // read the text in template file and return it as a string
+        private static string ReadFileFrom(string templateName)
+        {
+            string filePath = System.Web.HttpContext.Current.Server.MapPath("~/EmailTemplate/" + templateName);
+
+            string body = File.ReadAllText(filePath);
+
+            return body;
+        }
+        // get the template body, cache it and return the text
+        private static string GetMailBodyOfTemplate(string templateName)
+        {
+            string cacheKey = string.Concat("mailTemplate:", templateName);
+            string body;
+            body = (string)System.Web.HttpContext.Current.Cache[cacheKey];
+            if (string.IsNullOrEmpty(body))
+            {
+                //read template file text
+                body = ReadFileFrom(templateName);
+
+                if (!string.IsNullOrEmpty(body))
+                {
+                    System.Web.HttpContext.Current.Cache.Insert(cacheKey, body, null, DateTime.Now.AddHours(1), System.Web.Caching.Cache.NoSlidingExpiration);
+                }
+            }
+
+            return body;
+        }
+        // replace the tokens in template body with corresponding values
+        public static string PrepareMailBodyWith(string templateName, object param)
+        {
+            string body = GetMailBodyOfTemplate(templateName);
+
+            Type myType = param.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+            foreach (PropertyInfo prop in props)
+            {
+                object propValue = prop.GetValue(param, null);
+                object propName = prop.Name;
+
+                try
+                {
+                    string propertyReplace = "|" + propName.ToString() + "|";
+                    string propertyValueReplace = propValue == null ? "" : propValue.ToString();
+
+
+                    if (body.Contains(propertyReplace))
+                    {
+                        body = body.Replace(propertyReplace, propertyValueReplace);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errot = ex.ToString();
+                }
+            }
+
+            return body;
+        }
+
+        public static void sendEmailNew(
+          string nrpApproval,
+          string subject,
+          string tamplate,
+          trSPD spd,
+          string claimApprove,
+          string statusClaim,
+          string urltarget,
+          string indexLevel)
+        {
+            using (dsSPDDataContext ctx = new dsSPDDataContext())
+            {
+                //informasi approver
+                var approval = ctx.msKaryawans.FirstOrDefault(o => o.nrp == nrpApproval);
+
+                //informasi requestor
+                var karyawan = ctx.msKaryawans.FirstOrDefault(o => o.nrp == spd.nrp);
+
+                var informasiApproval = ctx.ApprovalStatus.Where(o => o.NoSPD == spd.noSPD);
+
+                string trtd = string.Empty;
+
+                foreach (var item in informasiApproval.OrderBy(o => o.IndexLevel))
+                {
+                    string statusApp = "Belum diapprove";
+
+                    if (item.Status != null)
+                    {
+                        if (item.Status.Value == true) statusApp = "Approved";
+                        else statusApp = "Rejected";
+                    };
+
+                    var modifiedDate = item.ModifiedDate != null ? item.ModifiedDate.Value.ToString("dd MMMM yyyy HH:mm") : "-";
+                    trtd +=
+                        "<tr>" +
+                            "<td>" + item.IndexLevel.ToString() + "</td>" +
+                            "<td>" + item.ApprovalRule.Deskripsi + "</td>" +
+                            "<td>" + item.Nama + "</td>" +
+                            "<td>" + modifiedDate + "</td>" +
+                            "<td>" + statusApp + "</td>" +
+                        "</tr>";
+
+                };
+
+                var tamplatesSPD = "<table><tr><th>No</th><th colspan='3' style='text-align:center;'>Detail Data</th><th>Status</th></tr>" + trtd + "</table>";
+
+                EspdEmail espdEmail = new EspdEmail();
+
+                //encrypt nrp
+                espdEmail.nCrypt = Encrypto.Encrypt(nrpApproval);
+
+                //encrypt email
+                string toAddress = "";
+                if (spd.nrp.Equals("99999999"))
+                {
+                    espdEmail.eCrypt = Encrypto.Encrypt(string.IsNullOrEmpty(spd.email) ? "" : spd.email);
+                    if (tamplate.ToLower().Contains("informasi"))
+                        toAddress = string.IsNullOrEmpty(spd.email) ? "" : spd.email;
+                    else toAddress = approval.email;
+                }
+                else
+                {
+                    espdEmail.eCrypt = Encrypto.Encrypt(approval.email);
+                    toAddress = approval.email;
+                }
+
+                //encrypt nospd
+                espdEmail.sCrypt = Encrypto.Encrypt(spd.noSPD);
+
+                espdEmail.NoSPD = spd.noSPD;
+                espdEmail.approverName = approval.namaLengkap;
+
+                espdEmail.spdRequester = spd.namaLengkap;
+                espdEmail.nrpRequester = spd.nrp;
+                espdEmail.statusName = (string.IsNullOrEmpty(statusClaim) == true ? spd.status : statusClaim);
+                espdEmail.noHp = spd.NoHP;
+                espdEmail.golongan = spd.idGolongan;
+                espdEmail.jabatan = spd.jabatan;
+                espdEmail.organisasiUnit = karyawan.organisasiUnit;
+                espdEmail.companyCode = karyawan.companyCode;
+                espdEmail.personalArea = karyawan.personelArea;
+                espdEmail.personelSubArea = karyawan.pSubArea;
+                espdEmail.costCenterPembebanan = spd.costCenter;
+                espdEmail.tempatTujuan = !string.IsNullOrEmpty(spd.tempatTujuanLain) ? spd.Tujuan + " - " + spd.tempatTujuanLain : spd.Tujuan + " - " + spd.companyCodeTujuan + " - " + spd.personelAreaTujuan + " - " + spd.pSubAreaTujuan;
+                espdEmail.keperluan = spd.msKeperluan.keperluan + " - " + spd.ketKeperluan;
+                espdEmail.tanggalBerangkat = spd.tglBerangkat.ToString("dd MMMM yyyy");
+                espdEmail.jamBerangkat = spd.jamBerangkat;
+                espdEmail.menitBerangkat = spd.menitBerangkat;
+                espdEmail.tanggalKembali = spd.tglKembali.ToString("dd MMMM yyyy");
+                espdEmail.jamKembali = spd.jamKembali;
+                espdEmail.menitKembali = spd.menitKembali;
+                espdEmail.angkutan = spd.idAngkutan != null ? spd.msAngkutan.nama : spd.angkutanLain;
+                espdEmail.hotel = spd.penginapan;
+
+                espdEmail.spdStatusList = tamplatesSPD;
+
+                espdEmail.claimApprove = claimApprove;
+                espdEmail.alasan = spd.Alasan;
+                try
+                {
+                    TimeSpan Jumlahhari = spd.tglKembali - spd.tglBerangkat;
+                    TimeSpan tambahan = TimeSpan.FromDays(1);
+                    Jumlahhari += tambahan;
+                    espdEmail.totalDays = Jumlahhari.Days.ToString();
+                }
+                catch (Exception)
+                {
+                    espdEmail.totalDays = "Undetected";
+                }
+
+
+                if (urltarget.ToLower().Contains("claim"))
+                {
+                    var dc = ctx.trClaims.FirstOrDefault(o => o.noSPD == spd.noSPD);
+                    #region claim
+                    var uangmuka = (string.IsNullOrEmpty(spd.uangMuka) ? 0 : int.Parse(spd.uangMuka));
+                    espdEmail.CbiayaMakan = dc.biayaMakan.ToString("#,###");
+                    espdEmail.CuangSaku = dc.uangSaku.ToString("#,###");
+                    espdEmail.Ctiket = dc.tiket.ToString("#,###");
+                    espdEmail.Chotel = dc.hotel.ToString("#,###");
+                    espdEmail.CBBM = dc.BBM.ToString("#,###");
+                    espdEmail.Ctol = dc.tol.ToString("#,###");
+                    espdEmail.Ctaxi = dc.taxi.ToString("#,###");
+                    espdEmail.CairportTax = dc.airportTax.ToString("#,###");
+                    espdEmail.Claundry = dc.laundry.ToString("#,###");
+                    espdEmail.Cparkir = dc.parkir.ToString("#,###");
+                    espdEmail.Ckomunikasi = dc.komunikasi != null ? dc.komunikasi.Value.ToString("#,###") : "";
+                    espdEmail.CbiayaLainLain = dc.biayaLainLain.ToString("#,###");
+                    espdEmail.CtotalClaim = dc.total.ToString("#,###");
+                    espdEmail.CuangMuka = uangmuka.ToString("#,###");
+                    espdEmail.Cpenyelesaian = (dc.total - uangmuka).ToString("#,###");
+                    espdEmail.CtotalClaim = dc.total.ToString("#,###");
+                    #endregion
+                }
+
+                string urlSource =
+                    "?nCrypt=" + espdEmail.nCrypt +
+                    "&eCrypt=" + espdEmail.eCrypt +
+                    "&sCrypt=" + espdEmail.sCrypt +
+                    "&ClaimApprove=" + espdEmail.claimApprove +
+                    "&index=" + indexLevel +
+                    "&Action=";
+
+
+                string urlAction = "http://trac39/SPD/" + urltarget + ".ashx" + urlSource;
+                string urlActionExternal = "http://118.97.80.12/SPD/" + urltarget + ".ashx" + urlSource;
+                espdEmail.DetailURL = "http://118.97.80.12/SPD/" + "newFormRequestDetail.aspx?encrypt=" + espdEmail.sCrypt;
+                espdEmail.DetailClaimURL = "http://118.97.80.12/SPD/" + "newFormRequestDetailClaim.aspx?encrypt=" + espdEmail.sCrypt;
+
+                espdEmail.ApproveUrl = urlAction + Encrypto.Encrypt("approve");
+                espdEmail.RejectUrl = urlAction + Encrypto.Encrypt("reject");
+                espdEmail.ApproveUrlExternal = urlActionExternal + Encrypto.Encrypt("approve");
+                espdEmail.RejectUrlExternal = urlActionExternal + Encrypto.Encrypt("reject");
+
+                //send to requestor and approval
+                string body = EmailCore.PrepareMailBodyWith(tamplate, espdEmail);
+
+                //cc
+                string ccAddress = "";
+                if (toAddress.ToLower() == "kumaraguru@sera.astra.co.id")
+                {
+                    ccAddress = "erna.stafitri@sera.astra.co.id,stefanie@sera.astra.co.id";
+                }
+
+                if (toAddress.ToLower() == "yosafat.siregar@sera.astra.co.id")
+                {
+                    ccAddress = "nenden.safitri@sera.astra.co.id";
+                }
+
+                if (toAddress.ToLower() == "edi.gunawan@sera.astra.co.id")
+                {
+                    ccAddress = "erna.stafitri@sera.astra.co.id,stefanie@sera.astra.co.id";
+                }
+                
+                if (toAddress.ToLower() == "masrana@sera.astra.co.id")
+                {
+                    ccAddress = "sisilia.angelawati@trac.astra.co.id"; 
+                }
+
+                //for date 16-Maret-2015 till 20-Maret-2015
+                //for date 20-April-2015 till 25-April-2015
+                //for date 18-Mei-2015 till 22-Mei-2015
+                if (toAddress.ToLower() == "yudas.tadeus@sera.astra.co.id")
+                {
+                    //toAddress = "yoana.fransiska@sera.astra.co.id";
+                    toAddress = "renata.indriana@sera.astra.co.id";
+                }
+
+                // bcc emasuri, eko saptono, espddeveloper
+                string bccAddress = "eko.saptono@sera.astra.co.id,nissa.m.lenny@sera.astra.co.id,emma.suri@sera.astra.co.id,espddeveloper@gmail.com";
+
+                //for production
+                EmailCore.SendMail(toAddress, ccAddress, bccAddress, subject, body);
+                //end for production
+
+            }
+        }
+        #region send Email new
+        //spd
+
+        public static void ApprovalSPD(string nrpApproval, string nospd, string index, trSPD dataSPD)
+        {
+            EmailCore.sendEmailNew(
+                            nrpApproval,
+                            "Approval " + nospd,
+                            "ApprovalSPD.txt",
+                            dataSPD,
+                            string.Empty,
+                             string.Empty,
+                            "ApprovalSPDUrl",
+                             index
+                            );
+        }
+
+        public static void ApprovalClaim(string nrpApproval, string nospd, trSPD dataSpd, string AtasanGAFinance, string statusClaim)
+        {
+            EmailCore.sendEmailNew(
+                             nrpApproval,
+                             "Approval Claim " + nospd,
+                             "ApprovalClaim.txt",
+                             dataSpd,
+                             AtasanGAFinance,
+                             statusClaim,
+                             "ClaimApprovalUrl",
+                             string.Empty
+                             );
+        }
+
+        public static void InformasiCancelSPD(string nrp, string nospd, trSPD dataSpd)
+        {
+            EmailCore.sendEmailNew(
+                nrp,
+               "Informasi Cancel " + nospd,
+               "InformasiCancelSPD.txt",
+               dataSpd,
+               string.Empty,
+               string.Empty,
+               "ApprovalSPDUrl",
+               string.Empty
+               );
+        }
+
+        public static void InformasiSPD(string nrp, string nospd, trSPD dataSpd)
+        {
+            EmailCore.sendEmailNew(
+                nrp,
+               "Informasi SPD " + nospd,
+               "InformasiSPD.txt",
+               dataSpd,
+               string.Empty,
+               string.Empty,
+               "ApprovalSPDUrl",
+               string.Empty
+               );
+        }
+
+        public static void InformasiPencarianTiket(string nrp, string nospd, trSPD dataSpd)
+        {
+            EmailCore.sendEmailNew(
+                nrp,
+               "Informasi pencarian tiket " + nospd,
+               "InformasiPencarianTiket.txt",
+               dataSpd,
+               string.Empty,
+               string.Empty,
+               "ApprovalSPDUrl",
+               string.Empty
+               );
+        }
+
+        public static void InformasiClaim(string nrp, string nospd, trSPD dataSpd, string statusClaim)
+        {
+            EmailCore.sendEmailNew(
+                nrp,
+               "Informasi Claim " + nospd,
+               "InformasiClaim.txt",
+               dataSpd,
+               string.Empty,
+              statusClaim,
+               "ClaimApprovalUrl",
+               string.Empty
+               );
+        }
+
+        #endregion
+    }
+}

@@ -1,0 +1,634 @@
+﻿using eSPD.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace eSPD
+{
+    public partial class newFormClaimInput : System.Web.UI.Page
+    {
+        private static msKaryawan karyawan = new msKaryawan();
+        private static classSpd oSPD = new classSpd();
+        private static string strID = string.Empty;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["IDLogin"] == null || Session["noSPD"] == null)
+            {
+                Response.Redirect("frmHome.aspx");
+            }
+
+
+            strID = (string)Session["IDLogin"];
+            karyawan = oSPD.getKaryawan(strID);
+            Session["nrpLogin"] = karyawan.nrp;
+
+            if (string.IsNullOrEmpty(karyawan.nrp)) Response.Redirect("frmHome.aspx");
+
+            using (var ctx = new dsSPDDataContext())
+            {
+                var spd = ctx.trSPDs.FirstOrDefault(o => o.noSPD == Session["noSPD"].ToString());
+                var spdApproval = ctx.ApprovalStatus.FirstOrDefault(o => o.NoSPD == spd.noSPD && o.IndexLevel == 1);
+                if (spdApproval == null)
+                {
+                    lblEmpty.Text += "Data approval tidak ditemukan ," + Environment.NewLine;
+                }
+
+                if (spd == null)
+                {
+                    lblEmpty.Text += "Data tidak ditemukan ," + Environment.NewLine;
+                }
+                else
+                {
+                    if (spd.isApproved != true)
+                    {
+                        lblEmpty.Text += "Spd rejected ," + Environment.NewLine;
+                    }
+
+                    if (spd.isCancel == true)
+                    {
+                        lblEmpty.Text += "Spd Canceled ," + Environment.NewLine;
+                    }
+                }
+
+
+                if (string.IsNullOrEmpty(lblEmpty.Text))
+                {
+                    lblEmpty.Visible = false;
+                    DetailSPD.Visible = true;
+                    if (!IsPostBack)
+                    {
+                        hiddenSPD.Value = spd.noSPD;
+                        hiddenNrpAtasan.Value = spdApproval.NrpApproval;
+                        isLuarNegeri.Checked = false;
+
+                        kurs.Visible = false;
+                        HideResult(false);
+
+                        // kalo tujuan keluar negeri result dalam rupiah dan juga input kurs dimunculin,
+                        // input kurs default nilainya 1, karena akan dikalikan untuk hasil yang akan di entri ke database
+                        if (spd.Tujuan.ToLower().Contains("luar negeri"))
+                        {
+                            isLuarNegeri.Checked = true;
+                            kurs.Visible = true;
+                            HideResult(true);
+                        }
+
+                        GenerateContent(spd);
+                    }
+                }
+                else
+                {
+                    lblEmpty.Visible = true;
+                    DetailSPD.Visible = false;
+                }
+            }
+        }
+
+        #region check if login ga
+        private bool ifga(string nrp)
+        {
+
+            bool returner = false;
+            using (var ctx = new dsSPDDataContext())
+            {
+                try
+                {
+                    int role = ctx.msUsers.First(o => o.nrp.Equals(nrp)).roleId;
+                    if (role == 17) returner = true;
+                }
+                catch (Exception)
+                {
+                    returner = false;
+                }
+            }
+            return returner;
+        }
+        #endregion
+
+        protected void GenerateContent(trSPD spd)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                // set label info spd
+                lblnoSPD.Text = spd.noSPD;
+                lblnamaLengkap.Text = spd.namaLengkap;
+                lblGolongan.Text = spd.idGolongan;
+                lblJabatan.Text = spd.jabatan;
+
+                lblTglBerangkat.Text = spd.tglBerangkat.ToString("dd MMMM yyyy");
+                lblJamberangkat.Text = spd.jamBerangkat;
+                lblMenitBerangkat.Text = spd.menitBerangkat;
+
+                lblTglKembali.Text = spd.tglKembali.ToString("dd MMMM yyyy");
+                lblJamKembali.Text = spd.jamKembali;
+                lblMenitKembali.Text = spd.menitKembali;
+                lblKeperluan.Text = spd.msKeperluan.keperluan;
+                lblKetKeperluan.Text = spd.ketKeperluan;
+                lblKeperluanLain.Text = spd.keperluanLain;
+
+                // get informasi plafon buat spd ini
+                var GolonganPlafon = ctx.msGolonganPlafons.Where(
+                    q => q.golongan.Equals(spd.idGolongan) &&
+                        q.jenisSPD.ToLower().Equals(spd.Tujuan) &&
+                        q.wilayah.ToLower().Equals(spd.WilayahTujuan));
+
+                // itung jumlah hari
+                TimeSpan Jumlahhari = new TimeSpan();
+                Jumlahhari = spd.tglKembali - spd.tglBerangkat;
+
+                TimeSpan tambahan = TimeSpan.FromDays(1);
+                Jumlahhari += tambahan;
+                lblJumlahHari.Text = Jumlahhari.Days.ToString();
+
+                // kalo nginep, dan bukan nginep dihotel enable input nilai hotel by golongan plafon
+                if (Jumlahhari.Days > 1 && spd.isHotel != null)
+                {
+                    if (!spd.isHotel.Value || !spd.penginapan.ToLower().Equals("disediakan"))
+                    {
+                        var UangHotel = GolonganPlafon.FirstOrDefault(o => o.idPlafon == 6) != null ? GolonganPlafon.FirstOrDefault(o => o.idPlafon == 6).harga.Value * Jumlahhari.Days : 0;
+                        txtHotel.Enabled = true;
+                        txtHotel.Text = UangHotel.ToString();
+                    }
+                }
+                else
+                {
+                    txtHotel.Enabled = false;
+                }
+
+                // informasi uang makan dari plafon
+                var UangMakan = GolonganPlafon.FirstOrDefault(o => o.idPlafon == 1);
+                txtUangMakan.Text = (UangMakan != null ? UangMakan.harga.Value * Jumlahhari.Days : 0).ToString();
+                lblUangMakan.Text = (UangMakan != null ? UangMakan.harga.Value : 0).ToString();
+                lblHariUangMakan.Text = lblJumlahHari.Text;
+
+                // informasi uang saku dari plafon
+                var UangSaku = GolonganPlafon.FirstOrDefault(o => o.idPlafon == 2);
+                txtUangSaku.Text = (UangSaku != null ? UangSaku.harga.Value * Jumlahhari.Days : 0).ToString();
+                lblUangSaku.Text = (UangSaku != null ? UangSaku.harga.Value : 0).ToString();
+                lblHariUangSaku.Text = lblJumlahHari.Text;
+
+                // informasi laundri
+                var Laundy = GolonganPlafon.FirstOrDefault(o => o.idPlafon == 7);
+                LaundryMaxHidden.Value = "0";
+                // bisa londri minimal 3 malam nginap
+                if (Laundy != null && Jumlahhari.Days > 2)
+                {
+                    LaundryMaxHidden.Value = (Laundy.harga.Value * (Jumlahhari.Days - 2)).ToString();
+                    laundryActual.Value = (Laundy.deskripsi != null ? Laundy.deskripsi : "");
+                }
+
+                // kalo tiket dicarikan disabled input tiket
+                if (spd.tiket.ToLower().Contains("dicarikan"))
+                {
+                    txtTiket.ReadOnly = true;
+                }
+
+                // informasi uang muka, kenapa dikasih hidden, ada kebutuhan untuk menghitung jika luarnegeri
+                UangMuka.Text = (string.IsNullOrEmpty(spd.uangMuka) == true ? "0" : spd.uangMuka);
+
+                // eksekusi ui
+                var claim = ctx.trClaims.FirstOrDefault(o => o.noSPD == spd.noSPD);
+                if (claim != null)
+                {
+                    BindClaim(claim);
+
+                    cbTiket.Checked = claim.tiket_cek != null ? claim.tiket_cek.Value : false;
+                    cbHotel.Checked = claim.hotel_cek != null ? claim.hotel_cek.Value : false;
+                    cbLaundry.Checked = claim.laundry_cek != null ? claim.laundry_cek.Value : false;
+                    cbKomunikasi.Checked = claim.komunikasi_cek != null ? claim.komunikasi_cek.Value : false;
+                    cbAirPortTax.Checked = claim.airportTax_cek != null ? claim.airportTax_cek.Value : false;
+                    cbBBM.Checked = claim.BBM_cek != null ? claim.BBM_cek.Value : false;
+                    cbTol.Checked = claim.tol_cek != null ? claim.tol_cek.Value : false;
+                    cbTaxi.Checked = claim.taxi_cek != null ? claim.taxi_cek.Value : false;
+                    cbParkir.Checked = claim.parkir_cek != null ? claim.parkir_cek.Value : false;
+                }
+
+                if (ifga(karyawan.nrp))
+                {
+                    txtUangMakan.ReadOnly = false;
+                    txtUangSaku.ReadOnly = false;
+                    txtTiket.ReadOnly = false;
+                    txtHotel.ReadOnly = false;
+                    txtUangMuka.ReadOnly = false;
+
+                    txtUangMakan.Enabled = true;
+                    txtUangSaku.Enabled = true;
+                    txtTiket.Enabled = true;
+                    txtHotel.Enabled = true;
+                    txtUangMuka.Enabled = true;
+
+                    cbTiket.Visible = true;
+                    cbHotel.Visible = true;
+                    cbLaundry.Visible = true;
+                    cbKomunikasi.Visible = true;
+                    cbAirPortTax.Visible = true;
+                    cbBBM.Visible = true;
+                    cbTol.Visible = true;
+                    cbTaxi.Visible = true;
+                    cbParkir.Visible = true;
+                }
+            }
+            GeneralFunction(null, null);
+        }
+
+        private void BindClaim(trClaim claim)
+        {
+            if (isLuarNegeri.Checked)
+            {
+                txtKurs.Text = claim.kurs.ToString();
+                txtUangMakan.Text = (claim.biayaMakan / claim.kurs).ToString();
+                txtUangSaku.Text = (claim.uangSaku / claim.kurs).ToString();
+                txtTiket.Text = (claim.tiket / claim.kurs).ToString();
+                txtHotel.Text = (claim.hotel / claim.kurs).ToString();
+                txtLaundry.Text = (claim.laundry / claim.kurs).ToString();
+                txtKomunikasi.Text = (claim.komunikasi / claim.kurs).ToString();
+                txtAirPortTax.Text = (claim.airportTax / claim.kurs).ToString();
+                txtBBM.Text = (claim.BBM / claim.kurs).ToString();
+                txtTol.Text = (claim.tol / claim.kurs).ToString();
+                txtTaxi.Text = (claim.taxi / claim.kurs).ToString();
+                txtParkir.Text = (claim.parkir / claim.kurs).ToString();
+                txtBiayaLainlain.Text = (claim.biayaLainLain / claim.kurs).ToString();
+                txtTotal.Text = (claim.total / claim.kurs).ToString();
+            }
+            else
+            {
+                txtKurs.Text = claim.kurs.ToString();
+                txtUangMakan.Text = claim.biayaMakan.ToString();
+                txtUangSaku.Text = claim.uangSaku.ToString();
+                txtTiket.Text = claim.tiket.ToString();
+                txtHotel.Text = claim.hotel.ToString();
+                txtLaundry.Text = claim.laundry.ToString();
+                txtKomunikasi.Text = claim.komunikasi.ToString();
+                txtAirPortTax.Text = claim.airportTax.ToString();
+                txtBBM.Text = claim.BBM.ToString();
+                txtTol.Text = claim.tol.ToString();
+                txtTaxi.Text = claim.taxi.ToString();
+                txtParkir.Text = claim.parkir.ToString();
+                txtBiayaLainlain.Text = claim.biayaLainLain.ToString();
+                txtTotal.Text = claim.total.ToString();
+            }
+
+            txtKeteranganBiayaLainlain.Text = claim.ketLainLain;
+
+        }
+
+        protected void HideResult(bool p)
+        {
+            UangMakan.Visible = p;
+            UangSaku.Visible = p;
+            Tiket.Visible = p;
+            Hotel.Visible = p;
+            Laundry.Visible = p;
+            Komunikasi.Visible = p;
+            AirPortTax.Visible = p;
+            BBM.Visible = p;
+            Tol.Visible = p;
+            Taxi.Visible = p;
+            Parkir.Visible = p;
+            BiayaLainlain.Visible = p;
+            Total.Visible = p;
+            UangMuka.Visible = p;
+            Penyelesaian.Visible = p;
+        }
+
+        protected void GeneralFunction(object sender, EventArgs e)
+        {
+
+            // result idr jika tujuan luar negeri
+            int kursInt = Convert.ToInt32(txtKurs.Text);
+
+            // kalo landrynya bukan aktual (deskripsi dari plafon) tidak boleh lebih dari nilai laundry dari plafon yang di set ke LaundryMaxHidden
+            if (laundryActual.Value.ToLower() != "Aktual" && int.Parse(txtLaundry.Text) > int.Parse(LaundryMaxHidden.Value))
+            {
+                txtLaundry.Text = LaundryMaxHidden.Value;
+
+                int LaundryHidden = Convert.ToInt32(LaundryMaxHidden.Value);
+                Laundry.Text = (LaundryHidden * kursInt).ToString(); ;
+            }
+
+
+            // seti initial value
+            if (string.IsNullOrEmpty(txtUangMakan.Text)) txtUangMakan.Text = "0";
+            if (string.IsNullOrEmpty(txtUangSaku.Text)) txtUangSaku.Text = "0";
+            if (string.IsNullOrEmpty(txtTiket.Text)) txtTiket.Text = "0";
+            if (string.IsNullOrEmpty(txtHotel.Text)) txtHotel.Text = "0";
+            if (string.IsNullOrEmpty(txtLaundry.Text)) txtLaundry.Text = "0";
+            if (string.IsNullOrEmpty(txtKomunikasi.Text)) txtKomunikasi.Text = "0";
+            if (string.IsNullOrEmpty(txtAirPortTax.Text)) txtAirPortTax.Text = "0";
+            if (string.IsNullOrEmpty(txtBBM.Text)) txtBBM.Text = "0";
+            if (string.IsNullOrEmpty(txtTol.Text)) txtTol.Text = "0";
+            if (string.IsNullOrEmpty(txtTaxi.Text)) txtTaxi.Text = "0";
+            if (string.IsNullOrEmpty(txtParkir.Text)) txtParkir.Text = "0";
+            if (string.IsNullOrEmpty(txtBiayaLainlain.Text)) txtBiayaLainlain.Text = "0";
+            // kebutuhan untuk menghitung jika luar negeri
+            if (string.IsNullOrEmpty(UangMuka.Text)) UangMuka.Text = "0";
+
+            // convert ke integer
+            var uangMakan = Convert.ToInt32(txtUangMakan.Text);
+            var uangSaku = Convert.ToInt32(txtUangSaku.Text);
+            var tiket = Convert.ToInt32(txtTiket.Text);
+            var hotel = Convert.ToInt32(txtHotel.Text);
+            var laundry = Convert.ToInt32(txtLaundry.Text);
+            var komunikasi = Convert.ToInt32(txtKomunikasi.Text);
+            var airPortTax = Convert.ToInt32(txtAirPortTax.Text);
+            var bbm = Convert.ToInt32(txtBBM.Text);
+            var tol = Convert.ToInt32(txtTol.Text);
+            var taxi = Convert.ToInt32(txtTaxi.Text);
+            var parkir = Convert.ToInt32(txtParkir.Text);
+            var biayaLainlain = Convert.ToInt32(txtBiayaLainlain.Text);
+            var total =
+                uangMakan +
+                uangSaku +
+                tiket +
+                hotel +
+                laundry +
+                komunikasi +
+                airPortTax +
+                bbm +
+                tol +
+                taxi +
+                parkir +
+                biayaLainlain;
+            var uangMuka = Convert.ToInt32(UangMuka.Text);
+
+            // perhitungan penyelesaian, total dikurangi uang muka
+            txtTotal.Text = total.ToString();
+            txtPenyelesaian.Text = (total - uangMuka).ToString();
+
+            txtUangMuka.Text = (uangMuka / kursInt).ToString();
+            // semunya di kali ke kurs, agar mendapatkan nilai asli buat rupiah
+            UangMakan.Text = (uangMakan * kursInt).ToString();
+            UangSaku.Text = (uangSaku * kursInt).ToString();
+            Tiket.Text = (tiket * kursInt).ToString();
+            Hotel.Text = (hotel * kursInt).ToString();
+            Laundry.Text = (laundry * kursInt).ToString();
+            Komunikasi.Text = (komunikasi * kursInt).ToString();
+            AirPortTax.Text = (airPortTax * kursInt).ToString();
+            BBM.Text = (bbm * kursInt).ToString();
+            Tol.Text = (tol * kursInt).ToString();
+            Taxi.Text = (taxi * kursInt).ToString();
+            Parkir.Text = (parkir * kursInt).ToString();
+            BiayaLainlain.Text = (biayaLainlain * kursInt).ToString();
+            Total.Text = (total * kursInt).ToString();
+
+            // idr output
+            Penyelesaian.Text = ((total * kursInt) - uangMuka).ToString();
+
+            // dolar output
+            txtPenyelesaian.Text = (total - (uangMuka / kursInt)).ToString();
+
+            // kalo biaya lain2 ngga nol maka keluarin keterangannya
+            if (biayaLainlain > 0)
+            {
+                txtKeteranganBiayaLainlain.Visible = true;
+            }
+            else
+            {
+                txtKeteranganBiayaLainlain.Visible = false;
+            }
+        }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                List<string> errorMessageHidden = new List<string>();
+                trSPD spd = ctx.trSPDs.FirstOrDefault(o => o.noSPD == hiddenSPD.Value);
+
+                if (spd == null) errorMessageHidden.Add("Data SPD tidak ditemukan");
+                if (string.IsNullOrEmpty(hiddenNrpAtasan.Value)) errorMessageHidden.Add("Data approval atasan tidak ditemukan");
+
+                trClaim claim = ctx.trClaims.FirstOrDefault(o => o.noSPD == spd.noSPD);
+                if (claim != null)
+                {
+                    claim.ApprovedAtasanBy = spd.trClaim.ApprovedAtasanBy;
+                    claim.ApprovedGABy = spd.trClaim.ApprovedGABy;
+                    claim.ApprovedFinanceBy = spd.trClaim.ApprovedFinanceBy;
+
+                    claim.isApprovedAtasan = spd.trClaim.isApprovedAtasan;
+                    claim.isApprovedAtasanDate = spd.trClaim.isApprovedAtasanDate;
+                    claim.isApprovedFinance = spd.trClaim.isApprovedFinance;
+                    claim.isApprovedFinanceDate = spd.trClaim.isApprovedFinanceDate;
+                    claim.isApprovedGA = spd.trClaim.isApprovedGA;
+                    claim.isApprovedGADate = spd.trClaim.isApprovedGADate;
+                    claim.isCancel = spd.trClaim.isCancel;
+                    claim.isCancelDate = spd.trClaim.isCancelDate;
+                    claim.isSubmit = spd.trClaim.isSubmit;
+                    claim.isSubmitDate = spd.trClaim.isSubmitDate;
+                    claim.status = spd.trClaim.status;
+                }
+
+                if (errorMessageHidden.Count == 0 && claim == null)
+                {
+                    claim = new trClaim();
+                    claim.noSPD = hiddenSPD.Value;
+                    claim.dibuatOleh = karyawan.nrp;
+                    claim.dibuatTanggal = DateTime.Now;
+                    claim.status = "Saved";
+                    claim.nrpAtasan = hiddenNrpAtasan.Value;
+                    ctx.trClaims.InsertOnSubmit(claim);
+                }
+
+                // convert ke integer                
+                var kursInt = Convert.ToInt32(txtKurs.Text);
+                var uangMakan = Convert.ToInt32(UangMakan.Text);
+                var uangSaku = Convert.ToInt32(UangSaku.Text);
+                var tiket = Convert.ToInt32(Tiket.Text);
+                var hotel = Convert.ToInt32(Hotel.Text);
+                var laundry = Convert.ToInt32(Laundry.Text);
+                var komunikasi = Convert.ToInt32(Komunikasi.Text);
+                var airPortTax = Convert.ToInt32(AirPortTax.Text);
+                var bbm = Convert.ToInt32(BBM.Text);
+                var tol = Convert.ToInt32(Tol.Text);
+                var taxi = Convert.ToInt32(Taxi.Text);
+                var parkir = Convert.ToInt32(Parkir.Text);
+                var biayaLainlain = Convert.ToInt32(BiayaLainlain.Text);
+                var total =
+                    uangMakan +
+                    uangSaku +
+                    tiket +
+                    hotel +
+                    laundry +
+                    komunikasi +
+                    airPortTax +
+                    bbm +
+                    tol +
+                    taxi +
+                    parkir +
+                    biayaLainlain;
+                var uangMuka = Convert.ToInt32(UangMuka.Text);
+
+                claim.biayaMakan = uangMakan;
+                claim.uangSaku = uangSaku;
+                claim.tiket = tiket;
+                claim.hotel = hotel;
+                claim.BBM = bbm;
+                claim.tol = tol;
+                claim.taxi = taxi;
+                claim.airportTax = airPortTax;
+                claim.laundry = laundry;
+                claim.parkir = parkir;
+                claim.komunikasi = komunikasi;
+                claim.ketLainLain = txtKeteranganBiayaLainlain.Text;
+                claim.biayaLainLain = biayaLainlain;
+                claim.total = total;
+                claim.kurs = kursInt;
+                claim.diubahOleh = karyawan.nrp;
+                claim.diubahTanggal = DateTime.Now;
+                spd.uangMuka = uangMuka.ToString();
+
+                claim.tiket_cek = cbTiket.Checked;
+                claim.hotel_cek = cbHotel.Checked;
+                claim.laundry_cek = cbLaundry.Checked;
+                claim.komunikasi_cek = cbKomunikasi.Checked;
+                claim.airportTax_cek = cbAirPortTax.Checked;
+                claim.BBM_cek = cbBBM.Checked;
+                claim.tol_cek = cbTol.Checked;
+                claim.taxi_cek = cbTaxi.Checked;
+                claim.parkir_cek = cbParkir.Checked;
+
+                try
+                {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    errorMessageHidden.Add("Gagal save claim|" + ex.Message.ToString());
+                    errorMessageHidden.Add(ex.Message);
+                }
+                finally
+                {
+                    pnlSuccess.Visible = true;
+                    pnlError.Visible = false;
+                    lblSuccess.Text += "Claim Berhasil di Save" + Environment.NewLine;
+                    if (ifga(karyawan.nrp)) lblSuccess.Text += "Jika submit diclick (GA), maka proses approval akan diulang dari awal.";
+                    btnSave.Enabled = false;
+                    btnReset.Disabled = true;
+
+                    //ian 2015-04-10
+                    if (claim != null)
+                    {
+                        if (claim.isSubmit == true)
+                        {
+                            btnSubmit.Enabled = false;
+                        } 
+                        if (claim.isSubmit == null)
+                        {
+                            btnSubmit.Enabled = true;
+                        }                       
+                    }
+                    else 
+                    {
+                        btnSubmit.Enabled = true;
+                    }
+                    //end
+
+
+                    if (ifga(karyawan.nrp))
+                    {
+                        if (claim.tiket_cek == true || claim.hotel_cek == true || claim.laundry_cek == true || claim.komunikasi_cek == true || claim.airportTax_cek == true || claim.BBM_cek == true || claim.tol_cek == true || claim.taxi_cek == true || claim.parkir_cek == true)
+                        {
+                            msKaryawan kary = new msKaryawan();
+                            if (spd.nrp == "99999999")
+                            {
+                                kary.email = spd.email;
+                                kary.nrp = spd.nrp;
+                                kary.namaLengkap = spd.namaLengkap;
+                                kary.golongan = "III";
+                                kary.job = spd.jabatan;
+                                kary.posisi = spd.jabatan;
+                                kary.coCd = "1";
+                                kary.kodePSubArea = "1";
+                                kary.kodePA = "1";
+                            }
+                            else
+                            {
+                                kary = (from kar in ctx.msKaryawans
+                                        where kar.nrp == spd.nrp
+                                        select kar).First();
+                            }
+
+                            classSpd oSpd = new classSpd();
+                            oSpd.sendMailClaim(claim, kary);
+                        }
+                    }
+                }
+
+                if (errorMessageHidden.Count() > 0)
+                {
+                    errorMessage.DataSource = errorMessageHidden;
+                    errorMessage.DataBind();
+
+                    pnlError.Visible = true;
+                    pnlSuccess.Visible = false;
+                    btnSubmit.Enabled = false;
+                }
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            using (var ctx = new dsSPDDataContext())
+            {
+                List<string> errorMessageHidden = new List<string>();
+                trClaim claim = ctx.trClaims.FirstOrDefault(o => o.noSPD == hiddenSPD.Value);
+                trSPD spd = ctx.trSPDs.FirstOrDefault(o => o.noSPD == claim.noSPD);
+                if (claim == null) errorMessageHidden.Add("Data claim tidak ditemukan, submit tidak bisa diproses");
+                if (spd == null) errorMessageHidden.Add("Data spd tidak ditemukan, submit tidak bisa diproses");
+                
+                if (errorMessageHidden.Count == 0)
+                {
+                    claim.status = "Menunggu approval atasan";
+                    claim.isSubmit = true;
+                    claim.isSubmitDate = DateTime.Now;
+                    claim.diubahOleh = karyawan.nrp;
+                    claim.diubahTanggal = DateTime.Now;
+
+                    try
+                    {
+                        ctx.SubmitChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessageHidden.Add("Error submit, gagal merubah data");
+                    }
+                }
+
+                if (errorMessageHidden.Count == 0)
+                {
+                    EmailCore.ApprovalClaim(claim.nrpAtasan, spd.noSPD, spd, "Atasan", claim.status);
+
+                    lblSuccess.Text = "Claim Berhasil di Submit";
+
+                    pnlError.Visible = false;
+                    pnlSuccess.Visible = true;
+                    btnSave.Enabled = false;
+                    btnSubmit.Enabled = false;
+                    btnReset.Disabled = true;
+                }
+
+                if (errorMessageHidden.Count() > 0)
+                {
+                    errorMessage.DataSource = errorMessageHidden;
+                    errorMessage.DataBind();
+
+                    pnlError.Visible = true;
+                    pnlSuccess.Visible = false;
+                }
+            }
+        }
+
+        protected void btnDetail_Click(object sender, EventArgs e)
+        {
+
+            string URL = "~/newFormRequestDetail.aspx?encrypt=" + Encrypto.Encrypt(Session["noSPD"].ToString());
+            URL = Page.ResolveClientUrl(URL);
+            ScriptManager.RegisterStartupScript(this, GetType(), "openDetail", "openDetail('" + URL + "');", true);
+        }
+    }
+}

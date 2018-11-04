@@ -1,0 +1,204 @@
+﻿<html>
+<head>
+    <title>e-SPD [Approval SPD Atasan Langsung] |NoSPD|-|spdRequester|</title>
+    <!-- CSS goes in the document HEAD or added to your external stylesheet -->
+    <style type="text/css">
+        body {
+            color: #333;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 1.42857;
+        }
+
+        .bs-callout {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-color: #eee;
+            border-image: none;
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 1px 1px 1px 10px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fdfdfd;
+        }
+
+            .bs-callout h4 {
+                margin-bottom: 5px;
+                margin-top: 0;
+                padding-bottom: 1em;
+            }
+
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #eee;
+            border-collapse: collapse;
+        }
+
+            table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+                background-color: #dedede;
+            }
+
+            table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+            }
+    </style>
+</head>
+<body>
+    <div class="bs-callout">
+        <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+            Approval |NoSPD|
+        </h4>
+        <p>
+            Kepada Yth, <br />
+            Bapak/Ibu |approverName| <br /> <br />
+
+            Bapak/Ibu |spdRequester| telah mengirim permintaan SPD dan status saat ini <b>|statusName|</b> dengan rincian sebagai berikut :   <br /> <br />
+        </p>
+
+        <div class="bs-callout">
+            <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+                Informasi
+            </h4>
+            <table class="none">
+                <tbody>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">No. SPD </td>
+                        <td>|NoSPD|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Nama Lengkap </td>
+                        <td>|spdRequester|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">No Handphone </td>
+                        <td>|noHp|</td>
+                    </tr>
+					<tr>
+                        <td style="text-align:right;font-weight:bold;">Golongan </td>
+                        <td>|golongan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Jabatan </td>
+                        <td>|jabatan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Organisasi Unit </td>
+                        <td>|organisasiUnit|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Company Code </td>
+                        <td>|companyCode|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Personel Area </td>
+                        <td>|personalArea|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Personel Sub Area </td>
+                        <td>|personelSubArea|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Cost Center Pembebanan </td>
+                        <td>|costCenterPembebanan|</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bs-callout">
+            <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+                Informasi Detail
+            </h4>
+            <table class="none">
+                <tbody>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tempat Tujuan </td>
+                        <td>|tempatTujuan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Keperluan </td>
+                        <td>|keperluan|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tanggal Berangkat</td>
+                        <td>|tanggalBerangkat|&nbsp;|jamBerangkat|:|menitBerangkat|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Tanggal Kembali </td>
+                        <td>|tanggalKembali|&nbsp;|jamKembali|:|menitKembali|</td>
+                    </tr>
+					<tr>
+                        <td style="text-align:right;font-weight:bold;">Total hari (Menginap)</td>
+                        <td>|totalDays|</td>
+                    </tr>
+					<tr>
+                        <td style="text-align:right;font-weight:bold;">Alasan</td>
+                        <td>|alasan|</td>
+                    </tr>					
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Hotel (penginapan)</td>
+                        <td>|hotel|</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;font-weight:bold;">Angkutan </td>
+                        <td>|angkutan|</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bs-callout">
+            <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+                Detail SPD Approval
+            </h4>
+            |spdStatusList|
+        </div>
+
+		<h3>Detail</h3>
+		
+		  <p>Silahkan  <a href='|DetailURL|'>Click ini</a> untuk melihat data detail.</p>
+
+
+        <p>
+            Apabila Bapak/ Ibu berada di kantor bisa menggunakan link dibawah ini untuk melakukan approve/reject request approval SPD tersebut. Setelah klik approval, masukkan username dan password windows. Approval dinyatakan berhasil jika terdapat notifikasi approval berhasil pada browser.
+            <br />
+            <a href='|ApproveUrl|' class="approve">Approve</a>&nbsp;<a href='|RejectUrl|' class="reject">Reject</a> <br />
+        </p>
+        <hr />
+        <p>
+            Jika link di atas tidak dapat diklik, copy dan gunakan URL dibawah ini di browser:  <br />
+            Approve : <a href='|ApproveUrl|'>|ApproveUrl|</a> <br />
+            Reject : <a href='|RejectUrl|'>|RejectUrl|</a> <br /> <br />
+        </p>
+        <hr />
+        <p>
+            Apabila Bapak/ Ibu berada di luar kantor bisa menggunakan link dibawah ini
+            <br />
+            <a href='|ApproveUrlExternal|' class="approve">Approve</a>&nbsp;<a href='|RejectUrlExternal|' class="reject">Reject</a> <br /> <br />
+        </p>
+        <hr />
+        <p>
+            Jika link di atas tidak dapat diklik, copy dan gunakan URL dibawah ini di browser:  <br />
+            Approve : <a href='|ApproveUrlExternal|'>|ApproveUrlExternal|</a> <br />
+            Reject : <a href='|RejectUrlExternal|'>|RejectUrlExternal|</a> <br /> <br />
+        </p>
+        <hr />
+        Terima kasih. <br />
+        <span style="color: #FF0000"><b>Catatan : E-mail ini dikirim otomatis oleh Sistem Pembuatan SPD.Tidak perlu membalas E-mail ini</b></span>
+
+    </div>
+</body>
+</html>

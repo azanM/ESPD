@@ -1,0 +1,154 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="eSPD.MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="App_Themes/Main/Site.css" rel="stylesheet" type="text/css" />
+    <link href="style/style.css" rel="stylesheet" type="text/css" />
+    <link href="style/select2.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="Script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="Script/select2.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style1 {
+            float: left;
+            padding-left: 8px;
+            padding-right: 0px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        .container {
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <asp:ScriptManager ID="ScriptManager1" runat="server" ScriptMode="Release">
+        </asp:ScriptManager>
+        <div class="page container">
+
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td colspan="2">
+
+                        <asp:Image runat="server" ID="IMGlOGO" ImageUrl="~/Style/Banner-ESPD.jpg"
+                            Height="121px" Width="100%" />
+                    </td>
+                </tr>
+                <tr class="authentic">
+                    <td>
+                        <asp:Menu ID="mnuMain" runat="server" CssClass="menu"
+                            DynamicEnableDefaultPopOutImage="False"
+                            DynamicPopOutImageUrl="~/App_Themes/Theme/Images/img_rmenuarrow.gif"
+                            EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal"
+                            StaticDisplayLevels="2" StaticEnableDefaultPopOutImage="False">
+                            <Items>
+                                <asp:MenuItem NavigateUrl="~/frmHome.aspx" Text="Home" Value="Home">
+                                    <asp:MenuItem Text="Master" Value="mstr">
+                                        <%-- <asp:MenuItem NavigateUrl="~/frmMasterKaryawan.aspx" Text="Karyawan" 
+                                    Value="Karyawan"></asp:MenuItem>--%>
+                                        <asp:MenuItem NavigateUrl="~/msCostCenter.aspx" Text="Cost Center"
+                                            Value="CostCenter"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/msUser.aspx" Text="User"
+                                            Value="User"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmMsRole.aspx" Text="Role"
+                                            Value="Role"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmMsAngkutan.aspx" Text="Angkutan"
+                                            Value="Angkutan"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmMsKeperluan.aspx" Text="Keperluan"
+                                            Value="Keperluan"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmMsPlafon.aspx" Text="Plafon"
+                                            Value="Plafon"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmMsPlafonGolongan.aspx" Text="Golongan Plafon"
+                                            Value="Plafon"></asp:MenuItem>
+                                    </asp:MenuItem>
+                                    <asp:MenuItem Text="Transaction" Value="tscn">
+                                        <%--<asp:MenuItem NavigateUrl="~/frmRequestInput.aspx" Text="Create SPD"
+                                            Value="msCreate"></asp:MenuItem>--%>
+                                        <asp:MenuItem NavigateUrl="~/newFormRequestList.aspx" Text="Create SPD (New)"
+                                            Value="msCreate"></asp:MenuItem>
+                                      <%--  <asp:MenuItem NavigateUrl="frmClaimApproval.aspx" Text="Claim SPD"
+                                            Value="msClaim"></asp:MenuItem>--%>
+                                         <asp:MenuItem NavigateUrl="~/newClaimList.aspx" Text="Claim SPD (New)"
+                                            Value="msClaim"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmFinanceApp.aspx" Text="Finance Approved"
+                                            Value="Finance Approved"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmSPDFinder.aspx" Text="Search All"
+                                            Value="Search All"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/newAcceptDocument.aspx" Text="Accept Document"
+                                            Value="Accept Document"></asp:MenuItem>
+                                    </asp:MenuItem>
+                                 <%--   <asp:MenuItem Text="Reports" Value="rpt">
+                                        <asp:MenuItem NavigateUrl="~/frmReportClaimSPD.aspx" Text="Report Claim SPD"
+                                            Value="ReportClaim"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmRptSPD.aspx" Text="Report SPD"
+                                            Value="ReportSPD"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmRptClaimAll.aspx" Text="Report Claim All"
+                                            Value="ReportClaimAll"></asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/frmRptSPDAll.aspx" Text="Report SPD All"
+                                            Value="ReportSPDAll"></asp:MenuItem>
+                                    </asp:MenuItem>--%>
+                                    <%--<asp:MenuItem Text="Laporan" Value="lpr">
+                               <asp:menuitem NavigateUrl="~/frmReportSPD.aspx" Text="Report SPD" 
+                                    Value="msCreate"></asp:menuitem>
+                                <asp:MenuItem NavigateUrl="frmReportClaim.aspx" Text="Report Claim SPD" 
+                                    Value="msClaim"></asp:MenuItem>
+                                    <asp:menuitem NavigateUrl="~/frmReportCrystalSPD.aspx" Text="Report SPD CR" 
+                                    Value="msCreate"></asp:menuitem>
+                                <asp:MenuItem NavigateUrl="~/frmReportCrystalClaim.aspx" Text="Report Claim SPD CR" 
+                                    Value="msClaim"></asp:MenuItem>
+                            </asp:MenuItem>--%>
+                                    <asp:MenuItem Text="Setting" Value="st">
+                                        <asp:MenuItem Text="User Maintenance" NavigateUrl="~/frmAssignRole.aspx" Value="UM"></asp:MenuItem>
+                                        <asp:MenuItem Text="Page Access Security" Value="GPM"></asp:MenuItem>
+                                        <asp:MenuItem Text="Data Access Security" Value="DAS"></asp:MenuItem>
+                                    </asp:MenuItem>
+                                    <asp:MenuItem Text="Help" Value="hlp">
+                                        <asp:MenuItem NavigateUrl="~/frmUserManual.aspx" Text="User Manual"
+                                            Value="usrManual"></asp:MenuItem>
+                                    </asp:MenuItem>
+                                </asp:MenuItem>
+                            </Items>
+                            <StaticMenuStyle CssClass="staticMenu" HorizontalPadding="0px"
+                                VerticalPadding="0px" />
+                            <StaticMenuItemStyle CssClass="staticMenuItem" ItemSpacing="1px" />
+                            <StaticHoverStyle CssClass="statichover" />
+                            <DynamicMenuStyle BackColor="#CCCCCC" CssClass="dynamicMenu"
+                                HorizontalPadding="1px" />
+                            <DynamicMenuItemStyle BackColor="#dbe8f4" CssClass="dynamicMenuItem"
+                                ItemSpacing="1px" />
+                            <DynamicHoverStyle BackColor="#89AFDC" BorderStyle="None" ForeColor="White" />
+                            <StaticSelectedStyle CssClass="staticMenuItem" ItemSpacing="1px" />
+                        </asp:Menu>
+                    </td>
+                    <td style="text-align: center; width: 200px;">
+
+                        <asp:LoginView ID="LoginView1" runat="server">
+                            <LoggedInTemplate>
+                                <asp:LoginName ID="LoginName1" runat="server" FormatString="Welcome, {0}" />
+                                <asp:Label runat="server" ID="lblLogin" CssClass="logouttheme" ForeColor="#3333FF" />
+                            </LoggedInTemplate>
+                            <AnonymousTemplate>
+                                <span class="logouttheme" style="color: White; width: 200px;">You are not logged in</span>
+
+                            </AnonymousTemplate>
+                        </asp:LoginView>
+                        <asp:LinkButton runat="server" ToolTip="Log Out" CssClass="authentication" Text="Keluar" Visible="true"
+                            ID="lblLogout"></asp:LinkButton>
+                    </td>
+                </tr>
+            </table>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

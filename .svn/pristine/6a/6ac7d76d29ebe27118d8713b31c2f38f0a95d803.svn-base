@@ -1,0 +1,239 @@
+﻿<html>
+<head>
+    <title>e-SPD [Approval Claim Atasan Langsung] |NoSPD|-|spdRequester|</title>
+    <style type="text/css">
+        body {
+            color: #333;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 1.42857;
+        }
+
+        .bs-callout {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-color: #eee;
+            border-image: none;
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 1px 1px 1px 10px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fdfdfd;
+        }
+
+            .bs-callout h4 {
+                margin-bottom: 5px;
+                margin-top: 0;
+                padding-bottom: 1em;
+            }
+
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #eee;
+            border-collapse: collapse;
+        }
+
+            table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+                background-color: #dedede;
+            }
+
+            table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #eee;
+            }
+    </style>
+</head>
+<body>
+    Kepada Yth, <br />
+    Bapak/Ibu |approverName| <br /> <br />
+
+    Bapak/Ibu |spdRequester| telah mengirim permiintaan Claim SPD dan status saat ini <b>|statusName|</b> dengan rincian sebagai berikut :   <br /> <br />
+
+    <div class="bs-callout">
+        <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+            Informasi karyawan
+        </h4>
+        <table class="none">
+            <tbody>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">No. SPD </td>
+                    <td>|NoSPD|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Nama Lengkap </td>
+                    <td>|spdRequester|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">No Handphone </td>
+                    <td>|noHp|</td>
+                </tr>
+				<tr>
+                    <td style="text-align:right;font-weight:bold;">Golongan </td>
+                    <td>|golongan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Jabatan </td>
+                    <td>|jabatan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Organisasi Unit </td>
+                    <td>|organisasiUnit|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Company Code </td>
+                    <td>|companyCode|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Personel Area </td>
+                    <td>|personalArea|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Personel Sub Area </td>
+                    <td>|personelSubArea|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Cost Center Pembebanan </td>
+                    <td>|costCenterPembebanan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Angkutan </td>
+                    <td>|angkutan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Hotel </td>
+                    <td>|hotel|</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bs-callout">
+        <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+            Informasi SPD
+        </h4>
+        <table class="none">
+            <tbody>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Tempat tujuan</td>
+                    <td>|tempatTujuan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Keperluan</td>
+                    <td>|keperluan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Tanggal Berangkat</td>
+                    <td>|tanggalBerangkat| Jam Berangkat : |jamBerangkat| Menit Berangkat : |menitBerangkat|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;"> Tanggal Kembali</td>
+                    <td>|tanggalKembali| Jam Kembali : |jamKembali| Menit Kembali : |menitKembali|</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <h4 style="color: #1b809e; border-bottom: 1px solid #eee;">
+           Data Claim
+        </h4>
+        <table class="none">
+            <tbody>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">biaya Makan</td>
+                    <td style="text-align:right;">|CbiayaMakan|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Uang Saku</td>
+                    <td style="text-align:right;">|CuangSaku|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Tiket</td>
+                    <td style="text-align:right;">|Ctiket|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Hotel</td>
+                    <td style="text-align:right;">|Chotel|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">BBM</td>
+                    <td style="text-align:right;">|CBBM|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Tol</td>
+                    <td style="text-align:right;">|Ctol|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Taxi</td>
+                    <td style="text-align:right;">|Ctaxi|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Airport tax</td>
+                    <td style="text-align:right;">|CairportTax|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Laundry</td>
+                    <td style="text-align:right;">|Claundry|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Parkir</td>
+                    <td style="text-align:right;">|Cparkir|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Komunikasi</td>
+                    <td style="text-align:right;">|Ckomunikasi|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Biaya lain - lain</td>
+                    <td style="text-align:right;">|CbiayaLainLain|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Total</td>
+                    <td style="text-align:right;font-weight:bold;">|CtotalClaim|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Uang muka</td>
+                    <td style="text-align:right;">|CuangMuka|</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;font-weight:bold;">Penyelesaian</td>
+                    <td style="text-align:right;font-weight:bold;">|Cpenyelesaian|</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+        <p>Silahkan  <a href='|DetailClaimURL|'>Click ini</a> untuk melihat data detail.</p>
+
+
+    Apabila Bapak/ Ibu berada di kantor bisa menggunakan link dibawah ini untuk melakukan approve/reject Request Claim SPD tersebut. Setelah klik approval, masukkan username dan password windows. Approval dinyatakan berhasil jika terdapat notifikasi approval berhasil pada browser.  <br />
+    <a href='|ApproveUrl|'>Approve</a> | <a href='|RejectUrl|'>Reject</a> <br /> <br />
+
+    Jika link di atas tidak dapat diklik, copy dan gunakan URL dibawah ini di browser:  <br />
+    Approve : <a href='|ApproveUrl|'>|ApproveUrl|</a> <br />
+    Reject : <a href='|RejectUrl|'>|RejectUrl|</a> <br /> <br />
+
+    Apabila Bapak/ Ibu berada di luar kantor bisa menggunakan link dibawah ini  <br />
+    <a href='|ApproveUrlExternal|'>Approve</a> | <a href='|RejectUrlExternal|'>Reject</a> <br /> <br />
+
+    Jika link di atas tidak dapat diklik, copy dan gunakan URL dibawah ini di browser:  <br />
+    Approve : <a href='|ApproveUrlExternal|'>|ApproveUrlExternal|</a> <br />
+    Reject : <a href='|RejectUrlExternal|'>|RejectUrlExternal|</a> <br /> <br />
+
+    Terima kasih. <br />
+    <span style="color: #FF0000"><b>Catatan : E-mail ini dikirim otomatis oleh Sistem Pembuatan SPD.Tidak perlu membalas E-mail ini</b></span>
+</body>
+</html>
