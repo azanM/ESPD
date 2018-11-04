@@ -1051,3 +1051,44 @@ E:\KERJA\SERA\SPD Dev (16-04-2018) Not Change Request\eSPD\obj\Debug\eSPD.pdb
 E:\KERJA\SERA\SPD Dev (16-04-2018) Not Change Request\eSPD\obj\Debug\eSPD.csprojResolveAssemblyReference.cache
 E:\KERJA\SERA\SPD Dev (16-04-2018) Not Change Request\eSPD\bin\Newtonsoft.Json.dll
 E:\KERJA\SERA\SPD Dev (16-04-2018) Not Change Request\eSPD\bin\Newtonsoft.Json.xml
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\eSPD.dll.config
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\eSPD.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\eSPD.pdb
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\AjaxControlToolkit.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\AntiXSSLibrary.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\CrystalDecisions.CrystalReports.Engine.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\CrystalDecisions.ReportSource.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\CrystalDecisions.Shared.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\CrystalDecisions.Web.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\HtmlSanitizationLibrary.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Microsoft.ReportViewer.Common.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Microsoft.ReportViewer.DataVisualization.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Microsoft.ReportViewer.WebForms.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Newtonsoft.Json.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Quartz.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\SanitizerProviders.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\AjaxControlToolkit.pdb
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Microsoft.ReportViewer.WebForms.xml
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Newtonsoft.Json.xml
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Quartz.pdb
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\Quartz.xml
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\ar\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\cs\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\de\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\es\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\fr\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\he\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\hi\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\it\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\ja\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\ko\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\nl\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\pt\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\ru\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\tr-TR\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\zh-CHS\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\bin\zh-CHT\AjaxControlToolkit.resources.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\obj\Debug\eSPD.csprojResolveAssemblyReference.cache
+E:\REPOSITORY_GIT\ESPD\eSPD\obj\Debug\eSPD.dll
+E:\REPOSITORY_GIT\ESPD\eSPD\obj\Debug\eSPD.pdb

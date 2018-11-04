@@ -151,7 +151,8 @@
                 <div style="border: 1px solid #e3e3e3">
                     <asp:GridView ID="ViewADH" runat="server"
                         Visible="false"
-                        AutoGenerateColumns="false" CellPadding="4" ForeColor="#333333" CssClass="fixit">
+                        AutoGenerateColumns="false" CellPadding="4" ForeColor="#333333" CssClass="fixit"
+                        GridLines="None" AllowPaging="true" OnPageIndexChanging="OnPageIndexChangingViewADH">
                         <Columns>
                             <asp:BoundField HeaderText="No SPD" DataField="" />
                             <asp:BoundField HeaderText="Cost Center" DataField="" />

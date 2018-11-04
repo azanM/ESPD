@@ -44,12 +44,12 @@ namespace eSPD
                 bindFind();
                 bindFindTujuan();
                 BindAtasan();
-
+                BindSPDViewForADH();
                 if (Session["IDLogin"].ToString() == "siska90000308")
                     PnlChange.Visible = true;
             }
         }
-        public void SPDViewForADH()
+        public void BindSPDViewForADH()
         {
             try
             {
@@ -84,6 +84,8 @@ namespace eSPD
                             }
                         }
                     }
+                    ViewADH.DataSource = dataSource;
+                    ViewADH.DataBind();
                 }
             }
             catch (Exception e)
@@ -120,10 +122,18 @@ namespace eSPD
                         cmd.Connection = con;
                         sda.SelectCommand = cmd;                        
                         sda.Fill(dt);
+                        dt.Rows.Add();
                     }
                 }
             }
         }
+
+        protected void OnPageIndexChangingViewADH(object sender, GridViewPageEventArgs e)
+        {
+            ViewADH.PageIndex = e.NewPageIndex;
+            BindSPDViewForADH();
+        }
+
         #region check if login ga
         private bool ifga(string nrp)
         {
